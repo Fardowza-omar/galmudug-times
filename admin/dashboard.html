@@ -857,11 +857,17 @@
                 const response = await fetch(`${API_URL}/admin/articles`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
+                if (response.status === 401 || response.status === 403) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                    return;
+                }
                 const articles = await response.json();
                 displayArticles(articles);
                 updateStats(articles);
             } catch (error) {
-                showError('Failed to load articles');
+                showError('Failed to load articles. Is the server running?');
                 console.error(error);
             }
         }

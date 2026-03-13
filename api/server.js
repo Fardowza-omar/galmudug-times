@@ -15,8 +15,22 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-// Use JWT_SECRET from environment. If not set, generate a random key per run (dev only).
-const SECRET_KEY = process.env.JWT_SECRET || crypto.randomBytes(64).toString('hex');
+
+// Use JWT_SECRET from environment, or generate once and persist to disk
+function getOrCreateSecret() {
+  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
+  const secretFile = join(__dirname, '../data/.secret');
+  if (fs.existsSync(secretFile)) {
+    return fs.readFileSync(secretFile, 'utf8').trim();
+  }
+  const newSecret = crypto.randomBytes(64).toString('hex');
+  try {
+    if (!fs.existsSync(join(__dirname, '../data'))) fs.mkdirSync(join(__dirname, '../data'), { recursive: true });
+    fs.writeFileSync(secretFile, newSecret, 'utf8');
+  } catch (e) { /* non-fatal */ }
+  return newSecret;
+}
+const SECRET_KEY = getOrCreateSecret();
 
 // Middleware
 app.use(cors());
