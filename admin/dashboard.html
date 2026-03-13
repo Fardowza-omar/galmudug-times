@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Galmudug Times</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Libre Baskerville', serif;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            font-family: 'Pirata One', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #aaa;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .menu-link.active {
+            border-left: 3px solid #667eea;
+            padding-left: calc(1rem - 3px);
+        }
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 0.75rem;
+            background-color: #d63031;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #b81a1e;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            grid-column: 2;
+            padding: 2rem;
+            margin-left: 250px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #000;
+        }
+
+        .add-article-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-article-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ==================== ARTICLES TABLE ==================== */
+        .articles-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .articles-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .articles-table thead {
+            background-color: #f9f9f9;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .articles-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #666;
+        }
+
+        .articles-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .articles-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .article-title {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-published {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-draft {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #5568d3;
+        }
+
+        .btn-delete {
+            background-color: #d63031;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #b81a1e;
+        }
+
+        .btn-view {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #1e8449;
+        }
+
+        /* ==================== MODAL ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        /* ==================== FORM ==================== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Libre Baskerville', serif;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .file-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 4px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+            background-color: #f9f9f9;
+        }
+
+        .file-upload p {
+            margin: 0;
+            color: #666;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 1.5rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: #d0d0d0;
+        }
+
+        /* ==================== ALERTS ==================== */
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .alert-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        /* ==================== STAT CARDS ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+                grid-column: 1;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">Galmudug Times</div>
+            <p style="font-size: 0.75rem; color: #666; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Admin Panel</p>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="#articles" class="menu-link active">📰 Articles</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#comments" class="menu-link">💬 Comments</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#categories" class="menu-link">📁 Categories</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#profile" class="menu-link">👤 Profile</a>
+                </li>
+            </ul>
+            
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #333;">
+                <p style="font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Quick Links</p>
+                <a href="/" target="_blank" style="display: block; padding: 0.6rem 1rem; background: #222; border-radius: 4px; color: #4CAF50; text-decoration: none; font-size: 0.85rem; margin-bottom: 0.5rem;">🌐 View Live Site</a>
+            </div>
+            
+            <button class="logout-btn" id="logoutBtn">Sign Out</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="alert alert-success" id="successAlert"></div>
+            <div class="alert alert-error" id="errorAlert"></div>
+
+            <!-- Header -->
+            <div class="header">
+                <h1>Dashboard</h1>
+                <button class="add-article-btn" id="newArticleBtn">+ New Article</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Articles</div>
+                    <div class="stat-number" id="totalArticles">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Published</div>
+                    <div class="stat-number" id="publishedCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Drafts</div>
+                    <div class="stat-number" id="draftCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-number" id="totalViews">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Comments</div>
+                    <div class="stat-number" id="totalComments">0</div>
+                </div>
+            </div>
+
+            <!-- Articles Table -->
+            <div class="articles-section" id="articlesSection">
+                <table class="articles-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Breaking</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Views</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articlesTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem; color: #999;">Loading articles...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="articles-section" id="commentsSection" style="display: none;">
+                <div style="padding: 2rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Comments</h2>
+                    <div id="commentsTableContainer">
+                        <p style="color:#999;">Loading comments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="articles-section" id="categoriesSection" style="display: none;">
+                <div style="padding: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.5rem; margin: 0;">Categories</h2>
+                        <button class="add-article-btn" id="newCategoryBtn" style="white-space: nowrap;">+ New Category</button>
+                    </div>
+                    <div class="categories-list" id="categoriesList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                        <p>Loading categories...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="articles-section" id="profileSection" style="display: none;">
+                <div style="padding: 2rem;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">👤 My Profile</h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px;">
+                        <!-- Profile Info -->
+                        <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                            <h3 style="font-size: 1rem; margin-bottom: 1.5rem; color: #333;">📝 Edit Profile</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" id="profileUsername" required placeholder="Your username">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="profileEmail" required placeholder="your@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Member Since</label>
+                                    <input type="text" id="profileMemberSince" readonly style="background-color: #e8e8e8; cursor: not-allowed;">
+                                </div>
+                                <button type="submit" class="btn-submit" style="width: 100%;">💾 Save Profile</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Change Password -->
+                        <div style="background: #fff3e0; padding: 1.5rem; border-radius: 8px; border: 1px solid #ffcc80;">
+                            <h3 style="font-size: 1rem; margin-bottom: 1.5rem; color: #e65100;">🔐 Change Password</h3>
+                            <form id="passwordForm">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" id="currentPassword" required placeholder="Enter current password">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" id="newPassword" required placeholder="Enter new password (min 6 chars)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" required placeholder="Confirm new password">
+                                </div>
+                                <button type="submit" class="btn-submit" style="width: 100%; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">🔑 Change Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Article Modal -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Article</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+
+            <form id="articleForm">
+                <div class="form-group">
+                    <label for="articleTitle">Title</label>
+                    <input type="text" id="articleTitle" name="title" required placeholder="Article title">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="articleCategory">Category</label>
+                        <select id="articleCategory" name="category_id">
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="articleAuthor">Author</label>
+                        <input type="text" id="articleAuthor" name="author" placeholder="Article author">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="articleDescription">Description</label>
+                    <textarea id="articleDescription" name="description" placeholder="Brief description of the article"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="articleContent">Content</label>
+                    <textarea id="articleContent" name="content" required placeholder="Write your full article content here. You can use plain text or basic HTML formatting." style="min-height: 300px;"></textarea>
+                    <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">💡 Tip: First paragraph will show as the article introduction on the homepage.</p>
+                </div>
+
+                <div style="background: #f8f9fa; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid #e0e0e0;">
+                    <h3 style="font-size: 1rem; margin-bottom: 1rem; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 0.5rem;">📷 Media Section</h3>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="articleImage" style="font-weight: 600;">Featured Image</label>
+                        <div class="file-upload" id="fileUpload" style="background: white;">
+                            <input type="file" id="articleImage" name="featured_image" accept="image/*" style="display: none;">
+                            <p style="font-size: 1rem; margin-bottom: 0.5rem;">📁 Click to upload image</p>
+                            <p style="font-size: 0.8rem; color: #999;">PNG, JPG, GIF up to 5MB</p>
+                        </div>
+                        <img id="imagePreview" class="image-preview" style="display: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="articleVideo" style="font-weight: 600;">🎬 Video (Optional)</label>
+                        <input type="url" id="articleVideo" name="video_url" placeholder="Paste YouTube or Vimeo URL here...">
+                        <div style="background: #fff3cd; padding: 0.75rem; border-radius: 4px; margin-top: 0.75rem; font-size: 0.8rem;">
+                            <strong>How to add a video:</strong><br>
+                            1. Go to YouTube, click Share → Embed<br>
+                            2. Copy the URL that looks like: <code style="background:#fff;padding:0.2rem 0.4rem;border-radius:2px;">https://www.youtube.com/embed/VIDEO_ID</code><br>
+                            3. Paste it above
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="articleURL">Source Link (Optional)</label>
+                    <input type="url" id="articleURL" name="article_url" placeholder="https://example.com/original-article">
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 0.3rem;">If this article has an external source, add the link here.</p>
+                </div>
+
+                <div style="background: #e8f5e9; border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid #4CAF50;">
+                    <h3 style="font-size: 1rem; margin-bottom: 1rem; font-family: 'Inter', sans-serif; color: #2e7d32;">⚡ Publishing Options</h3>
+                    
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label for="articleStatus">Status</label>
+                        <select id="articleStatus" name="status" required>
+                            <option value="draft">📝 Draft (Save for later)</option>
+                            <option value="published">✅ Published (Show on site)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:white;padding:1rem;border-radius:6px;border:2px solid #e0e0e0;">
+                            <input type="checkbox" id="articleBreaking" name="is_breaking" style="width:22px;height:22px;cursor:pointer;">
+                            <div>
+                                <span style="font-weight:600;color:#d63031;">🚨 Mark as Breaking News</span>
+                                <p style="font-size:0.8rem;color:#666;margin-top:0.2rem;font-weight:normal;">Shows in the scrolling ticker at the top of all pages</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Save Article</button>
+                    <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="categoryModalTitle">Add New Category</h2>
+                <button class="close-btn" id="closeCategoryModal">&times;</button>
+            </div>
+
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" id="categoryName" name="name" required placeholder="e.g., Politics, Business, Technology">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryColor">Color</label>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="color" id="categoryColor" name="color" value="#000000" style="width: 60px; height: 40px; cursor: pointer; border: none; border-radius: 4px;">
+                        <span id="colorPreview" style="font-size: 0.9rem; color: #666;">Color preview</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryPageFile">Link to Page (optional)</label>
+                    <input type="text" id="categoryPageFile" name="page_file" placeholder="e.g., politics.html or leave blank for default">
+                    <small style="color: #666; display: block; margin-top: 0.3rem;">If blank, will link to {slug}.html</small>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 2rem; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="categoryShowInNav" name="show_in_nav" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="categoryShowInNav" style="margin: 0; cursor: pointer;">Show in Navigation Menu</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label for="categoryNavOrder" style="margin: 0;">Menu Order:</label>
+                        <input type="number" id="categoryNavOrder" name="nav_order" min="1" max="99" value="99" style="width: 60px; padding: 0.4rem;">
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn-submit" id="saveCategoryBtn">Save Category</button>
+                    <button type="button" class="btn-cancel" id="cancelCategoryBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let currentArticleId = null;
+        let categories = [];
+
+        // Get token from localStorage
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        // Check authentication
+        window.addEventListener('load', () => {
+            if (!getToken()) {
+                window.location.href = 'login.html';
+            } else {
+                loadArticles();
+                loadCategories();
+                loadUserProfile();
+                loadCommentCount();
+                setupSectionNavigation();
+            }
+        });
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`);
+                categories = await response.json();
+                const select = document.getElementById('articleCategory');
+                select.innerHTML = '<option value="">Select Category</option>';
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = cat.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load articles
+        async function loadArticles() {
+            try {
+                const response = await fetch(`${API_URL}/admin/articles`, {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                const articles = await response.json();
+                displayArticles(articles);
+                updateStats(articles);
+            } catch (error) {
+                showError('Failed to load articles');
+                console.error(error);
+            }
+        }
+
+        // Display articles in table
+        function displayArticles(articles) {
+            const tbody = document.getElementById('articlesTableBody');
+
+            if (articles.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #999;">No articles yet. Create your first article!</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = articles.map(article => `
+                <tr>
+                    <td class="article-title">${article.title}</td>
+                    <td>${article.category_name || '-'}</td>
+                    <td style="text-align:center;">${article.is_breaking ? '<span style="color:#d63031;font-size:1.1rem;" title="Breaking News">&#128680;</span>' : '<span style="color:#ccc;">—</span>'}</td>
+                    <td><span class="status-badge status-${article.status}">${article.status}</span></td>
+                    <td>${new Date(article.created_at).toLocaleDateString()}</td>
+                    <td>${article.views}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-small btn-edit" onclick="editArticle(${article.id})">Edit</button>
+                            <button class="btn-small btn-delete" onclick="deleteArticle(${article.id})">Delete</button>
+                            <button class="btn-small btn-view" onclick="viewArticle('${article.slug}')">View</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats(articles) {
+            const total = articles.length;
+            const published = articles.filter(a => a.status === 'published').length;
+            const drafts = articles.filter(a => a.status === 'draft').length;
+            const views = articles.reduce((sum, a) => sum + a.views, 0);
+
+            document.getElementById('totalArticles').textContent = total;
+            document.getElementById('publishedCount').textContent = published;
+            document.getElementById('draftCount').textContent = drafts;
+            document.getElementById('totalViews').textContent = views;
+        }
+
+        // Setup section navigation
+        function setupSectionNavigation() {
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.getAttribute('href');
+                    showSection(section);
+                });
+            });
+        }
+
+        // Show/hide sections
+        function showSection(section) {
+            ['articlesSection','commentsSection','categoriesSection','profileSection'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+            document.querySelector(`.menu-link[href="${section}"]`)?.classList.add('active');
+
+            if (section === '#articles') {
+                document.getElementById('articlesSection').style.display = 'block';
+            } else if (section === '#comments') {
+                document.getElementById('commentsSection').style.display = 'block';
+                loadComments();
+            } else if (section === '#categories') {
+                document.getElementById('categoriesSection').style.display = 'block';
+            } else if (section === '#profile') {
+                document.getElementById('profileSection').style.display = 'block';
+                loadUserProfile();
+            }
+        }
+
+        // Load user profile from API
+        async function loadUserProfile() {
+            try {
+                const response = await fetch(`${API_URL}/auth/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    document.getElementById('profileUsername').value = user.username || '';
+                    document.getElementById('profileEmail').value = user.email || '';
+                    document.getElementById('profileMemberSince').value = user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A';
+                } else {
+                    // Fallback to JWT decode
+                    const token = getToken();
+                    const parts = token.split('.');
+                    const decoded = JSON.parse(atob(parts[1]));
+                    document.getElementById('profileUsername').value = decoded.username || 'Admin';
+                    document.getElementById('profileEmail').value = '';
+                    document.getElementById('profileMemberSince').value = 'N/A';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Display categories
+        function displayCategories(cats) {
+            const list = document.getElementById('categoriesList');
+            // Sort by nav_order for display
+            const sorted = [...cats].sort((a, b) => (a.nav_order || 99) - (b.nav_order || 99));
+            list.innerHTML = sorted.map(cat => `
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid ${cat.color}; position: relative;">
+                    <div style="position: absolute; top: 0.75rem; right: 0.75rem; display: flex; gap: 0.5rem; align-items: center;">
+                        ${cat.show_in_nav ? `<span style="background: #27ae60; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">IN MENU #${cat.nav_order || 99}</span>` : `<span style="background: #ccc; color: #666; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">HIDDEN</span>`}
+                    </div>
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">${cat.name}</h3>
+                    <p style="margin: 0 0 0.3rem 0; color: #666; font-size: 0.85rem;">
+                        <span style="display: inline-block; width: 16px; height: 16px; background-color: ${cat.color}; border-radius: 3px; vertical-align: middle; margin-right: 0.4rem;"></span>
+                        ${cat.color} &nbsp;|&nbsp; Slug: <code style="background:#f0f0f0;padding:0.1rem 0.3rem;border-radius:3px;">${cat.slug}</code>
+                    </p>
+                    ${cat.page_file ? `<p style="margin: 0 0 0.8rem 0; color: #666; font-size: 0.8rem;">Page: ${cat.page_file}</p>` : ''}
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.8rem;">
+                        <button class="btn-small btn-edit" onclick="editCategory(${cat.id})">Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteCategory(${cat.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update loadCategories to also display in categories section
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`);
+                categories = await response.json();
+                
+                // Update select in form
+                const select = document.getElementById('articleCategory');
+                if (select) {
+                    select.innerHTML = '<option value="">Select Category</option>';
+                    categories.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.id;
+                        option.textContent = cat.name;
+                        select.appendChild(option);
+                    });
+                }
+
+                // Display in categories section
+                displayCategories(categories);
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Open new article modal
+        document.getElementById('newArticleBtn').addEventListener('click', () => {
+            currentArticleId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Article';
+            document.getElementById('articleForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('articleModal').classList.add('active');
+        });
+
+        // Profile Form Submit
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('profileUsername').value.trim();
+            const email = document.getElementById('profileEmail').value.trim();
+            
+            if (!username || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({ username, email })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showSuccess('Profile updated successfully!');
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to update profile'));
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        });
+
+        // Password Change Form Submit
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all password fields');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('New password must be at least 6 characters');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/password`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showSuccess('Password changed successfully!');
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to change password'));
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        });
+
+        // Category Management
+        let currentCategoryId = null;
+
+        // Open new category modal
+        document.getElementById('newCategoryBtn').addEventListener('click', () => {
+            currentCategoryId = null;
+            document.getElementById('categoryModalTitle').textContent = 'Add New Category';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryColor').value = '#000000';
+            // Reset nav fields
+            document.getElementById('categoryShowInNav').checked = false;
+            document.getElementById('categoryNavOrder').value = 99;
+            document.getElementById('categoryPageFile').value = '';
+            document.getElementById('categoryModal').classList.add('active');
+        });
+
+        // Close category modal
+        document.getElementById('closeCategoryModal').addEventListener('click', () => {
+            document.getElementById('categoryModal').classList.remove('active');
+        });
+
+        document.getElementById('cancelCategoryBtn').addEventListener('click', () => {
+            document.getElementById('categoryModal').classList.remove('active');
+        });
+
+        // Color preview
+        document.getElementById('categoryColor').addEventListener('change', (e) => {
+            document.getElementById('colorPreview').style.color = e.target.value;
+            document.getElementById('colorPreview').textContent = `Color: ${e.target.value}`;
+        });
+
+        // Save category
+        document.getElementById('saveCategoryBtn').addEventListener('click', async () => {
+            const name = document.getElementById('categoryName').value.trim();
+            const color = document.getElementById('categoryColor').value;
+            const show_in_nav = document.getElementById('categoryShowInNav').checked ? 1 : 0;
+            const nav_order = parseInt(document.getElementById('categoryNavOrder').value) || 99;
+            const page_file = document.getElementById('categoryPageFile').value.trim() || null;
+
+            if (!name) { alert('Please enter a category name.'); return; }
+
+            const btn = document.getElementById('saveCategoryBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            try {
+                const token = getToken();
+                if (!token) { window.location.href = 'login.html'; return; }
+
+                const method = currentCategoryId ? 'PUT' : 'POST';
+                const url = currentCategoryId ? `${API_URL}/categories/${currentCategoryId}` : `${API_URL}/categories`;
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, color, show_in_nav, nav_order, page_file })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('categoryModal').classList.remove('active');
+                    showSuccess(data.message || (currentCategoryId ? 'Category updated!' : 'Category created!'));
+                    loadCategories();
+                    loadArticles();
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Session expired. Please log in again.');
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to save category'));
+                }
+            } catch (error) {
+                alert('Network error — make sure the server is running.\n' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Category';
+            }
+        });
+
+        // Edit category
+        function editCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            if (!cat) return;
+            currentCategoryId = id;
+            document.getElementById('categoryModalTitle').textContent = 'Edit Category';
+            document.getElementById('categoryName').value = cat.name;
+            document.getElementById('categoryColor').value = cat.color;
+            document.getElementById('colorPreview').style.color = cat.color;
+            document.getElementById('colorPreview').textContent = `Color: ${cat.color}`;
+            // New nav fields
+            document.getElementById('categoryShowInNav').checked = !!cat.show_in_nav;
+            document.getElementById('categoryNavOrder').value = cat.nav_order || 99;
+            document.getElementById('categoryPageFile').value = cat.page_file || '';
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // Delete category
+        async function deleteCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            const name = cat ? cat.name : 'this category';
+            if (confirm(`Are you sure you want to delete the category "${name}"? This action cannot be undone.`)) {
+                try {
+                    const response = await fetch(`${API_URL}/categories/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${getToken()}`
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showSuccess('Category deleted successfully');
+                        loadCategories();
+                    } else {
+                        showError(data.error || 'Failed to delete category');
+                    }
+                } catch (error) {
+                    showError('Failed to delete category');
+                    console.error(error);
+                }
+            }
+        }
+
+        // Edit article
+        async function editArticle(id) {
+            try {
+                const response = await fetch(`${API_URL}/admin/articles`, {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                const articles = await response.json();
+                const article = articles.find(a => a.id === id);
+
+                if (article) {
+                    currentArticleId = id;
+                    document.getElementById('modalTitle').textContent = 'Edit Article';
+                    document.getElementById('articleTitle').value = article.title;
+                    document.getElementById('articleCategory').value = article.category_id || '';
+                    document.getElementById('articleAuthor').value = article.author || '';
+                    document.getElementById('articleDescription').value = article.description || '';
+                    document.getElementById('articleContent').value = article.content;
+                    document.getElementById('articleStatus').value = article.status;
+                    document.getElementById('articleURL').value = article.article_url || '';
+                    document.getElementById('articleVideo').value = article.video_url || '';
+                    document.getElementById('articleBreaking').checked = !!article.is_breaking;
+
+                    if (article.featured_image) {
+                        const preview = document.getElementById('imagePreview');
+                        preview.src = article.featured_image;
+                        preview.style.display = 'block';
+                    }
+
+                    document.getElementById('articleModal').classList.add('active');
+                }
+            } catch (error) {
+                showError('Failed to load article');
+            }
+        }
+
+        // Delete article
+        async function deleteArticle(id) {
+            if (!confirm('Are you sure you want to delete this article?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/articles/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+
+                if (response.ok) {
+                    showSuccess('Article deleted successfully');
+                    loadArticles();
+                } else {
+                    showError('Failed to delete article');
+                }
+            } catch (error) {
+                showError('Error deleting article');
+            }
+        }
+
+        // Save article
+        document.getElementById('articleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('articleTitle').value);
+            formData.append('category_id', document.getElementById('articleCategory').value);
+            formData.append('author', document.getElementById('articleAuthor').value);
+            formData.append('description', document.getElementById('articleDescription').value);
+            formData.append('content', document.getElementById('articleContent').value);
+            formData.append('status', document.getElementById('articleStatus').value);
+            formData.append('article_url', document.getElementById('articleURL').value);
+            formData.append('video_url', document.getElementById('articleVideo').value);
+            formData.append('is_breaking', document.getElementById('articleBreaking').checked ? '1' : '0');
+
+            const fileInput = document.getElementById('articleImage');
+            if (fileInput.files.length > 0) {
+                formData.append('featured_image', fileInput.files[0]);
+            }
+
+            try {
+                const url = currentArticleId ? `${API_URL}/articles/${currentArticleId}` : `${API_URL}/articles`;
+                const method = currentArticleId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Authorization': `Bearer ${getToken()}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showSuccess(currentArticleId ? 'Article updated successfully' : 'Article created successfully');
+                    document.getElementById('articleModal').classList.remove('active');
+                    loadArticles();
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Failed to save article');
+                }
+            } catch (error) {
+                showError('Error saving article');
+                console.error(error);
+            }
+        });
+
+        // File upload
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('articleImage');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.style.backgroundColor = '#f0f0f0';
+        });
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.style.backgroundColor = '';
+        });
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.style.backgroundColor = '';
+            fileInput.files = e.dataTransfer.files;
+            previewImage();
+        });
+
+        fileInput.addEventListener('change', previewImage);
+
+        function previewImage() {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Modal controls
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('articleModal').classList.remove('active');
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('articleModal').classList.remove('active');
+        });
+
+        // Load and display comments for moderation
+        async function loadComments() {
+            const container = document.getElementById('commentsTableContainer');
+            container.innerHTML = '<p style="color:#999;">Loading...</p>';
+            try {
+                const res = await fetch(`${API_URL}/admin/comments`, {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                const comments = await res.json();
+                document.getElementById('totalComments').textContent = comments.length;
+                if (!comments.length) {
+                    container.innerHTML = '<p style="color:#999;padding:2rem 0;">No comments yet.</p>';
+                    return;
+                }
+                container.innerHTML = `
+                    <table class="articles-table">
+                        <thead><tr>
+                            <th>Author</th><th>Comment</th><th>Article</th><th>Date</th><th>Status</th><th>Actions</th>
+                        </tr></thead>
+                        <tbody>${comments.map(c => `
+                            <tr id="comment-row-${c.id}">
+                                <td><strong>${escHtml(c.author_name)}</strong>${c.author_email ? '<br><small style="color:#999">' + escHtml(c.author_email) + '</small>' : ''}</td>
+                                <td style="max-width:300px;word-break:break-word;">${escHtml(c.content)}</td>
+                                <td><a href="../article.html?slug=${encodeURIComponent(c.article_slug)}" target="_blank" style="color:#667eea;">${escHtml(c.article_title || '')}</a></td>
+                                <td style="white-space:nowrap;">${new Date(c.created_at).toLocaleDateString()}</td>
+                                <td><span class="status-badge ${c.approved ? 'status-published' : 'status-draft'}">${c.approved ? 'Approved' : 'Hidden'}</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-small" style="background:${c.approved ? '#f39c12' : '#27ae60'};color:#fff;" onclick="toggleComment(${c.id}, ${c.approved ? 0 : 1})">${c.approved ? 'Hide' : 'Approve'}</button>
+                                        <button class="btn-small btn-delete" onclick="deleteComment(${c.id})">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>`;
+            } catch(e) {
+                container.innerHTML = '<p style="color:#d63031;">Failed to load comments.</p>';
+            }
+        }
+
+        function escHtml(s) {
+            return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        async function toggleComment(id, approved) {
+            try {
+                await fetch(`${API_URL}/admin/comments/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                    body: JSON.stringify({ approved })
+                });
+                loadComments();
+            } catch(e) { showError('Failed to update comment'); }
+        }
+
+        async function deleteComment(id) {
+            if (!confirm('Delete this comment?')) return;
+            try {
+                await fetch(`${API_URL}/admin/comments/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                loadComments();
+            } catch(e) { showError('Failed to delete comment'); }
+        }
+
+        // Load comment count on page load
+        async function loadCommentCount() {
+            try {
+                const res = await fetch(`${API_URL}/admin/comments`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+                const comments = await res.json();
+                document.getElementById('totalComments').textContent = comments.length;
+            } catch(e) {}
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+
+        // View article
+        function viewArticle(slug) {
+            window.open(`../article.html?slug=${slug}`, '_blank');
+        }
+
+        // Show alerts
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.classList.add('active');
+            setTimeout(() => alert.classList.remove('active'), 3000);
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.classList.add('active');
+            setTimeout(() => alert.classList.remove('active'), 3000);
+        }
+    </script>
+</body>
+</html>

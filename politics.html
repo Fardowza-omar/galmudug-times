@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politics â€” Galmudug Times</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Breaking News Ticker -->
+    <div class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-label">BREAKING</span>
+            <div class="ticker-scroll">
+                <span class="ticker-text" id="tickerText">Loading latest news...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top-rule"></div>
+        
+        <div class="masthead">
+            <h1 class="title">Galmudug Times</h1>
+            <p class="tagline">A Journal of Record</p>
+        </div>
+        
+        <div class="header-nav">
+            <nav class="main-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">HOME</a>
+                <a href="politics.html" class="nav-item" style="color: #d63031; border-bottom: 2px solid #d63031;">POLITICS</a>
+                <a href="world.html" class="nav-item">WORLD</a>
+                <a href="business.html" class="nav-item">BUSINESS</a>
+                <a href="technology.html" class="nav-item">TECHNOLOGY</a>
+                <a href="opinion.html" class="nav-item">OPINION</a>
+                <a href="culture.html" class="nav-item">LIFE & CULTURE</a>
+            </nav>
+        </div>
+        
+        <div class="header-bottom-rule double-rule"></div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="section-hero">
+        <div class="section-hero-content">
+            <h1 class="section-title">Politics</h1>
+            <p class="section-description">Reporting on power, elections, policy, and the people shaping the nation's political future.</p>
+        </div>
+        <div class="section-accent" style="background-color: #d63031;"></div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Featured Story (8 columns) -->
+        <article class="story story-hero"><div id="dynamic-hero"><div class="story-header">
+                <span class="story-category category-politics">POLITICS</span>
+                <h2 class="story-headline">Congress Debates Trade Accord as Business Voices Split</h2>
+                <p class="story-description">Lawmakers grapple with competing interests as manufacturers, retailers, and unions lobby on opposite sides of historic treaty.</p>
+            </div>
+            
+            <div class="story-byline">
+                <span class="author-name">By Marcus Thompson</span>
+                <span class="publish-date">March 11, 2026 â€” 3:45 PM</span>
+            </div>
+
+            <figure class="story-image">
+                <div class="image-placeholder"></div>
+                <figcaption>Congressional leaders gather for debate on the international trade agreement.</figcaption>
+            </figure>
+
+            <div class="story-body">
+                <p><span class="drop-cap">D</span>ebate erupted on Capitol Hill this afternoon as lawmakers began preliminary hearings on the international trade accord signed this morning. The divisions, which pit manufacturers concerned about competition against retailers eager for lower consumer prices, threaten to complicate ratification efforts.</p>
+
+                <p>House Speaker Jennifer Williams urged caution, noting that the accord's long-term effects remain uncertain. "We must review this agreement line by line to ensure it serves American workers and businesses," she said in a statement.</p>
+
+                <aside class="pull-quote">
+                    <blockquote>"We must review this agreement line by line to ensure it serves American workers and businesses."</blockquote>
+                    <cite>â€” House Speaker Jennifer Williams</cite>
+                </aside>
+
+                <p>Meanwhile, Senate Minority Leader David Chen expressed qualified support: "The provisions protecting labor standards are strong. This could be a good agreement for working Americans if implemented correctly."</p>
+
+                <p>The accord faces a planned ratification vote in three weeks. Democratic leaders believe they have sufficient votes for passage, but the outcome remains uncertain as swing-district representatives weigh constituent concerns about manufacturing job losses against potential consumer benefits.</p>
+            </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Featured Story --><article class="story story-sidebar" id="dynamic-sidebar-1">
+                <span class="story-category category-politics">POLITICS</span>
+                <h3 class="story-headline">2028 Campaign Finance Ruling Reshapes Race</h3>
+                <p class="story-description">Supreme Court decision on dark money spending opens door for billionaire-backed super PACs.</p>
+                <div class="story-byline">
+                    <span class="author-name">By Rebecca Adams</span>
+                    <span class="publish-date">March 10, 2026</span>
+                </div>
+            </article>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Analysis --><article class="story story-sidebar" id="dynamic-sidebar-2">
+                <span class="story-category category-opinion">ANALYSIS</span>
+                <h3 class="story-headline">The Political Calculation Behind Trade Support</h3>
+                <p class="story-description">Why some conservative lawmakers backed a deal they would have opposed five years ago.</p>
+                <div class="story-byline">
+                    <span class="author-name">By James Morrison</span>
+                    <span class="publish-date">March 11, 2026</span>
+                </div>
+            </article>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Podcasts -->
+            <section class="sidebar-module">
+                <h4 class="module-title">GALMUDUG TIMES PODCAST</h4>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">New episodes every Thursday exploring the week's most important political developments.</p>
+                <button class="sidebar-btn">Listen Now</button>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Secondary Grid Stories -->
+    <section class="secondary-section">
+        <div class="secondary-divider double-rule"></div>
+        
+        <h2 class="section-title">THIS WEEK IN WASHINGTON</h2>
+
+        <div class="secondary-grid" id="dynamic-grid">
+            <!-- Story 1 -->
+            <article class="story story-secondary">
+                <span class="story-category category-politics">ELECTIONS</span>
+                <h3 class="story-headline">Administration Announces Federal Judiciary Appointments</h3>
+                <div class="story-byline">
+                    <span class="author-name">By Katherine Walsh</span>
+                    <span class="publish-date">March 9, 2026</span>
+                </div>
+                <p class="story-description">Three circuit court judges and twelve district court judges nominated, marking largest judicial push since 2022.</p>
+            </article>
+
+            <!-- Story 2 -->
+            <article class="story story-secondary">
+                <span class="story-category category-politics">CONGRESS</span>
+                <h3 class="story-headline">Senate Begins Marathon Confirmation Hearings</h3>
+                <div class="story-byline">
+                    <span class="author-name">By Robert Yang</span>
+                    <span class="publish-date">March 10, 2026</span>
+                </div>
+                <p class="story-description">Judiciary Committee expects contentious debates over judicial philosophies and constitutional interpretation.</p>
+            </article>
+
+            <!-- Story 3 -->
+            <article class="story story-secondary">
+                <span class="story-category category-opinion">OPINION</span>
+                <h3 class="story-headline">Why This Trade Deal Matters More Than You Think</h3>
+                <div class="story-byline">
+                    <span class="author-name">By Dr. Michael Park</span>
+                    <span class="publish-date">March 11, 2026</span>
+                </div>
+                <p class="story-description">The accord signals a fundamental shift away from nationalist economics toward cooperative multilateralism.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top-rule double-rule"></div>
+        
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4 class="footer-title">GALMUDUG TIMES</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Sections</a></li>
+                    <li><a href="#">Search</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4 class="footer-title">COMPANY</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4 class="footer-title">POLICIES</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Cookie Management</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4 class="footer-title">SUBSCRIBE</h4>
+                <p class="footer-text">Get unlimited access to the most important stories.</p>
+                <button class="subscribe-btn">Subscribe Now</button>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2026 Galmudug Times. All rights reserved.</p>
+        </div>
+
+        <div class="footer-bottom-rule double-rule"></div>
+    </footer>
+
+    <script src="/js/category.js"></script>
+    <script src="/js/nav.js"></script>
+    <script>initCategoryPage('politics','#d63031');</script>
+</body>
+</html>
+
