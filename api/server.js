@@ -8,13 +8,15 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
+import crypto from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = 3000;
-const SECRET_KEY = 'your-secret-key-change-this-in-production';
+const PORT = process.env.PORT || 3000;
+// Use JWT_SECRET from environment. If not set, generate a random key per run (dev only).
+const SECRET_KEY = process.env.JWT_SECRET || crypto.randomBytes(64).toString('hex');
 
 // Middleware
 app.use(cors());
