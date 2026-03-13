@@ -1,4 +1,4 @@
-﻿# Galmudug Times - News Portal
+# Galmudug Times - News Portal
 
 A professional news portal built for Galmudug Times. Clean, fast, and fully responsive.
 

@@ -1,0 +1,18 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Explicitly declare text files as UTF-8 (no BOM)
+*.html text encoding=utf-8
+*.css text encoding=utf-8
+*.js text encoding=utf-8
+*.json text encoding=utf-8
+*.md text encoding=utf-8
+*.txt text encoding=utf-8
+
+# Binary files - never modify
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.db binary
