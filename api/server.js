@@ -40,18 +40,21 @@ const storage = multer.diskStorage({
     cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    // Sanitize filename — keep only safe characters
+    const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    cb(null, Date.now() + '-' + safeName);
   }
 });
 
 const upload = multer({ 
   storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4'];
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type'));
+      cb(new Error('Only JPEG, PNG and GIF images are allowed'));
     }
   }
 });
@@ -175,9 +178,10 @@ function initializeDatabase() {
     });
 
     // Create default admin user (if not exists)
-    const username = 'admin';
-    const password = 'admin123';
-    const email = 'admin@therecord.com';
+    // Set ADMIN_USERNAME and ADMIN_PASSWORD in your .env file before first run
+    const username = process.env.ADMIN_USERNAME || 'admin';
+    const password = process.env.ADMIN_PASSWORD || 'admin123';
+    const email = process.env.ADMIN_EMAIL || 'admin@galmudug-times.com';
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
     db.run(`
@@ -188,7 +192,7 @@ function initializeDatabase() {
     // Add sample articles if not exists
     addSampleArticles();
 
-    console.log('Database initialized. Default admin user: admin / admin123');
+    console.log(`Database initialized. Admin user: ${username}`);
   });
 }
 
@@ -789,7 +793,6 @@ app.delete('/api/admin/comments/:id', authenticateToken, (req, res) => {
 // ==================== Server Start ====================
 
 app.listen(PORT, () => {
-  console.log(`✓ Galmudug Times Server running on http://localhost:${PORT}`);
+  console.log(`✓ Galmudug Times running on http://localhost:${PORT}`);
   console.log(`✓ Admin Dashboard: http://localhost:${PORT}/admin/`);
-  console.log(`✓ Default credentials: admin / admin123`);
 });
