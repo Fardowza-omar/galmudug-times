@@ -125,11 +125,20 @@
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            min-width: fit-content;
         }
 
         .add-article-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .add-article-btn:active {
+            transform: translateY(0);
         }
 
         /* ==================== ARTICLES TABLE ==================== */
