@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galmudug Times - Quick Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Pirata One', cursive;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .link-btn {
+            display: block;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .btn-admin:hover {
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .btn-home:hover {
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .credentials {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 6px;
+            text-align: left;
+        }
+
+        .credentials h3 {
+            color: #000;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .credentials p {
+            margin: 0.5rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .credentials code {
+            background: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .info {
+            background: #e8f5e9;
+            border: 1px solid #4CAF50;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            color: #2e7d32;
+            font-size: 0.85rem;
+        }
+
+        .info strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #27ae60;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Galmudug Times</div>
+        <p class="subtitle">News & Media Platform</p>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            Server Running on localhost:3000
+        </div>
+
+        <div class="links-section">
+            <a href="http://localhost:3000/" class="link-btn btn-home">
+                🏠 Visit Website
+            </a>
+            <a href="http://localhost:3000/admin/login.html" class="link-btn btn-admin">
+                🔐 Admin Dashboard
+            </a>
+        </div>
+
+        <div class="credentials">
+            <h3>📝 Admin Login Credentials</h3>
+            <p><strong>Username:</strong> <code>admin</code></p>
+            <p><strong>Password:</strong> <code>admin123</code></p>
+        </div>
+
+        <div class="info">
+            <strong>💡 Quick Tips:</strong>
+            Make sure the server is running before accessing the links above. Use npm start in the api folder to start the server.
+        </div>
+    </div>
+</body>
+</html>
