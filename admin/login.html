@@ -182,7 +182,10 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password" style="flex: 1; padding-right: 2.5rem;">
+                    <button type="button" id="togglePassword" style="position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; color: #667eea; font-size: 1rem; padding: 0.5rem;" title="Show/Hide password">👁️</button>
+                </div>
             </div>
 
             <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
@@ -208,6 +211,18 @@
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
 
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        if (togglePassword) {
+            togglePassword.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                togglePassword.textContent = isPassword ? '🙈' : '👁️';
+            });
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -227,7 +242,7 @@
                 loadingIndicator.style.justifyContent = 'center';
                 loadingIndicator.style.marginTop = '1rem';
 
-                const response = await fetch('http://localhost:3000/api/auth/login', {
+                const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

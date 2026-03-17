@@ -644,15 +644,24 @@
                             <form id="passwordForm">
                                 <div class="form-group">
                                     <label>Current Password</label>
-                                    <input type="password" id="currentPassword" required placeholder="Enter current password">
+                                    <div style="position: relative; display: flex; align-items: center;">
+                                        <input type="password" id="currentPassword" required placeholder="Enter current password" style="flex: 1; padding-right: 2.5rem;">
+                                        <button type="button" class="toggle-pwd-btn" data-target="currentPassword" style="position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; color: #667eea; font-size: 1rem; padding: 0.5rem;" title="Show/Hide password">👁️</button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>New Password</label>
-                                    <input type="password" id="newPassword" required placeholder="Enter new password (min 6 chars)">
+                                    <div style="position: relative; display: flex; align-items: center;">
+                                        <input type="password" id="newPassword" required placeholder="Enter new password (min 6 chars)" style="flex: 1; padding-right: 2.5rem;">
+                                        <button type="button" class="toggle-pwd-btn" data-target="newPassword" style="position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; color: #667eea; font-size: 1rem; padding: 0.5rem;" title="Show/Hide password">👁️</button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Confirm New Password</label>
-                                    <input type="password" id="confirmPassword" required placeholder="Confirm new password">
+                                    <div style="position: relative; display: flex; align-items: center;">
+                                        <input type="password" id="confirmPassword" required placeholder="Confirm new password" style="flex: 1; padding-right: 2.5rem;">
+                                        <button type="button" class="toggle-pwd-btn" data-target="confirmPassword" style="position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; color: #667eea; font-size: 1rem; padding: 0.5rem;" title="Show/Hide password">👁️</button>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn-submit" style="width: 100%; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">🔑 Change Password</button>
                             </form>
@@ -811,9 +820,25 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api';
+        const API_URL = '/api';
         let currentArticleId = null;
         let categories = [];
+
+        // Password visibility toggles
+        function setupPasswordToggles() {
+            document.querySelectorAll('.toggle-pwd-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = btn.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    if (input) {
+                        const isPassword = input.type === 'password';
+                        input.type = isPassword ? 'text' : 'password';
+                        btn.textContent = isPassword ? '🙈' : '👁️';
+                    }
+                });
+            });
+        }
 
         // Get token from localStorage
         function getToken() {
@@ -830,10 +855,9 @@
                 loadUserProfile();
                 loadCommentCount();
                 setupSectionNavigation();
+                setupPasswordToggles();
             }
         });
-
-        // Load categories
         async function loadCategories() {
             try {
                 const response = await fetch(`${API_URL}/categories`);
