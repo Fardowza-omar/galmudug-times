@@ -64,14 +64,26 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only JPEG, PNG and GIF images are allowed'));
+      cb(new Error('Only JPEG, PNG, GIF and WebP images are allowed'));
     }
   }
 });
+
+// Wrapper to handle multer errors as JSON responses
+function uploadSingle(fieldName) {
+  return (req, res, next) => {
+    upload.single(fieldName)(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  };
+}
 
 // Initialize SQLite Database
 const dbPath = join(__dirname, '../data/articles.db');
@@ -138,6 +150,16 @@ function initializeDatabase() {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(article_id, identifier),
         FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
+      )
+    `);
+
+    // Subscribers table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS subscribers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        name TEXT,
+        subscribed_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
@@ -568,29 +590,36 @@ app.get('/api/articles/:slug', (req, res) => {
 });
 
 // Create new article (admin only)
-app.post('/api/articles', authenticateToken, upload.single('featured_image'), (req, res) => {
+app.post('/api/articles', authenticateToken, uploadSingle('featured_image'), (req, res) => {
   const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
-  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const featured_image = req.file ? `/uploads/${req.file.filename}` : null;
   const published_at = status === 'published' ? new Date().toISOString() : null;
+  // Auto-generate description from content if not provided
+  const autoDesc = description || content.replace(/<[^>]*>/g, '').substring(0, 220).trim();
 
   if (!title || !content) {
     return res.status(400).json({ error: 'Title and content are required' });
   }
 
-  db.run(`
-    INSERT INTO articles (title, slug, description, content, category_id, featured_image, article_url, video_url, author, status, is_breaking, published_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `, [title, slug, description, content, category_id || null, featured_image, article_url || null, video_url || null, author || 'Galmudug Times', status || 'draft', is_breaking ? 1 : 0, published_at], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.status(201).json({ id: this.lastID, slug, message: 'Article created successfully' });
+  // Ensure unique slug by appending a timestamp if needed
+  db.get('SELECT id FROM articles WHERE slug = ?', [baseSlug], (slugErr, existing) => {
+    const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
+
+    db.run(`
+      INSERT INTO articles (title, slug, description, content, category_id, featured_image, article_url, video_url, author, status, is_breaking, published_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [title, slug, autoDesc, content, category_id || null, featured_image, article_url || null, video_url || null, author || 'Galmudug Times', status || 'draft', is_breaking ? 1 : 0, published_at], function(err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(201).json({ id: this.lastID, slug, message: 'Article created successfully' });
+    });
   });
 });
 
 // Update article (admin only)
-app.put('/api/articles/:id', authenticateToken, upload.single('featured_image'), (req, res) => {
+app.put('/api/articles/:id', authenticateToken, uploadSingle('featured_image'), (req, res) => {
   const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
   const id = req.params.id;
 
@@ -743,18 +772,23 @@ app.post('/api/articles/:id/comments', (req, res) => {
 
 // ==================== Likes Routes ====================
 
-// Get like count for an article
+// Get like count + status for an article
 app.get('/api/articles/:id/likes', (req, res) => {
-  db.get(`SELECT COUNT(*) as count FROM likes WHERE article_id = ?`, [req.params.id], (err, row) => {
+  const article_id = req.params.id;
+  const identifier = req.headers['x-client-token'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  db.get(`SELECT COUNT(*) as count FROM likes WHERE article_id = ?`, [article_id], (err, row) => {
     if (err) return res.status(500).json({ error: 'Database error' });
-    res.json({ count: row ? row.count : 0 });
+    db.get(`SELECT id FROM likes WHERE article_id = ? AND identifier = ?`, [article_id, identifier], (e2, liked) => {
+      res.json({ count: row ? row.count : 0, liked: !!liked });
+    });
   });
 });
 
 // Toggle like for an article (identifier = forwarded-for or x-real-ip or a client token)
 app.post('/api/articles/:id/like', (req, res) => {
   const article_id = req.params.id;
-  const identifier = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  // Use client-supplied token (stored in localStorage) so each browser is treated as a unique user
+  const identifier = req.headers['x-client-token'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
 
   db.get(`SELECT id FROM likes WHERE article_id = ? AND identifier = ?`, [article_id, identifier], (err, row) => {
     if (err) return res.status(500).json({ error: 'Database error' });
@@ -802,6 +836,73 @@ app.delete('/api/admin/comments/:id', authenticateToken, (req, res) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.json({ message: 'Deleted' });
   });
+});
+
+// ==================== Subscribe Routes ====================
+
+app.post('/api/subscribe', (req, res) => {
+  const { email, name } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Please enter a valid email address.' });
+  }
+  db.run(`INSERT INTO subscribers (email, name) VALUES (?, ?)`, [email.toLowerCase().trim(), (name || '').trim()], function(err) {
+    if (err) {
+      if (err.message.includes('UNIQUE')) return res.status(409).json({ error: 'This email is already subscribed!' });
+      return res.status(500).json({ error: 'Could not subscribe. Please try again.' });
+    }
+    res.json({ message: 'Subscribed successfully! Thank you.' });
+  });
+});
+
+app.get('/api/admin/subscribers', authenticateToken, (req, res) => {
+  db.all(`SELECT id, email, name, subscribed_at FROM subscribers ORDER BY subscribed_at DESC`, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.json(rows);
+  });
+});
+
+app.delete('/api/admin/subscribers/:id', authenticateToken, (req, res) => {
+  db.run(`DELETE FROM subscribers WHERE id = ?`, [req.params.id], function(err) {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.json({ message: 'Subscriber removed' });
+  });
+});
+
+// ==================== Backup & Reset Routes ====================
+
+// Download database backup
+app.get('/api/admin/backup', authenticateToken, (req, res) => {
+  const backupName = `galmudug-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.db`;
+  res.setHeader('Content-Disposition', `attachment; filename="${backupName}"`);
+  res.setHeader('Content-Type', 'application/octet-stream');
+  res.sendFile(dbPath);
+});
+
+// Delete all articles (reset)
+app.delete('/api/admin/reset-articles', authenticateToken, (req, res) => {
+  db.run('DELETE FROM articles', [], function(err) {
+    if (err) return res.status(500).json({ error: 'Failed to clear articles' });
+    db.run('DELETE FROM sqlite_sequence WHERE name = "articles"', [], () => {});
+    res.json({ message: 'All articles deleted', count: this.changes });
+  });
+});
+
+// ==================== Subscribe Route ====================
+
+app.post('/api/subscribe', (req, res) => {
+  const { email, name } = req.body;
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({ error: 'A valid email address is required' });
+  }
+  db.run(
+    'INSERT OR IGNORE INTO subscribers (email, name) VALUES (?, ?)',
+    [email.trim().toLowerCase(), (name || '').trim() || null],
+    function(err) {
+      if (err) return res.status(500).json({ error: 'Database error' });
+      if (this.changes === 0) return res.status(400).json({ error: 'This email is already subscribed' });
+      res.json({ message: 'Subscribed successfully' });
+    }
+  );
 });
 
 // ==================== Server Start ====================

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers – Galmudug Times</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-hero{background:#8B0000;color:#fff;padding:3.5rem 2rem;text-align:center}
+        .page-hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:#fff;margin:0 0 .5rem}
+        .page-hero p{font-family:'Inter',sans-serif;font-size:1rem;color:rgba(255,255,255,.8);margin:0}
+        .page-body{max-width:900px;margin:0 auto;padding:3.5rem 2rem}
+        .page-body h2{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;margin:2.5rem 0 1rem;padding-top:1.5rem;border-top:2px solid #e0e0e0}
+        .page-body h2:first-child{border-top:none;margin-top:0}
+        .page-body p,.page-body li{font-family:'Libre Baskerville',serif;font-size:1rem;line-height:1.85;color:#333;margin-bottom:1rem}
+        .page-body ul{margin:0 0 1.5rem 1.75rem}
+        .page-body li{margin-bottom:.5rem}
+        .jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.5rem;margin:2rem 0}
+        .job-card{border:1px solid #e0e0e0;padding:1.75rem;border-radius:2px;transition:box-shadow .2s}
+        .job-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+        .job-tag{display:inline-block;background:#8B0000;color:#fff;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .6rem;margin-bottom:.75rem;border-radius:2px}
+        .job-tag.remote{background:#27ae60}
+        .job-tag.contract{background:#e67e22}
+        .job-card h3{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;margin:0 0 .4rem}
+        .job-card p{font-family:'Inter',sans-serif;font-size:.88rem;color:#666;line-height:1.5;margin:.5rem 0 1rem}
+        .job-card ul{font-family:'Inter',sans-serif;font-size:.85rem;color:#555;margin:0 0 1.25rem 1.25rem}
+        .job-card li{margin-bottom:.3rem}
+        .apply-btn{display:inline-block;background:#000;color:#fff;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.65rem 1.5rem;text-decoration:none;border-radius:2px;transition:background .2s}
+        .apply-btn:hover{background:#8B0000}
+        .no-jobs{background:#fafafa;border:1px dashed #ddd;padding:2rem;text-align:center;font-family:'Inter',sans-serif;font-size:.95rem;color:#999;border-radius:2px;margin:1.5rem 0}
+        .values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin:1.5rem 0}
+        .value-item{padding:1.25rem;border-left:3px solid #8B0000}
+        .value-item h4{font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0 0 .4rem;color:#8B0000}
+        .value-item p{font-family:'Libre Baskerville',serif;font-size:.9rem;color:#555;line-height:1.6;margin:0}
+    </style>
+</head>
+<body>
+    <div class="gt-topbar">
+        <div class="gt-topbar-inner">
+            <div class="gt-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="gt-topbar-center">
+                <span id="weatherWidget"><span id="wtIcon">🌡️</span>&nbsp;<strong id="wtTemp">--°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span class="gt-sep">|</span>
+                <span id="topbarDate"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-label">BREAKING</span>
+            <div class="ticker-scroll"><span class="ticker-text" id="tickerText">Loading latest news...</span></div>
+        </div>
+    </div>
+
+    <header class="gt-header">
+        <div class="gt-header-inner">
+            <a href="index.html" class="gt-logo">
+                <div class="gt-logo-text">Galmudug Times</div>
+                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+            </a>
+            <nav class="gt-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="contact.html" class="nav-item">Contact Us</a>
+            </nav>
+            <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
+            <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <h1>Careers at Galmudug Times</h1>
+        <p>Join us in telling Somalia's most important stories</p>
+    </div>
+
+    <div class="page-body">
+        <h2>Why Work With Us?</h2>
+        <p>Galmudug Times is a growing digital news organisation at the heart of Somali journalism. We are building a team of committed reporters, editors, and digital professionals who believe in the power of independent media to inform and empower communities.</p>
+
+        <div class="values-grid">
+            <div class="value-item">
+                <h4>Impact</h4>
+                <p>Your work will reach and inform hundreds of thousands of readers across Somalia and the diaspora.</p>
+            </div>
+            <div class="value-item">
+                <h4>Independence</h4>
+                <p>We maintain strict editorial independence — your journalism is guided by facts, not politics.</p>
+            </div>
+            <div class="value-item">
+                <h4>Growth</h4>
+                <p>We invest in our team's professional development through training and mentorship.</p>
+            </div>
+            <div class="value-item">
+                <h4>Flexibility</h4>
+                <p>Many of our roles offer remote or hybrid working arrangements.</p>
+            </div>
+        </div>
+
+        <h2>Open Positions</h2>
+
+        <div class="jobs-grid">
+            <div class="job-card">
+                <span class="job-tag">Full-time</span>
+                <h3>Political Reporter</h3>
+                <p>Cover national and regional political developments including government, policy, and elections across Somalia.</p>
+                <ul>
+                    <li>2+ years of journalism experience</li>
+                    <li>Fluent in Somali and English</li>
+                    <li>Strong source network in Mogadishu or Dhusamareb</li>
+                </ul>
+                <a href="mailto:careers@galmudug-times.com?subject=Application: Political Reporter" class="apply-btn">Apply Now</a>
+            </div>
+
+            <div class="job-card">
+                <span class="job-tag remote">Remote</span>
+                <h3>Digital Content Editor</h3>
+                <p>Edit and publish articles across all sections, ensuring accuracy, clarity, and adherence to our editorial standards.</p>
+                <ul>
+                    <li>3+ years editing experience</li>
+                    <li>Excellent written English and Somali</li>
+                    <li>Experience with digital CMS platforms</li>
+                </ul>
+                <a href="mailto:careers@galmudug-times.com?subject=Application: Digital Content Editor" class="apply-btn">Apply Now</a>
+            </div>
+
+            <div class="job-card">
+                <span class="job-tag contract">Freelance</span>
+                <h3>Regional Correspondent</h3>
+                <p>Report on ground-level stories from regions including Galmudug, Hirshabelle, Puntland, or Jubaland.</p>
+                <ul>
+                    <li>Local knowledge and community connections</li>
+                    <li>Ability to file text, photo, and video reports</li>
+                    <li>Reliable internet access</li>
+                </ul>
+                <a href="mailto:careers@galmudug-times.com?subject=Application: Regional Correspondent" class="apply-btn">Apply Now</a>
+            </div>
+
+            <div class="job-card">
+                <span class="job-tag remote">Remote</span>
+                <h3>Social Media Manager</h3>
+                <p>Grow our presence on Facebook, Instagram, X (Twitter), and YouTube by creating engaging multimedia content.</p>
+                <ul>
+                    <li>Proven social media management experience</li>
+                    <li>Visual storytelling skills (Canva, Reels, etc.)</li>
+                    <li>Understanding of Somali digital audience</li>
+                </ul>
+                <a href="mailto:careers@galmudug-times.com?subject=Application: Social Media Manager" class="apply-btn">Apply Now</a>
+            </div>
+        </div>
+
+        <h2>Don't See Your Role?</h2>
+        <p>We are always interested in talented journalists, photographers, translators, and digital professionals. Send your CV and a cover letter to <a href="mailto:careers@galmudug-times.com" style="color:#8B0000;">careers@galmudug-times.com</a> and we will keep your details on file for future opportunities.</p>
+
+        <h2>Internships</h2>
+        <p>We offer journalism internships for students and recent graduates interested in Somali media. Internships are typically 3–6 months and can be remote or in-person in Dhusamareb. Contact us at <a href="mailto:internships@galmudug-times.com" style="color:#8B0000;">internships@galmudug-times.com</a> to enquire.</p>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-top-rule double-rule"></div>
+        <div class="footer-content">
+            <div class="footer-column">
+                <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="X / Twitter" style="color:#aaa;font-size:1rem;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube" style="color:#aaa;font-size:1rem;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">COMPANY</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">POLICIES</h4>
+                <ul class="footer-links">
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="cookies.html">Cookie Management</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">SUBSCRIBE</h4>
+                <p class="footer-text">Get unlimited access to the most important stories.</p>
+                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
+            </div>
+        </div>
+        <div class="copyright"><p>&copy; 2026 Galmudug Times. All rights reserved.</p></div>
+        <div class="footer-bottom-rule double-rule"></div>
+    </footer>
+
+    <script>
+        async function loadTicker(){
+            try{
+                const r=await fetch('/api/breaking-news');const items=await r.json();
+                if(!items.length) return;
+                const el=document.getElementById('tickerText');
+                if(!el) return;
+                const text=items.map(i=>i.title).join('   ·   ');
+                el.textContent=text+'     ·     '+text;
+                requestAnimationFrame(()=>{
+                    const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
+                    el.style.animationDuration=dur+'s';
+                });
+            }catch(e){}}
+        document.addEventListener('DOMContentLoaded', loadTicker);
+    </script>
+    <script src="/js/header.js"></script>
+    <script src="/js/nav.js"></script>
+</body>
+</html>

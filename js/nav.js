@@ -7,47 +7,61 @@
 // Detect current page slug from URL
 function getCurrentSlug() {
     const path = window.location.pathname.toLowerCase();
-    // Extract filename without .html
     const match = path.match(/([a-z0-9-]+)\.html/i);
     return match ? match[1] : null;
+}
+
+// Get the current ?cat= query param value
+function getCurrentCatParam() {
+    return new URLSearchParams(window.location.search).get('cat') || null;
+}
+
+function buildNavHTML(categories) {
+    const currentSlug = getCurrentSlug();
+    const currentCat  = getCurrentCatParam();
+
+    let links = `<a href="index.html" class="nav-item${currentSlug === 'index' || !currentSlug ? ' nav-active' : ''}">Home</a>\n                `;
+
+    links += categories.map(cat => {
+        const page = cat.page_file || `category.html?cat=${cat.slug}`;
+        const name = cat.name;
+        const isActive = (cat.slug === currentSlug) ||
+                         (currentSlug === 'category' && currentCat === cat.slug) ||
+                         (cat.page_file && cat.page_file.replace('.html', '') === currentSlug);
+        const activeClass = isActive ? ' nav-active' : '';
+        return `<a href="${page}" class="nav-item${activeClass}">${escNav(name)}</a>`;
+    }).join('\n                ');
+
+    links += `\n                <a href="contact.html" class="nav-item${currentSlug === 'contact' ? ' nav-active' : ''}">Contact Us</a>`;
+    return links;
 }
 
 async function loadDynamicNav() {
     const navEl = document.getElementById('dynamic-nav');
     if (!navEl) return;
 
-    // Check if this is a category page (has HOME link) or index page
-    const isCategory = navEl.innerHTML.includes('index.html');
-    const currentSlug = getCurrentSlug();
+    // ── Step 1: render from cache instantly (no flicker) ──────────────
+    const CACHE_KEY = 'gt_nav_categories';
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+        try {
+            navEl.innerHTML = buildNavHTML(JSON.parse(cached));
+        } catch(e) { /* ignore bad cache */ }
+    }
 
+    // ── Step 2: fetch fresh data in background & update if changed ────
     try {
-        // Fetch only categories marked as visible in nav, ordered by nav_order
-        const res = await fetch('/api/categories/nav/visible?_t=' + Date.now());
+        const res = await fetch('/api/categories/nav/visible');
         const categories = await res.json();
-
-        // Start with HOME link if on category page
-        let links = '';
-        if (isCategory) {
-            links += `<a href="index.html" class="nav-item">HOME</a>\n                `;
+        const fresh = JSON.stringify(categories);
+        // Only repaint if data actually changed
+        if (fresh !== cached) {
+            sessionStorage.setItem(CACHE_KEY, fresh);
+            navEl.innerHTML = buildNavHTML(categories);
         }
-
-        // Build nav links from API response (already sorted by nav_order)
-        links += categories.map(cat => {
-            // Use page_file if set, otherwise use generic category.html with slug parameter
-            const page = cat.page_file || `category.html?cat=${cat.slug}`;
-            const name = cat.name;
-            const color = cat.color || '#000';
-            
-            // Add active style if this is the current page
-            const isActive = (cat.slug === currentSlug) || (page.replace('.html', '') === currentSlug);
-            const activeStyle = isActive ? ` style="color: ${color}; border-bottom: 2px solid ${color};"` : '';
-            
-            return `<a href="${page}" class="nav-item"${activeStyle}>${escNav(name).toUpperCase()}</a>`;
-        }).join('\n                ');
-
-        navEl.innerHTML = links;
     } catch (e) {
-        console.error('Failed to load navigation:', e);
+        // If fetch fails and we already rendered from cache, that's fine
+        if (!cached) console.error('Failed to load navigation:', e);
     }
 }
 

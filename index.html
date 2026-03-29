@@ -5,9 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galmudug Times — A Journal of Record News Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- GT Top Bar -->
+    <div class="gt-topbar">
+        <div class="gt-topbar-inner">
+            <div class="gt-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="gt-topbar-center">
+                <span id="weatherWidget"><span id="wtIcon">🌡️</span>&nbsp;<strong id="wtTemp">--°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span class="gt-sep">|</span>
+                <span id="topbarDate"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Breaking News Ticker -->
     <div class="ticker-bar">
         <div class="ticker-content">
@@ -18,36 +37,34 @@
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="header-top-rule"></div>
-        
-        <div class="masthead">
-            <h1 class="title"><a href="index.html" style="text-decoration:none;color:inherit;">Galmudug Times</a></h1>
-            <p class="tagline">A Journal of Record</p>
+    <!-- Main Navigation -->
+    <header class="gt-header">
+        <div class="gt-header-inner">
+            <a href="index.html" class="gt-logo">
+                <div class="gt-logo-text">Galmudug Times</div>
+                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+            </a>
+            <nav class="gt-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="category.html?cat=galmudug" class="nav-item">Galmudug</a>
+                <a href="category.html?cat=muqdisho" class="nav-item">Muqdisho</a>
+                <a href="category.html?cat=hargaysa" class="nav-item">Calamka</a>
+                <a href="category.html?cat=borame" class="nav-item">Somalia</a>
+                <a href="contact.html" class="nav-item">Contact Us</a>
+            </nav>
+            <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
+            <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
         </div>
-
-        <!-- Search Bar -->
-        <div style="display:flex;justify-content:center;padding:.75rem 1rem 0;">
-            <div style="display:flex;gap:.5rem;max-width:500px;width:100%;">
-                <input type="text" id="searchInput" placeholder="Search articles..." style="flex:1;padding:.6rem 1rem;border:1px solid #ccc;border-radius:4px;font-family:'Inter',sans-serif;font-size:.9rem;">
-                <button onclick="doSearch()" style="background:#000;color:#fff;border:none;padding:.6rem 1.2rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:4px;">Search</button>
+        <div class="gt-search-expand" id="gtSearchExpand" style="display:none;">
+            <div class="gt-search-expand-inner">
+                <input type="text" id="searchInput" placeholder="Search Galmudug Times...">
+                <button class="gt-search-go" onclick="doSearch()">Search</button>
+                <button class="gt-close-btn" onclick="toggleGTSearch()">&#x2715;</button>
             </div>
         </div>
-        <div id="searchResults" style="display:none;max-width:1400px;margin:.5rem auto 0;padding:0 2rem;"></div>
-        
-        <div class="header-nav">
-            <nav class="main-nav" id="dynamic-nav">
-                <a href="politics.html" class="nav-item">POLITICS</a>
-                <a href="world.html" class="nav-item">WORLD</a>
-                <a href="business.html" class="nav-item">BUSINESS</a>
-                <a href="technology.html" class="nav-item">TECHNOLOGY</a>
-                <a href="opinion.html" class="nav-item">OPINION</a>
-                <a href="culture.html" class="nav-item">LIFE & CULTURE</a>
-            </nav>
-        </div>
-        
-        <div class="header-bottom-rule double-rule"></div>
+        <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
 
     <!-- Main Content -->
@@ -61,28 +78,20 @@
 
         <!-- Sidebar Stories (4 columns) -->
         <aside class="sidebar" id="sidebar-container">
-            <!-- Featured Story - Loaded Dynamically -->
-            <article class="story story-sidebar" id="sidebar-article-1">
-                <p style="text-align: center; color: #999; padding: 1rem;">Loading...</p>
-            </article>
+            <!-- Top Stories compact horizontal cards -->
+            <div class="sb-section-hdr">Top Stories</div>
+            <div id="sb-top-stories">
+                <p style="color:#bbb;padding:.8rem 0;font-size:.82rem;font-family:'Inter',sans-serif;">Loading...</p>
+            </div>
 
             <div class="sidebar-divider"></div>
 
-            <!-- Analysis - Loaded Dynamically -->
-            <article class="story story-sidebar" id="sidebar-article-2">
-                <p style="text-align: center; color: #999; padding: 1rem;">Loading...</p>
-            </article>
-
-            <div class="sidebar-divider"></div>
-
-            <!-- Quick Links -->
+            <!-- Editors' Picks - dynamic numbered list -->
             <section class="sidebar-module">
                 <h4 class="module-title">EDITORS' PICKS</h4>
-                <ul class="module-list">
-                    <li><a href="#">Environmental Groups React to Climate Provisions</a></li>
-                    <li><a href="#">Inside the Secret Meetings That Led to the Deal</a></li>
-                    <li><a href="#">Historical Parallels: Trade Agreements That Changed History</a></li>
-                </ul>
+                <ol class="module-picks" id="editors-picks-list">
+                    <li style="color:#bbb;font-size:.82rem;font-family:'Inter',sans-serif;display:block;border:none;padding:.5rem 0;">Loading...</li>
+                </ol>
             </section>
         </aside>
     </main>
@@ -104,36 +113,37 @@
         
         <div class="footer-content">
             <div class="footer-column">
-                <h4 class="footer-title">GALMUDUG TIMES</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Sections</a></li>
-                    <li><a href="#">Search</a></li>
-                </ul>
+                <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="X / Twitter" style="color:#aaa;font-size:1rem;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube" style="color:#aaa;font-size:1rem;"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
 
             <div class="footer-column">
                 <h4 class="footer-title">COMPANY</h4>
                 <ul class="footer-links">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <h4 class="footer-title">POLICIES</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Cookie Management</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="cookies.html">Cookie Management</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <h4 class="footer-title">SUBSCRIBE</h4>
                 <p class="footer-text">Get unlimited access to the most important stories.</p>
-                <button class="subscribe-btn">Subscribe Now</button>
+                <button class="subscribe-btn" onclick="document.getElementById('gt-subscribe-popup').style.display='flex'">Subscribe Now</button>
             </div>
         </div>
 
@@ -145,6 +155,11 @@
     </footer>
 
     <script>
+        // HTML escape helper to prevent XSS
+        function esc(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
         // Category color mapping (backup for display)
         let categoryColorMap = {
             'politics': '#d63031',
@@ -172,111 +187,159 @@
         // Format date
         function formatDate(dateStr) {
             const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Strip copy-paste metadata from titles (same logic as article.html)
+        function cleanTitle(raw) {
+            if (!raw) return '';
+            const cuts = [
+                /\s+\d{4}\s+[Bb]y\s+/,
+                /\s+[Bb]y\s+[A-Z\u00C0-\u024F][a-z]/,
+                /\s+\d+\s*min/i,
+                /\s+[Bb]ookmark\b/i,
+                /\s+[Ss]hare\b/i,
+            ];
+            let t = raw.trim();
+            for (const re of cuts) {
+                const i = t.search(re);
+                if (i > 20) { t = t.substring(0, i).trim(); break; }
+            }
+            return t;
+        }
+
+        // Truncate plain text to max chars, strip HTML tags
+        function excerpt(str, max) {
+            const plain = (str || '').replace(/<[^>]*>/g, '').trim();
+            return plain.length > max ? plain.substring(0, max).replace(/\s+\S*$/, '') + '…' : plain;
         }
 
         // Create category span with color from API
         function createCategorySpan(categoryName, categorySlug, categoryColor) {
-            // Use color from API if available, otherwise fall back to mapped color
-            const color = categoryColor || categoryColorMap[categorySlug] || '#000';
-            const name = categoryName || categorySlug || 'News';
-            return `<span class="story-category" style="background-color: ${color}; color: white; padding: 0.3rem 0.6rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; display: inline-block; margin-bottom: 0.5rem;">${name.toUpperCase()}</span>`;
+            const color = esc(categoryColor || categoryColorMap[categorySlug] || '#000');
+            const name = esc(categoryName || categorySlug || 'News');
+            return `<span class="story-category" style="background:${color};color:#fff;padding:.25rem .6rem;font-size:.68rem;font-weight:700;letter-spacing:.08em;display:inline-block;margin-bottom:.5rem;">${name.toUpperCase()}</span>`;
+        }
+
+        function articleUrl(a) {
+            return `/article.html?id=${esc(String(a.id))}&slug=${esc(a.slug)}`;
+        }
+
+        // Time-ago helper
+        function timeAgo(dateStr) {
+            const diff = Date.now() - new Date(dateStr).getTime();
+            const mins = Math.floor(diff / 60000);
+            if (mins < 2) return 'Just now';
+            if (mins < 60) return `${mins} min ago`;
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return `${hrs}h ago`;
+            const days = Math.floor(hrs / 24);
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            return formatDate(dateStr);
         }
 
         // Load featured articles
         async function loadArticles() {
             try {
-                // Use cache-busting query parameter to force fresh data
                 const response = await fetch('/api/articles/featured/latest?_t=' + Date.now());
                 const articles = await response.json();
 
                 if (articles.length === 0) {
-                    document.getElementById('hero-article').innerHTML = '<p style="text-align: center; padding: 2rem; color: #999;">No articles published yet</p>';
+                    document.getElementById('hero-article').innerHTML = '<p style="text-align:center;padding:2rem;color:#999;">No articles published yet</p>';
                     return;
                 }
 
-                // Hero Article (first one)
+                // ── Hero Article ──────────────────────────────────────────
                 const hero = articles[0];
-                const heroContent = hero.description || hero.content.substring(0, 200).replace(/<[^>]*>/g, '');
-                const heroHTML = `
+                const heroTitle = cleanTitle(hero.title);
+                const heroDesc  = excerpt(hero.description || hero.content, 160);
+                const heroImg   = hero.featured_image
+                    ? `<a href="${articleUrl(hero)}"><figure class="story-image" style="margin:1rem 0 0"><img src="${esc(hero.featured_image)}" alt="${esc(heroTitle)}" style="width:100%;height:220px;object-fit:cover;display:block;"></figure></a>`
+                    : '';
+                document.getElementById('hero-article').innerHTML = `
                     <div class="story-header">
                         ${createCategorySpan(hero.category_name, hero.category_slug, hero.category_color)}
-                        <a href="/article.html?id=${hero.id}&slug=${hero.slug}" style="text-decoration: none; color: inherit;">
-                            <h2 class="story-headline">${hero.title}</h2>
+                        <a href="${articleUrl(hero)}" style="text-decoration:none;color:inherit;">
+                            <h2 class="story-headline" style="margin:.4rem 0 .6rem;line-height:1.2;">${esc(heroTitle)}</h2>
                         </a>
-                        <p class="story-description">${heroContent}${heroContent.length >= 200 ? '...' : ''}</p>
+                        ${heroDesc ? `<p class="story-description" style="margin:.4rem 0 .8rem;font-size:.95rem;color:#444;line-height:1.55;">${esc(heroDesc)}</p>` : ''}
                     </div>
-                    <div class="story-byline">
-                        <span class="author-name">By ${hero.author}</span>
+                    <div class="story-byline" style="margin-bottom:.6rem;">
+                        <span class="author-name">By ${esc(hero.author)}</span>
                         <span class="publish-date">${formatDate(hero.published_at)}</span>
                     </div>
-                    ${hero.featured_image ? `
-                        <figure class="story-image">
-                            <img src="${hero.featured_image}" alt="${hero.title}" style="width: 100%; height: auto;">
-                            <figcaption>${hero.title}</figcaption>
-                        </figure>
-                    ` : `
-                        <figure class="story-image">
-                            <div class="image-placeholder"></div>
-                            <figcaption>${hero.title}</figcaption>
-                        </figure>
-                    `}
+                    ${heroImg}
+                    <a href="${articleUrl(hero)}" style="display:inline-block;margin-top:.9rem;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d63031;text-decoration:none;border-bottom:2px solid #d63031;padding-bottom:2px;">Read more →</a>
                 `;
-                document.getElementById('hero-article').innerHTML = heroHTML;
 
-                // Sidebar articles (next 2)
-                if (articles.length > 1) {
-                    const sidebar1 = articles[1];
-                    const sidebar1Desc = sidebar1.description || sidebar1.content.substring(0, 100).replace(/<[^>]*>/g, '');
-                    const sidebar1HTML = `
-                        ${createCategorySpan(sidebar1.category_name, sidebar1.category_slug, sidebar1.category_color)}
-                        <h3 class="story-headline"><a href="/article.html?id=${sidebar1.id}&slug=${sidebar1.slug}" style="text-decoration: none; color: inherit;">${sidebar1.title}</a></h3>
-                        <p class="story-description">${sidebar1Desc}${sidebar1Desc.length >= 100 ? '...' : ''}</p>
-                        <div class="story-byline">
-                            <span class="author-name">By ${sidebar1.author}</span>
-                            <span class="publish-date">${formatDate(sidebar1.published_at)}</span>
-                        </div>
-                    `;
-                    document.getElementById('sidebar-article-1').innerHTML = sidebar1HTML;
+                // ── Sidebar Top Stories (compact horizontal cards) ────────
+                const sbArticles = articles.slice(1, 5);
+                if (sbArticles.length > 0) {
+                    document.getElementById('sb-top-stories').innerHTML = sbArticles.map(s => {
+                        const sTitle = cleanTitle(s.title);
+                        const catColor = esc(s.category_color || categoryColorMap[s.category_slug] || '#d63031');
+                        const thumb = s.featured_image
+                            ? `<div class="sb-card-img"><a href="${articleUrl(s)}"><img src="${esc(s.featured_image)}" alt="${esc(sTitle)}" loading="lazy"></a></div>`
+                            : '';
+                        return `
+                        <div class="sb-card">
+                            <div class="sb-card-text">
+                                <span class="sb-cat" style="color:${catColor};">${esc((s.category_name || s.category_slug || 'News').toUpperCase())}</span>
+                                <h3 class="sb-headline"><a href="${articleUrl(s)}">${esc(sTitle)}</a></h3>
+                                <span class="sb-meta">${timeAgo(s.published_at)}</span>
+                            </div>
+                            ${thumb}
+                        </div>`;
+                    }).join('');
                 }
 
-                if (articles.length > 2) {
-                    const sidebar2 = articles[2];
-                    const sidebar2Desc = sidebar2.description || sidebar2.content.substring(0, 100).replace(/<[^>]*>/g, '');
-                    const sidebar2HTML = `
-                        ${createCategorySpan(sidebar2.category_name, sidebar2.category_slug, sidebar2.category_color)}
-                        <h3 class="story-headline"><a href="/article.html?id=${sidebar2.id}&slug=${sidebar2.slug}" style="text-decoration: none; color: inherit;">${sidebar2.title}</a></h3>
-                        <p class="story-description">${sidebar2Desc}${sidebar2Desc.length >= 100 ? '...' : ''}</p>
-                        <div class="story-byline">
-                            <span class="author-name">By ${sidebar2.author}</span>
-                            <span class="publish-date">${formatDate(sidebar2.published_at)}</span>
-                        </div>
-                    `;
-                    document.getElementById('sidebar-article-2').innerHTML = sidebar2HTML;
+                // ── Editors' Picks (numbered list, different articles) ────
+                const pickStart = articles.length > 5 ? 5 : 1;
+                const pickArticles = articles.slice(pickStart, pickStart + 5);
+                if (pickArticles.length > 0) {
+                    document.getElementById('editors-picks-list').innerHTML = pickArticles.map(s => {
+                        const sTitle = cleanTitle(s.title);
+                        const catColor = esc(s.category_color || categoryColorMap[s.category_slug] || '#d63031');
+                        return `
+                        <li>
+                            <div>
+                                <a href="${articleUrl(s)}">${esc(sTitle)}</a>
+                                <span class="mp-meta"><span style="color:${catColor};font-weight:700;">${esc((s.category_name || '').toUpperCase())}</span> &middot; <span style="color:#aaa;">${timeAgo(s.published_at)}</span></span>
+                            </div>
+                        </li>`;
+                    }).join('');
+                } else {
+                    document.getElementById('editors-picks-list').innerHTML = '';
                 }
 
-                // Secondary grid (remaining articles)
+                // ── Secondary Grid ────────────────────────────────────────
                 const secondaryArticles = articles.slice(3);
                 if (secondaryArticles.length > 0) {
-                    const gridHTML = secondaryArticles.map(article => {
-                        const desc = article.description || article.content.substring(0, 100).replace(/<[^>]*>/g, '');
+                    document.getElementById('secondary-grid').innerHTML = secondaryArticles.map(a => {
+                        const t = cleanTitle(a.title);
+                        const d = excerpt(a.description || a.content, 90);
+                        const img = a.featured_image
+                            ? `<a href="${articleUrl(a)}"><img src="${esc(a.featured_image)}" alt="${esc(t)}" style="width:100%;height:150px;object-fit:cover;display:block;margin-bottom:.7rem;"></a>`
+                            : `<div style="width:100%;height:8px;background:${esc(a.category_color||'#d63031')};margin-bottom:.7rem;"></div>`;
                         return `
-                        <article class="story story-secondary">
-                            ${createCategorySpan(article.category_name, article.category_slug, article.category_color)}
-                            <h3 class="story-headline"><a href="/article.html?id=${article.id}&slug=${article.slug}" style="text-decoration: none; color: inherit;">${article.title}</a></h3>
-                            <div class="story-byline">
-                                <span class="author-name">By ${article.author}</span>
-                                <span class="publish-date">${formatDate(article.published_at)}</span>
+                        <article class="story story-secondary" style="border:1px solid #ebebeb;padding:1rem;border-top:3px solid ${esc(a.category_color||'#d63031')};">
+                            ${img}
+                            ${createCategorySpan(a.category_name, a.category_slug, a.category_color)}
+                            <h3 class="story-headline" style="font-size:1.05rem;margin:.3rem 0 .45rem;line-height:1.3;">
+                                <a href="${articleUrl(a)}" style="text-decoration:none;color:inherit;">${esc(t)}</a>
+                            </h3>
+                            ${d ? `<p class="story-description" style="font-size:.82rem;color:#555;margin:.3rem 0 .6rem;line-height:1.5;">${esc(d)}</p>` : ''}
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+                                <span style="font-family:'Inter',sans-serif;font-size:.68rem;color:#aaa;">${timeAgo(a.published_at)}</span>
+                                <a href="${articleUrl(a)}" style="font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#d63031;text-decoration:none;">Read more →</a>
                             </div>
-                            <p class="story-description">${desc}${desc.length >= 100 ? '...' : ''}</p>
-                        </article>
-                    `;
+                        </article>`;
                     }).join('');
-                    document.getElementById('secondary-grid').innerHTML = gridHTML;
                 }
             } catch (error) {
                 console.error('Error loading articles:', error);
-                document.getElementById('hero-article').innerHTML = '<p style="text-align: center; padding: 2rem; color: #999;">Error loading articles</p>';
+                document.getElementById('hero-article').innerHTML = '<p style="text-align:center;padding:2rem;color:#999;">Error loading articles. Is the server running?</p>';
             }
         }
 
@@ -292,9 +355,16 @@
             try {
                 const res = await fetch('/api/breaking-news');
                 const items = await res.json();
-                if (items.length) {
-                    document.getElementById('tickerText').textContent = items.map(i => i.title).join('  |  ');
-                }
+                if (!items.length) return;
+                const el = document.getElementById('tickerText');
+                if (!el) return;
+                const text = items.map(i => i.title).join('   ·   ');
+                el.textContent = text + '     ·     ' + text; // duplicate for seamless loop
+                requestAnimationFrame(() => {
+                    // target ~70px/sec; half scrollWidth = one copy width
+                    const dur = Math.max(25, Math.round(el.scrollWidth / 2 / 70));
+                    el.style.animationDuration = dur + 's';
+                });
             } catch(e) {}
         }
 
@@ -314,12 +384,12 @@
                 }
                 box.innerHTML = `
                     <div style="background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:1.5rem;margin-bottom:1rem;">
-                        <p style="font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#666;margin-bottom:1rem;">${results.length} results for "${q}"</p>
+                        <p style="font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#666;margin-bottom:1rem;">${results.length} results for &quot;${esc(q)}&quot;</p>
                         ${results.map(a => `
                             <div style="padding:.75rem 0;border-bottom:1px solid #f0f0f0;">
-                                <span style="display:inline-block;background:${a.category_color||'#d63031'};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">${a.category_name||''}</span>
-                                <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin:.3rem 0;"><a href="/article.html?id=${a.id}&slug=${encodeURIComponent(a.slug)}" style="color:#000;text-decoration:none;">${a.title}</a></h4>
-                                <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;">${a.description||''}</p>
+                                <span style="display:inline-block;background:${esc(a.category_color||'#d63031')};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">${esc(a.category_name||'')}</span>
+                                <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin:.3rem 0;"><a href="/article.html?id=${esc(String(a.id))}&slug=${encodeURIComponent(a.slug)}" style="color:#000;text-decoration:none;">${esc(a.title)}</a></h4>
+                                <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;">${esc(a.description||'')}</p>
                             </div>`).join('')}
                         <button onclick="document.getElementById('searchResults').style.display='none'" style="margin-top:1rem;background:none;border:none;font-family:'Inter',sans-serif;font-size:.8rem;color:#999;cursor:pointer;">Close</button>
                     </div>`;
@@ -328,12 +398,77 @@
             }
         }
 
-        // Search on Enter key
+        // Search on Enter key (single handler)
         document.addEventListener('DOMContentLoaded', function() {
             const inp = document.getElementById('searchInput');
             if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
         });
     </script>
+    <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
+
+    <!-- Subscribe Popup (bottom-right corner) -->
+    <div id="gt-subscribe-popup" style="
+        position:fixed;bottom:1.5rem;right:1.5rem;width:300px;
+        background:#fff;border:1px solid #e0e0e0;
+        box-shadow:0 8px 32px rgba(0,0,0,.18);
+        z-index:9999;padding:1.5rem 1.5rem 1.25rem;
+        transform:translateY(120%);opacity:0;
+        transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s;
+        border-radius:4px;">
+        <button onclick="gtClosePopup()" title="Close" style="
+            position:absolute;top:.6rem;right:.75rem;
+            background:none;border:none;font-size:1.1rem;
+            cursor:pointer;color:#999;line-height:1;">&#x2715;</button>
+        <p style="font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;
+            letter-spacing:.18em;text-transform:uppercase;color:#d63031;margin:0 0 .4rem;">Newsletter</p>
+        <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
+            line-height:1.3;margin:0 0 .5rem;">Stay Informed</p>
+        <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;
+            margin:0 0 1rem;line-height:1.5;">Get the latest Galmudug Times stories delivered to your inbox.</p>
+        <input type="text" id="popupSubName" placeholder="Your name (optional)"
+            style="width:100%;padding:.55rem .7rem;border:1px solid #ddd;border-radius:3px;
+            font-family:'Inter',sans-serif;font-size:.82rem;margin-bottom:.5rem;box-sizing:border-box;">
+        <input type="email" id="popupSubEmail" placeholder="Email address *"
+            style="width:100%;padding:.55rem .7rem;border:1px solid #ddd;border-radius:3px;
+            font-family:'Inter',sans-serif;font-size:.82rem;margin-bottom:.75rem;box-sizing:border-box;">
+        <button onclick="gtPopupSubscribe()" style="
+            width:100%;background:#d63031;color:#fff;border:none;
+            padding:.7rem;font-family:'Inter',sans-serif;font-size:.78rem;
+            font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+            cursor:pointer;border-radius:3px;transition:background .2s;"
+            onmouseover="this.style.background='#b71c1c'"
+            onmouseout="this.style.background='#d63031'">Subscribe Now</button>
+        <p id="popupSubMsg" style="font-size:.78rem;margin:.5rem 0 0;
+            font-family:'Inter',sans-serif;display:none;"></p>
+    </div>
+    <script>
+    // Show popup after 5 seconds (only once per session)
+    (function(){
+        if(sessionStorage.getItem('gt_popup_seen')) return;
+        setTimeout(function(){
+            const p=document.getElementById('gt-subscribe-popup');
+            if(p){p.style.transform='translateY(0)';p.style.opacity='1';}
+        }, 5000);
+    })();
+    function gtClosePopup(){
+        const p=document.getElementById('gt-subscribe-popup');
+        if(p){p.style.transform='translateY(120%)';p.style.opacity='0';}
+        sessionStorage.setItem('gt_popup_seen','1');
+    }
+    async function gtPopupSubscribe(){
+        const name=(document.getElementById('popupSubName').value||'').trim();
+        const email=(document.getElementById('popupSubEmail').value||'').trim();
+        const msg=document.getElementById('popupSubMsg');
+        if(!email){msg.style.display='block';msg.style.color='#d63031';msg.textContent='Please enter your email.';return;}
+        try{
+            const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name})});
+            const d=await r.json();
+            if(r.ok){msg.style.color='#27ae60';msg.textContent='Subscribed! Thank you.';setTimeout(gtClosePopup,2500);}
+            else{msg.style.color='#d63031';msg.textContent=d.error||'Something went wrong.';}
+        }catch(e){msg.style.color='#d63031';msg.textContent='Server not reachable.';}
+        msg.style.display='block';
+    }
+    </script>
 </body>
 </html>

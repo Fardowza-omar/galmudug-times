@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <style>
         .article-container{max-width:1400px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:2fr 1fr;gap:4rem}
@@ -71,9 +72,38 @@
         .subscribe-box button:hover{background:#d63031;color:#fff}
         .article-loading{text-align:center;padding:5rem 2rem;color:#999;font-family:'Inter',sans-serif;grid-column:1/-1}
         @media(max-width:900px){.article-container{grid-template-columns:1fr}.article-sidebar-col{grid-column:1;position:static}.article-title{font-size:2rem}.c-row{grid-template-columns:1fr}}
+        /* Reading progress bar */
+        #read-progress-bar{
+            position:fixed;top:0;left:0;height:3px;width:0%;
+            background:linear-gradient(90deg,#d63031,#e74c3c);
+            z-index:9999;transition:width .1s linear;
+            box-shadow:0 0 6px rgba(214,48,49,.5);
+        }
     </style>
 </head>
 <body>
+    <!-- Reading Progress Bar -->
+    <div id="read-progress-bar"></div>
+
+    <!-- GT Top Bar -->
+    <div class="gt-topbar">
+        <div class="gt-topbar-inner">
+            <div class="gt-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="gt-topbar-center">
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--�C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span class="gt-sep">|</span>
+                <span id="topbarDate"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breaking News Ticker -->
     <div class="ticker-bar">
         <div class="ticker-content">
             <span class="ticker-label">BREAKING</span>
@@ -83,24 +113,34 @@
         </div>
     </div>
 
-    <header class="header">
-        <div class="header-top-rule"></div>
-        <div class="masthead">
-            <h1 class="title"><a href="index.html" style="text-decoration:none;color:inherit;">Galmudug Times</a></h1>
-            <p class="tagline">A Journal of Record</p>
-        </div>
-        <div class="header-nav">
-            <nav class="main-nav" id="dynamic-nav">
-                <a href="index.html" class="nav-item">HOME</a>
-                <a href="politics.html" class="nav-item">POLITICS</a>
-                <a href="world.html" class="nav-item">WORLD</a>
-                <a href="business.html" class="nav-item">BUSINESS</a>
-                <a href="technology.html" class="nav-item">TECHNOLOGY</a>
-                <a href="opinion.html" class="nav-item">OPINION</a>
-                <a href="culture.html" class="nav-item">LIFE &amp; CULTURE</a>
+    <!-- Main Navigation -->
+    <header class="gt-header">
+        <div class="gt-header-inner">
+            <a href="index.html" class="gt-logo">
+                <div class="gt-logo-text">Galmudug Times</div>
+                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+            </a>
+            <nav class="gt-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="category.html?cat=galmudug" class="nav-item">Galmudug</a>
+                <a href="category.html?cat=muqdisho" class="nav-item">Muqdisho</a>
+                <a href="category.html?cat=hargaysa" class="nav-item">Calamka</a>
+                <a href="category.html?cat=borame" class="nav-item">Somalia</a>
+                <a href="contact.html" class="nav-item">Contact Us</a>
             </nav>
+            <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
+            <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
         </div>
-        <div class="header-bottom-rule double-rule"></div>
+        <div class="gt-search-expand" id="gtSearchExpand" style="display:none;">
+            <div class="gt-search-expand-inner">
+                <input type="text" id="searchInput" placeholder="Search Galmudug Times..." onkeydown="if(event.key==='Enter')doSearch()">
+                <button class="gt-search-go" onclick="doSearch()">Search</button>
+                <button class="gt-close-btn" onclick="toggleGTSearch()">&#x2715;</button>
+            </div>
+        </div>
+        <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
 
     <main class="article-container" id="articleContainer">
@@ -111,37 +151,34 @@
         <div class="footer-top-rule double-rule"></div>
         <div class="footer-content">
             <div class="footer-column">
-                <h4 class="footer-title">GALMUDUG TIMES</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="politics.html">Politics</a></li>
-                    <li><a href="world.html">World</a></li>
-                    <li><a href="business.html">Business</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4 class="footer-title">SECTIONS</h4>
-                <ul class="footer-links">
-                    <li><a href="technology.html">Technology</a></li>
-                    <li><a href="opinion.html">Opinion</a></li>
-                    <li><a href="culture.html">Life &amp; Culture</a></li>
-                </ul>
+                <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="X / Twitter" style="color:#aaa;font-size:1rem;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube" style="color:#aaa;font-size:1rem;"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
             <div class="footer-column">
                 <h4 class="footer-title">COMPANY</h4>
                 <ul class="footer-links">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h4 class="footer-title">FOLLOW US</h4>
+                <h4 class="footer-title">POLICIES</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter / X</a></li>
-                    <li><a href="#">Instagram</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="cookies.html">Cookie Management</a></li>
                 </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">SUBSCRIBE</h4>
+                <p class="footer-text">Get unlimited access to the most important stories.</p>
+                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
             </div>
         </div>
         <div class="copyright"><p>&copy; 2026 Galmudug Times. All rights reserved.</p></div>
@@ -153,9 +190,37 @@
     function fmtDate(d){return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}
     function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
+    // Strip copy-paste metadata from article titles
+    function cleanTitle(raw){
+        if(!raw) return '';
+        const cuts=[
+            /\s+\d{4}\s+[Bb]y\s+/,          // "2026 By Name"
+            /\s+[Bb]y\s+[A-Z\u00C0-\u024F][a-z]/, // " By Name"
+            /\s+\d+\s*min/i,                  // "1 min" / "2 min read"
+            /\s+[Bb]ookmark\b/i,              // " Bookmark"
+            /\s+[Ss]hare\b/i,                 // " Share"
+        ];
+        let t=raw.trim();
+        for(const re of cuts){
+            const i=t.search(re);
+            if(i>20){t=t.substring(0,i).trim();break;}
+        }
+        return t;
+    }
+
     async function loadTicker(){
-        try{const r=await fetch('/api/breaking-news');const items=await r.json();
-        if(items.length)document.getElementById('tickerText').textContent=items.map(i=>i.title).join('  |  ');}catch(e){}}
+        try{
+            const r=await fetch('/api/breaking-news');const items=await r.json();
+            if(!items.length) return;
+            const el=document.getElementById('tickerText');
+            if(!el) return;
+            const text=items.map(i=>i.title).join('   ·   ');
+            el.textContent=text+'     ·     '+text;
+            requestAnimationFrame(()=>{
+                const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
+                el.style.animationDuration=dur+'s';
+            });
+        }catch(e){}}
 
     async function loadArticle(){
         const id=qs('id'),slug=qs('slug');
@@ -165,9 +230,9 @@
             const r=await fetch(url);
             if(!r.ok){showErr('Article not found.');return;}
             const a=await r.json();
-            document.title=esc(a.title)+' — Galmudug Times';
+            document.title=esc(cleanTitle(a.title))+' — Galmudug Times';
             renderArticle(a);
-            loadLikeCount(a.id);
+            loadLikeState(a.id);
             loadComments(a.id);
             loadRelated(a.category_id,a.id);
         }catch(e){showErr('Could not load article. Make sure the server is running on port 3000.');}}
@@ -189,7 +254,7 @@
         <article class="full-article">
             <header class="article-header">
                 <span style="display:inline-block;background:${cc};color:#fff;padding:.3rem .7rem;font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;">${esc(cn)}</span>
-                <h1 class="article-title">${esc(a.title)}</h1>
+                <h1 class="article-title">${esc(cleanTitle(a.title))}</h1>
                 ${a.description?`<p class="article-subtitle">${esc(a.description)}</p>`:''}
                 <div class="article-meta">
                     <div class="author-info">
@@ -220,10 +285,15 @@
         <aside class="article-sidebar-col">
             <h3 class="related-title">More Stories</h3>
             <div id="relatedList"><p style="color:#999;font-size:.85rem">Loading...</p></div>
-            <div class="subscribe-box" style="margin-top:2rem">
+            <div class="subscribe-box" style="margin-top:2rem" id="subscribeBox">
                 <p class="subscribe-box-title">Stay Informed</p>
                 <p>Get the latest news from Galmudug Times.</p>
-                <button onclick="alert('Subscribe feature coming soon!')">Subscribe Now</button>
+                <div id="subForm">
+                    <input type="text" id="subName" placeholder="Your name (optional)" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
+                    <input type="email" id="subEmail" placeholder="Your email address *" style="width:100%;padding:.6rem .75rem;margin-bottom:.75rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
+                    <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#d63031';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Subscribe Now</button>
+                    <p id="subMsg" style="margin-top:.6rem;font-size:.8rem;display:none;"></p>
+                </div>
             </div>
         </aside>`;
         const pu=encodeURIComponent(location.href),pt=encodeURIComponent(a.title);
@@ -231,18 +301,34 @@
         document.getElementById('shareFb').href=`https://www.facebook.com/sharer/sharer.php?u=${pu}`;
         document.getElementById('shareCp').addEventListener('click',()=>{
             navigator.clipboard.writeText(location.href).then(()=>{
-                const b=document.getElementById('shareCp');b.classList.add('copied');b.textContent='✓ Copied!';
+                const b=document.getElementById('shareCp');b.classList.add('copied');b.textContent='? Copied!';
                 setTimeout(()=>{b.classList.remove('copied');b.textContent='&#128279; Copy Link';},2000);});});
         document.getElementById('likeBtn').addEventListener('click',()=>toggleLike(a.id));}
 
-    async function loadLikeCount(id){
-        try{const r=await fetch(`/api/articles/${id}/likes`);const d=await r.json();
-        const el=document.getElementById('likeCount');if(el)el.textContent=d.count;}catch(e){}}
+    // Generate or retrieve a persistent per-browser token
+    function getClientToken(){
+        let t=localStorage.getItem('gt_client_token');
+        if(!t){t=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem('gt_client_token',t);}
+        return t;}
+
+    async function loadLikeState(id){
+        try{
+            const r=await fetch(`/api/articles/${id}/likes`,{headers:{'X-Client-Token':getClientToken()}});
+            const d=await r.json();
+            const el=document.getElementById('likeCount');if(el)el.textContent=d.count;
+            const btn=document.getElementById('likeBtn');if(btn)btn.classList.toggle('liked',!!d.liked);
+        }catch(e){}}
 
     async function toggleLike(id){
-        try{const r=await fetch(`/api/articles/${id}/like`,{method:'POST'});const d=await r.json();
-        const btn=document.getElementById('likeBtn');if(btn)btn.classList.toggle('liked',d.liked);
-        const el=document.getElementById('likeCount');if(el)el.textContent=d.count;}catch(e){}}
+        const btn=document.getElementById('likeBtn');
+        if(btn){btn.disabled=true;}
+        try{
+            const r=await fetch(`/api/articles/${id}/like`,{method:'POST',headers:{'X-Client-Token':getClientToken()}});
+            const d=await r.json();
+            if(btn)btn.classList.toggle('liked',d.liked);
+            const el=document.getElementById('likeCount');if(el)el.textContent=d.count;
+        }catch(e){}
+        if(btn){btn.disabled=false;}}
 
     async function loadComments(aid){
         const sec=document.getElementById('commentsSection');if(!sec)return;
@@ -293,9 +379,49 @@
             <p class="related-byline">By ${esc(a.author||'')}</p>
         </article>`).join('');}catch(e){}}
 
+    async function doSubscribe(){
+        const email=(document.getElementById('subEmail').value||'').trim();
+        const name=(document.getElementById('subName').value||'').trim();
+        const msg=document.getElementById('subMsg');
+        if(!email){msg.style.display='block';msg.style.color='#f39c12';msg.textContent='Please enter your email.';return;}
+        const btn=event.target;btn.disabled=true;btn.textContent='Subscribing...';
+        try{
+            const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name})});
+            const d=await r.json();
+            msg.style.display='block';
+            if(r.ok){
+                msg.style.color='#4CAF50';msg.textContent='? '+d.message;
+                document.getElementById('subEmail').value='';document.getElementById('subName').value='';
+                btn.textContent='Subscribed!';btn.style.background='#27ae60';btn.style.color='#fff';
+            }else{
+                msg.style.color='#f39c12';msg.textContent=d.error||'Something went wrong.';
+                btn.disabled=false;btn.textContent='Subscribe Now';
+            }
+        }catch(e){
+            msg.style.display='block';msg.style.color='#f39c12';msg.textContent='Network error. Please try again.';
+            btn.disabled=false;btn.textContent='Subscribe Now';
+        }
+    }
+
     loadTicker();
     loadArticle();
     </script>
+    <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
+    <script>
+    // Reading progress bar
+    (function(){
+        const bar = document.getElementById('read-progress-bar');
+        if(!bar) return;
+        function updateBar(){
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+            bar.style.width = pct + '%';
+        }
+        window.addEventListener('scroll', updateBar, { passive: true });
+        updateBar();
+    })();
+    </script>
 </body>
 </html>

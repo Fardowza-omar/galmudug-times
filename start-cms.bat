@@ -3,7 +3,7 @@ REM The Record CMS - Quick Start Script
 
 echo.
 echo ======================================
-echo   The Record — CMS Quick Start
+echo   Galmudug Times — CMS Quick Start
 echo ======================================
 echo.
 

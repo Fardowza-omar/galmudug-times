@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy – Galmudug Times</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-hero{background:#8B0000;color:#fff;padding:3.5rem 2rem;text-align:center}
+        .page-hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:#fff;margin:0 0 .5rem}
+        .page-hero p{font-family:'Inter',sans-serif;font-size:.9rem;color:rgba(255,255,255,.75);margin:0}
+        .page-body{max-width:860px;margin:0 auto;padding:3.5rem 2rem}
+        .page-body h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin:2.5rem 0 1rem;padding-top:1.5rem;border-top:1px solid #e0e0e0}
+        .page-body h2:first-child{border-top:none;margin-top:0}
+        .page-body p,.page-body li{font-family:'Libre Baskerville',serif;font-size:1rem;line-height:1.85;color:#333;margin-bottom:1rem}
+        .page-body ul{margin:0 0 1.5rem 1.75rem}
+        .page-body li{margin-bottom:.5rem}
+        .last-updated{font-family:'Inter',sans-serif;font-size:.8rem;color:#999;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #e0e0e0}
+        .cookie-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-family:'Inter',sans-serif;font-size:.9rem}
+        .cookie-table th{background:#8B0000;color:#fff;padding:.7rem 1rem;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.07em}
+        .cookie-table td{padding:.7rem 1rem;border-bottom:1px solid #e0e0e0;vertical-align:top;line-height:1.5}
+        .cookie-table tr:last-child td{border-bottom:none}
+        .cookie-table tr:nth-child(even) td{background:#fafafa}
+        .pref-box{background:#f5f5f5;border:1px solid #e0e0e0;padding:1.5rem;border-radius:2px;margin:1.5rem 0}
+        .pref-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid #e0e0e0}
+        .pref-row:last-child{border-bottom:none}
+        .pref-label{font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600}
+        .pref-desc{font-family:'Inter',sans-serif;font-size:.78rem;color:#666;margin-top:.15rem}
+        .toggle{position:relative;display:inline-block;width:42px;height:24px}
+        .toggle input{opacity:0;width:0;height:0}
+        .slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:.3s}
+        .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+        input:checked+.slider{background:#8B0000}
+        input:checked+.slider:before{transform:translateX(18px)}
+        input:disabled+.slider{cursor:not-allowed;opacity:.6}
+        .save-prefs{background:#8B0000;color:#fff;border:none;padding:.7rem 2rem;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;margin-top:1rem;transition:background .2s}
+        .save-prefs:hover{background:#6b0000}
+        #prefSaved{display:none;color:#27ae60;font-family:'Inter',sans-serif;font-size:.85rem;margin-top:.5rem}
+    </style>
+</head>
+<body>
+    <div class="gt-topbar">
+        <div class="gt-topbar-inner">
+            <div class="gt-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="gt-topbar-center">
+                <span id="weatherWidget"><span id="wtIcon">🌡️</span>&nbsp;<strong id="wtTemp">--°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span class="gt-sep">|</span>
+                <span id="topbarDate"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-label">BREAKING</span>
+            <div class="ticker-scroll"><span class="ticker-text" id="tickerText">Loading latest news...</span></div>
+        </div>
+    </div>
+
+    <header class="gt-header">
+        <div class="gt-header-inner">
+            <a href="index.html" class="gt-logo">
+                <div class="gt-logo-text">Galmudug Times</div>
+                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+            </a>
+            <nav class="gt-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="contact.html" class="nav-item">Contact Us</a>
+            </nav>
+            <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
+            <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <h1>Cookie Management</h1>
+        <p>Control how Galmudug Times uses cookies on your device</p>
+    </div>
+
+    <div class="page-body">
+        <p class="last-updated">Last revised: March 2026</p>
+
+        <h2>What Are Cookies?</h2>
+        <p>Cookies are small text files placed on your device when you visit a website. They help websites remember your preferences, understand how you use the site, and deliver a better experience. Some cookies are essential for the site to work; others are optional.</p>
+
+        <h2>Cookies We Use</h2>
+        <table class="cookie-table">
+            <thead>
+                <tr><th>Cookie Name</th><th>Type</th><th>Purpose</th><th>Duration</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>gt_client_token</code></td><td>Essential</td><td>Used to track article likes anonymously per browser.</td><td>Persistent</td></tr>
+                <tr><td><code>gt_popup_seen</code></td><td>Functional</td><td>Remembers whether the newsletter popup has been shown this session.</td><td>Session</td></tr>
+                <tr><td><code>gt_cookie_prefs</code></td><td>Essential</td><td>Stores your cookie preferences.</td><td>1 year</td></tr>
+                <tr><td>Analytics cookies</td><td>Analytics</td><td>Help us understand how visitors interact with our site (e.g., pages visited, time on site). No personally identifiable information is stored.</td><td>Up to 2 years</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Your Cookie Preferences</h2>
+        <p>Manage your preferences below. Essential cookies cannot be disabled as they are required for the site to function properly.</p>
+
+        <div class="pref-box">
+            <div class="pref-row">
+                <div>
+                    <div class="pref-label">Essential Cookies</div>
+                    <div class="pref-desc">Required for the website to function. Cannot be disabled.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked disabled><span class="slider"></span></label>
+            </div>
+            <div class="pref-row">
+                <div>
+                    <div class="pref-label">Functional Cookies</div>
+                    <div class="pref-desc">Remember your preferences and settings across visits.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="functionalCookies" checked><span class="slider"></span></label>
+            </div>
+            <div class="pref-row">
+                <div>
+                    <div class="pref-label">Analytics Cookies</div>
+                    <div class="pref-desc">Help us improve the site by understanding how you use it.</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="analyticsCookies" checked><span class="slider"></span></label>
+            </div>
+            <button class="save-prefs" onclick="savePrefs()">Save Preferences</button>
+            <p id="prefSaved">✓ Your preferences have been saved.</p>
+        </div>
+
+        <h2>How to Manage Cookies in Your Browser</h2>
+        <p>You can also control cookies through your browser settings. Note that disabling certain cookies may affect site functionality:</p>
+        <ul>
+            <li><strong>Chrome:</strong> Settings → Privacy and Security → Cookies and other site data</li>
+            <li><strong>Firefox:</strong> Settings → Privacy &amp; Security → Cookies and Site Data</li>
+            <li><strong>Safari:</strong> Preferences → Privacy → Manage Website Data</li>
+            <li><strong>Edge:</strong> Settings → Cookies and site permissions</li>
+        </ul>
+
+        <h2>Contact Us</h2>
+        <p>If you have questions about our use of cookies, contact us at <a href="mailto:privacy@galmudug-times.com" style="color:#8B0000;">privacy@galmudug-times.com</a> or read our full <a href="privacy.html" style="color:#8B0000;">Privacy Policy</a>.</p>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-top-rule double-rule"></div>
+        <div class="footer-content">
+            <div class="footer-column">
+                <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="X / Twitter" style="color:#aaa;font-size:1rem;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube" style="color:#aaa;font-size:1rem;"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">COMPANY</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">POLICIES</h4>
+                <ul class="footer-links">
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="cookies.html">Cookie Management</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4 class="footer-title">SUBSCRIBE</h4>
+                <p class="footer-text">Get unlimited access to the most important stories.</p>
+                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
+            </div>
+        </div>
+        <div class="copyright"><p>&copy; 2026 Galmudug Times. All rights reserved.</p></div>
+        <div class="footer-bottom-rule double-rule"></div>
+    </footer>
+
+    <script>
+        function savePrefs(){
+            const prefs={functional:document.getElementById('functionalCookies').checked,analytics:document.getElementById('analyticsCookies').checked};
+            localStorage.setItem('gt_cookie_prefs',JSON.stringify(prefs));
+            const msg=document.getElementById('prefSaved');
+            msg.style.display='block';
+            setTimeout(()=>msg.style.display='none',3000);
+        }
+        // Restore saved prefs on load
+        (function(){
+            const saved=localStorage.getItem('gt_cookie_prefs');
+            if(!saved) return;
+            try{const p=JSON.parse(saved);
+                document.getElementById('functionalCookies').checked=!!p.functional;
+                document.getElementById('analyticsCookies').checked=!!p.analytics;
+            }catch(e){}
+        })();
+        async function loadTicker(){
+            try{
+                const r=await fetch('/api/breaking-news');const items=await r.json();
+                if(!items.length) return;
+                const el=document.getElementById('tickerText');
+                if(!el) return;
+                const text=items.map(i=>i.title).join('   ·   ');
+                el.textContent=text+'     ·     '+text;
+                requestAnimationFrame(()=>{
+                    const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
+                    el.style.animationDuration=dur+'s';
+                });
+            }catch(e){}}
+        document.addEventListener('DOMContentLoaded', loadTicker);
+    </script>
+    <script src="/js/header.js"></script>
+    <script src="/js/nav.js"></script>
+</body>
+</html>

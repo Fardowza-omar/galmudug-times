@@ -1,13 +1,32 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politics â€” Galmudug Times</title>
+    <title>Politics — Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- GT Top Bar -->
+    <div class="gt-topbar">
+        <div class="gt-topbar-inner">
+            <div class="gt-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="gt-topbar-center">
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--�C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span class="gt-sep">|</span>
+                <span id="topbarDate"></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Breaking News Ticker -->
     <div class="ticker-bar">
         <div class="ticker-content">
@@ -18,28 +37,34 @@
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="header-top-rule"></div>
-        
-        <div class="masthead">
-            <h1 class="title">Galmudug Times</h1>
-            <p class="tagline">A Journal of Record</p>
-        </div>
-        
-        <div class="header-nav">
-            <nav class="main-nav" id="dynamic-nav">
-                <a href="index.html" class="nav-item">HOME</a>
-                <a href="politics.html" class="nav-item" style="color: #d63031; border-bottom: 2px solid #d63031;">POLITICS</a>
-                <a href="world.html" class="nav-item">WORLD</a>
-                <a href="business.html" class="nav-item">BUSINESS</a>
-                <a href="technology.html" class="nav-item">TECHNOLOGY</a>
-                <a href="opinion.html" class="nav-item">OPINION</a>
-                <a href="culture.html" class="nav-item">LIFE & CULTURE</a>
+    <!-- Main Navigation -->
+    <header class="gt-header">
+        <div class="gt-header-inner">
+            <a href="index.html" class="gt-logo">
+                <div class="gt-logo-text">Galmudug Times</div>
+                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+            </a>
+            <nav class="gt-nav" id="dynamic-nav">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="category.html?cat=galmudug" class="nav-item">Galmudug</a>
+                <a href="category.html?cat=muqdisho" class="nav-item">Muqdisho</a>
+                <a href="category.html?cat=hargaysa" class="nav-item">Calamka</a>
+                <a href="category.html?cat=borame" class="nav-item">Somalia</a>
+                <a href="contact.html" class="nav-item">Contact Us</a>
             </nav>
+            <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
+            <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
         </div>
-        
-        <div class="header-bottom-rule double-rule"></div>
+        <div class="gt-search-expand" id="gtSearchExpand" style="display:none;">
+            <div class="gt-search-expand-inner">
+                <input type="text" id="searchInput" placeholder="Search Galmudug Times..." onkeydown="if(event.key==='Enter')doSearch()">
+                <button class="gt-search-go" onclick="doSearch()">Search</button>
+                <button class="gt-close-btn" onclick="toggleGTSearch()">&#x2715;</button>
+            </div>
+        </div>
+        <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
 
     <!-- Section Hero -->
@@ -62,7 +87,7 @@
             
             <div class="story-byline">
                 <span class="author-name">By Marcus Thompson</span>
-                <span class="publish-date">March 11, 2026 â€” 3:45 PM</span>
+                <span class="publish-date">March 11, 2026 — 3:45 PM</span>
             </div>
 
             <figure class="story-image">
@@ -77,7 +102,7 @@
 
                 <aside class="pull-quote">
                     <blockquote>"We must review this agreement line by line to ensure it serves American workers and businesses."</blockquote>
-                    <cite>â€” House Speaker Jennifer Williams</cite>
+                    <cite>— House Speaker Jennifer Williams</cite>
                 </aside>
 
                 <p>Meanwhile, Senate Minority Leader David Chen expressed qualified support: "The provisions protecting labor standards are strong. This could be a good agreement for working Americans if implemented correctly."</p>
@@ -169,36 +194,34 @@
         
         <div class="footer-content">
             <div class="footer-column">
-                <h4 class="footer-title">GALMUDUG TIMES</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">Sections</a></li>
-                    <li><a href="#">Search</a></li>
-                </ul>
+                <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="X / Twitter" style="color:#aaa;font-size:1rem;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube" style="color:#aaa;font-size:1rem;"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
-
             <div class="footer-column">
                 <h4 class="footer-title">COMPANY</h4>
                 <ul class="footer-links">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
-
             <div class="footer-column">
                 <h4 class="footer-title">POLICIES</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Cookie Management</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                    <li><a href="cookies.html">Cookie Management</a></li>
                 </ul>
             </div>
-
             <div class="footer-column">
                 <h4 class="footer-title">SUBSCRIBE</h4>
                 <p class="footer-text">Get unlimited access to the most important stories.</p>
-                <button class="subscribe-btn">Subscribe Now</button>
+                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
             </div>
         </div>
 
@@ -210,6 +233,7 @@
     </footer>
 
     <script src="/js/category.js"></script>
+    <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
     <script>initCategoryPage('politics','#d63031');</script>
 </body>
