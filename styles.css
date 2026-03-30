@@ -3,7 +3,7 @@
    Clean, authoritative editorial aesthetic
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
 /* ── Design Tokens ──────────────────────────────────────────────── */
 :root {
@@ -395,7 +395,7 @@ html { visibility: visible; }
    7. GT HEADER & NAVIGATION
    ================================================================ */
 .gt-header {
-    background: var(--gt-white);
+    background: #1a1a1a;
     position: sticky;
     top: 38px;
     z-index: 999;
@@ -415,36 +415,36 @@ html { visibility: visible; }
 /* Logo — centered nameplate */
 .gt-logo {
     text-decoration: none;
-    color: var(--gt-black);
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex: 0 0 100%;
-    padding: 1.1rem 0 0.65rem;
+    padding: 1.4rem 0 0.8rem;
     border-right: none;
     margin-right: 0;
     transition: opacity 0.2s;
 }
 
-.gt-logo:hover { opacity: 0.75; text-decoration: none; }
+.gt-logo:hover { opacity: 0.85; text-decoration: none; }
 
 .gt-logo-text {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 3.4rem;
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 3.2rem;
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     line-height: 1;
-    color: #000;
+    color: #fff;
 }
 
 .gt-logo-tagline {
     font-family: var(--gt-font-ui);
-    font-size: 0.58rem;
+    font-size: 0.55rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--gt-meta);
-    margin-top: 0.3rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.35rem;
 }
 
 /* Nav links */
@@ -457,8 +457,9 @@ html { visibility: visible; }
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    border-top: 1px solid var(--gt-border);
-    border-bottom: 3px solid var(--gt-black);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-bottom: none;
+    background: #1a1a1a;
 }
 
 .gt-nav::-webkit-scrollbar { display: none; }
@@ -470,7 +471,7 @@ html { visibility: visible; }
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--gt-black);
+    color: rgba(255,255,255,0.85);
     text-decoration: none !important;
     padding: 0 1rem;
     display: flex;
@@ -506,23 +507,23 @@ html { visibility: visible; }
 
 .gt-nav .nav-item:hover,
 .gt-nav a.nav-item:hover {
-    background: rgba(196, 30, 58, 0.04);
-    color: var(--gt-red) !important;
+    background: rgba(255,255,255,0.08);
+    color: #fff !important;
     text-decoration: none !important;
     border-bottom-color: transparent !important;
 }
 
 .gt-nav .nav-item.nav-active,
 .gt-nav a.nav-item.nav-active {
-    color: var(--gt-red) !important;
-    background: rgba(196, 30, 58, 0.05);
+    color: #fff !important;
+    background: rgba(255,255,255,0.1);
 }
 
 /* Search button */
 .gt-search-btn {
     background: transparent;
     border: none;
-    color: var(--gt-meta);
+    color: rgba(255,255,255,0.6);
     cursor: pointer;
     padding: 0 0.85rem;
     display: flex;
@@ -530,23 +531,23 @@ html { visibility: visible; }
     justify-content: center;
     flex-shrink: 0;
     transition: color 0.2s, background 0.2s;
-    border-left: 1px solid var(--gt-border);
+    border-left: 1px solid rgba(255,255,255,0.15);
     position: absolute;
     right: 1.5rem;
     top: 0.8rem;
 }
 
 .gt-search-btn:hover {
-    color: var(--gt-red);
-    background: rgba(196, 30, 58, 0.04);
+    color: #fff;
+    background: rgba(255,255,255,0.08);
 }
 
 /* Hamburger (mobile) */
 .gt-hamburger {
     display: none;
     background: transparent;
-    border: 1.5px solid #ccc;
-    color: #333;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: #fff;
     cursor: pointer;
     padding: 0.35rem 0.65rem;
     border-radius: 3px;
@@ -556,7 +557,7 @@ html { visibility: visible; }
     margin-right: 0.5rem;
 }
 
-.gt-hamburger:hover { background: #f5f5f5; border-color: #bbb; }
+.gt-hamburger:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); }
 
 /* Search expand bar */
 .gt-search-expand {
