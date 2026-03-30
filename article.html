@@ -273,7 +273,7 @@
         try{
             const imgs=a.gallery_images?JSON.parse(a.gallery_images):[];
             if(imgs.length){
-                galleryHtml=`<div class="article-gallery"><h3 class="gallery-title">Sawirro / Photos</h3><div class="gallery-grid">${imgs.map(src=>`<figure class="gallery-item"><img src="${esc(src)}" alt="" loading="lazy" onclick="openLightbox(this.src)"></figure>`).join('')}</div></div>`;
+                galleryHtml=`<div class="article-gallery"><div class="gallery-grid">${imgs.map(src=>`<figure class="gallery-item"><img src="${esc(src)}" alt="" loading="lazy" onclick="openLightbox(this.src)"></figure>`).join('')}</div></div>`;
             }
         }catch(e){}
         // Video at the end
@@ -282,9 +282,9 @@
             let vs=a.video_url;
             if(vs.includes('youtube.com')||vs.includes('youtu.be')){
                 vs=vs.replace('youtube.com/watch?v=','youtube.com/embed/').replace('youtu.be/','youtube.com/embed/');
-                videoHtml=`<div class="article-video"><h3 class="gallery-title">Muuqaal / Video</h3><div class="video-wrapper"><iframe src="${esc(vs)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div></div>`;
+                videoHtml=`<div class="article-video"><div class="video-wrapper"><iframe src="${esc(vs)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div></div>`;
             } else {
-                videoHtml=`<div class="article-video"><h3 class="gallery-title">Muuqaal / Video</h3><div class="video-wrapper"><video src="${esc(vs)}" controls preload="metadata" style="width:100%;border-radius:8px;"></video></div></div>`;
+                videoHtml=`<div class="article-video"><div class="video-wrapper"><video src="${esc(vs)}" controls preload="metadata" style="width:100%;border-radius:8px;"></video></div></div>`;
             }
         }
         const body=(a.content||'').split(/\n\n+/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
