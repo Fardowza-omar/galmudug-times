@@ -816,14 +816,14 @@ h4 {
    ======================================== */
 
 .footer {
-    background-color: #f9f9f9;
-    border-top: 3px double #000;
+    background-color: #111111;
+    border-top: none;
     margin-top: 4rem;
 }
 
 .footer-top-rule {
-    border-top: 3px double #000;
-    background-color: #f9f9f9;
+    border-top: 1px solid #2a2a2a;
+    background-color: #111111;
 }
 
 .footer-content {
@@ -847,7 +847,7 @@ h4 {
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: #000;
+    color: #ffffff;
 }
 
 .footer-links {
@@ -861,27 +861,27 @@ h4 {
 .footer-links a {
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
-    color: #666;
+    color: #888;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
-    color: #000;
+    color: #ffffff;
 }
 
 .footer-text {
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
-    color: #666;
+    color: #888;
     margin-bottom: 1rem;
     line-height: 1.5;
 }
 
 .subscribe-btn {
-    background-color: #000;
+    background-color: #d63031;
     color: #fff;
-    border: 1px solid #000;
+    border: 1px solid #d63031;
     padding: 0.75rem 1.5rem;
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
@@ -894,24 +894,25 @@ h4 {
 }
 
 .subscribe-btn:hover {
-    background-color: #fff;
-    color: #000;
+    background-color: #b52828;
+    border-color: #b52828;
+    color: #fff;
 }
 
 .copyright {
     max-width: 1400px;
     margin: 0 auto;
     padding: 1.5rem 2rem;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #2a2a2a;
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
-    color: #999;
+    color: #555;
     text-align: center;
 }
 
 .footer-bottom-rule {
-    border-top: 3px double #000;
-    background-color: #f9f9f9;
+    border-top: 1px solid #2a2a2a;
+    background-color: #111111;
 }
 
 /* ========================================
@@ -2517,8 +2518,8 @@ body {
 
 /* ---- Top Info Bar ---- */
 .gt-topbar {
-    background: #f5f5f5;
-    border-bottom: 1px solid #ddd;
+    background: #111111;
+    border-bottom: none;
     font-family: 'Inter', sans-serif;
     font-size: 0.76rem;
     position: sticky;
@@ -2543,7 +2544,7 @@ body {
     flex-shrink: 0;
 }
 .gt-social a {
-    color: #555;
+    color: rgba(255,255,255,0.65);
     font-size: 0.82rem;
     text-decoration: none;
     width: 26px;
@@ -2553,13 +2554,13 @@ body {
     justify-content: center;
     border-radius: 50%;
     transition: color 0.2s, background 0.2s;
-    border: 1px solid #ddd;
-    background: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
 }
 .gt-social a:hover {
     color: #fff;
-    background: #8B0000;
-    border-color: #8B0000;
+    background: #d63031;
+    border-color: #d63031;
     text-decoration: none;
 }
 
@@ -2569,14 +2570,15 @@ body {
     align-items: center;
     gap: 0.7rem;
     font-weight: 500;
-    color: #333;
+    color: rgba(255,255,255,0.75);
     white-space: nowrap;
     flex-shrink: 0;
 }
 .gt-weather-city {
     font-weight: 600;
+    color: rgba(255,255,255,0.9);
 }
-.gt-sep { color: #bbb; }
+.gt-sep { color: rgba(255,255,255,0.25); }
 
 /* Right links + lang */
 .gt-topbar-right {
@@ -2586,14 +2588,14 @@ body {
     white-space: nowrap;
 }
 .gt-topbar-right a {
-    color: #555;
+    color: rgba(255,255,255,0.65);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.76rem;
     transition: color 0.2s;
 }
 .gt-topbar-right a:hover {
-    color: #8B0000;
+    color: #fff;
     text-decoration: none;
 }
 .gt-lang {
@@ -2604,8 +2606,8 @@ body {
 }
 .gt-lang-btn {
     background: transparent;
-    border: 1.5px solid #ccc;
-    color: #555;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.65);
     font-family: 'Inter', sans-serif;
     font-size: 0.7rem;
     font-weight: 700;
@@ -2616,22 +2618,23 @@ body {
     line-height: 1.4;
 }
 .gt-lang-btn.active {
-    background: #8B0000;
-    border-color: #8B0000;
+    background: #d63031;
+    border-color: #d63031;
     color: #fff;
 }
 .gt-lang-btn:hover:not(.active) {
-    border-color: #8B0000;
-    color: #8B0000;
+    border-color: rgba(255,255,255,0.6);
+    color: #fff;
 }
 
 /* ---- Main Red Nav Header ---- */
 .gt-header {
-    background: #8B0000;
+    background: #ffffff;
     position: sticky;
     top: 38px;
     z-index: 999;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 0 #e0e0e0;
+    border-bottom: 3px solid #d63031;
 }
 .gt-header-inner {
     display: flex;
@@ -2645,33 +2648,33 @@ body {
 /* Logo */
 .gt-logo {
     text-decoration: none;
-    color: #fff;
+    color: #111;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0.75rem 1.8rem 0.75rem 0;
+    padding: 0.65rem 1.8rem 0.65rem 0;
     margin-right: 0.5rem;
-    border-right: 1px solid rgba(255,255,255,0.2);
+    border-right: 1px solid #e8e8e8;
     flex-shrink: 0;
     transition: opacity 0.2s;
 }
-.gt-logo:hover { opacity: 0.88; text-decoration: none; }
+.gt-logo:hover { opacity: 0.8; text-decoration: none; }
 .gt-logo-text {
-    font-family: 'Pirata One', cursive;
-    font-size: 1.75rem;
-    font-weight: 400;
-    letter-spacing: 0.07em;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
     line-height: 1;
-    color: #fff;
-    text-transform: uppercase;
+    color: #111111;
+    text-transform: none;
 }
 .gt-logo-tagline {
     font-family: 'Inter', sans-serif;
-    font-size: 0.56rem;
-    letter-spacing: 0.2em;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.65);
-    margin-top: 0.22rem;
+    color: #999;
+    margin-top: 0.25rem;
 }
 
 /* Nav links */
@@ -2690,11 +2693,11 @@ body {
 .gt-nav .nav-item,
 .gt-nav a.nav-item {
     font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.88);
+    color: #1a1a1a;
     text-decoration: none !important;
     padding: 0 1.05rem;
     display: flex;
@@ -2716,7 +2719,7 @@ body {
     transform: translateX(-50%);
     width: 0 !important;
     height: 3px;
-    background: #fff !important;
+    background: #d63031 !important;
     border-radius: 2px;
     transition: width 0.22s ease;
 }
@@ -2730,22 +2733,22 @@ body {
 }
 .gt-nav .nav-item:hover,
 .gt-nav a.nav-item:hover {
-    background: rgba(0,0,0,0.18);
-    color: #fff !important;
+    background: rgba(214,48,49,0.05);
+    color: #d63031 !important;
     text-decoration: none !important;
     border-bottom-color: transparent !important;
 }
 .gt-nav .nav-item.nav-active,
 .gt-nav a.nav-item.nav-active {
-    background: rgba(0,0,0,0.22);
-    color: #fff !important;
+    background: rgba(214,48,49,0.07);
+    color: #d63031 !important;
 }
 
 /* Search & hamburger buttons */
 .gt-search-btn {
     background: transparent;
     border: none;
-    color: rgba(255,255,255,0.88);
+    color: #555;
     cursor: pointer;
     padding: 0 0.9rem;
     display: flex;
@@ -2753,18 +2756,18 @@ body {
     justify-content: center;
     flex-shrink: 0;
     transition: color 0.2s, background 0.2s;
-    border-left: 1px solid rgba(255,255,255,0.15);
+    border-left: 1px solid #ececec;
     margin-left: auto;
 }
 .gt-search-btn:hover {
-    color: #fff;
-    background: rgba(0,0,0,0.2);
+    color: #d63031;
+    background: rgba(214,48,49,0.04);
 }
 .gt-hamburger {
     display: none;
     background: transparent;
-    border: 1.5px solid rgba(255,255,255,0.45);
-    color: #fff;
+    border: 1.5px solid #ccc;
+    color: #333;
     cursor: pointer;
     padding: 0.35rem 0.65rem;
     border-radius: 3px;
@@ -2772,14 +2775,14 @@ body {
     margin-left: auto;
     align-self: center;
     margin-right: 0.5rem;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s;
 }
-.gt-hamburger:hover { background: rgba(0,0,0,0.25); }
+.gt-hamburger:hover { background: #f5f5f5; border-color: #bbb; }
 
 /* Search expand bar */
 .gt-search-expand {
-    background: rgba(0,0,0,0.3);
-    border-top: 1px solid rgba(255,255,255,0.1);
+    background: #f5f5f5;
+    border-top: 1px solid #e8e8e8;
 }
 .gt-search-expand-inner {
     display: flex;
@@ -2792,17 +2795,17 @@ body {
 .gt-search-expand-inner input {
     flex: 1;
     padding: 0.55rem 1rem;
-    border: none;
+    border: 1px solid #ddd;
     border-radius: 3px;
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     outline: none;
-    background: rgba(255,255,255,0.95);
+    background: #ffffff;
     color: #111;
 }
 .gt-search-go {
-    background: #fff;
-    color: #8B0000;
+    background: #d63031;
+    color: #fff;
     border: none;
     font-family: 'Inter', sans-serif;
     font-size: 0.78rem;
@@ -2814,23 +2817,23 @@ body {
     border-radius: 3px;
     transition: background 0.2s;
 }
-.gt-search-go:hover { background: #f0f0f0; }
+.gt-search-go:hover { background: #b52828; }
 .gt-close-btn {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.4);
-    color: #fff;
+    border: 1px solid #ccc;
+    color: #555;
     cursor: pointer;
     padding: 0.5rem 0.7rem;
     border-radius: 3px;
     font-size: 0.85rem;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s;
 }
-.gt-close-btn:hover { background: rgba(255,255,255,0.15); }
+.gt-close-btn:hover { background: #ebebeb; border-color: #bbb; }
 
 /* Search results panel */
 .gt-search-results {
     background: #fff;
-    border-top: 3px solid #8B0000;
+    border-top: 3px solid #d63031;
     max-height: 420px;
     overflow-y: auto;
 }
@@ -2903,10 +2906,10 @@ body {
 @media (max-width: 768px) {
     .gt-topbar-inner { padding: 0.4rem 1rem; }
     .gt-header-inner { padding: 0 1rem; }
-    .gt-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: #6B0000; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .gt-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: #1a1a1a; z-index: 100; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
     .gt-nav.open { display: flex; }
-    .gt-nav .nav-item { padding: 0.85rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); border-left: 3px solid transparent; border-bottom-color: rgba(255,255,255,0.1) !important; }
-    .gt-nav .nav-item:hover { border-left-color: #fff; }
+    .gt-nav .nav-item { padding: 0.85rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08) !important; border-left: 3px solid transparent; color: rgba(255,255,255,0.82) !important; }
+    .gt-nav .nav-item:hover { border-left-color: #d63031; color: #fff !important; background: rgba(255,255,255,0.06) !important; }
     .gt-hamburger { display: flex; }
     .gt-search-btn { display: none; }
 }
@@ -2999,6 +3002,7 @@ img, video, iframe, embed, object {
     .gt-topbar {
         position: relative !important;
         top: auto !important;
+        background: #1a1a1a !important;
     }
     .gt-header {
         position: sticky !important;
@@ -3014,6 +3018,7 @@ img, video, iframe, embed, object {
     }
     .gt-logo-text {
         font-size: 1.3rem !important;
+        color: #111 !important;
     }
 
     /* Main content */

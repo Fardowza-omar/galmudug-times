@@ -750,7 +750,7 @@ app.post('/api/articles', authenticateToken, (req, res, next) => {
       db.run(`
         INSERT INTO articles (title, slug, description, content, category_id, featured_image, gallery_images, article_url, video_url, author, author_id, status, is_breaking, published_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [title, slug, autoDesc, content, category_id || null, featured_image, gallery_images, article_url || null, finalVideoUrl, authorName, req.user.id, status || 'draft', is_breaking ? 1 : 0, published_at], function(err) {
+      `, [title, slug, autoDesc, content, category_id || null, featured_image, gallery_images, article_url || null, finalVideoUrl, authorName, req.user.id, status || 'published', is_breaking ? 1 : 0, published_at], function(err) {
         if (err) {
           return res.status(500).json({ error: err.message });
         }
