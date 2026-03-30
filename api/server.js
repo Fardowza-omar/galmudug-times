@@ -69,8 +69,12 @@ setInterval(() => {
 const allowedOrigins = [
   'https://galmudugtimes.com',
   'https://www.galmudugtimes.com',
+  'http://galmudugtimes.com',
+  'http://www.galmudugtimes.com',
   'http://localhost:3000',
-  'http://127.0.0.1:3000'
+  'http://127.0.0.1:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
 ];
 app.use(cors({
   origin: function (origin, callback) {
@@ -78,6 +82,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
