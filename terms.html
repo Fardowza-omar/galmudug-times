@@ -37,10 +37,6 @@
         </div>
     </div>
 
-    <div class="ticker-bar">
-        <div class="ticker-content">
-            <span class="ticker-label">BREAKING</span>
-            <div class="ticker-scroll"><span class="ticker-text" id="tickerText">Loading latest news...</span></div>
         </div>
     </div>
 
@@ -151,20 +147,6 @@
     </footer>
 
     <script>
-        async function loadTicker(){
-            try{
-                const r=await fetch('/api/breaking-news');const items=await r.json();
-                if(!items.length) return;
-                const el=document.getElementById('tickerText');
-                if(!el) return;
-                const text=items.map(i=>i.title).join('   |   ');
-                el.textContent=text+'     |     '+text;
-                requestAnimationFrame(()=>{
-                    const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
-                    el.style.animationDuration=dur+'s';
-                });
-            }catch(e){}}
-        document.addEventListener('DOMContentLoaded', loadTicker);
     </script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>

@@ -244,15 +244,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Breaking News Ticker -->
-    <div class="ticker-bar">
-        <div class="ticker-content">
-            <span class="ticker-label">BREAKING</span>
-            <div class="ticker-scroll">
-                <span class="ticker-text" id="tickerText">Loading latest news...</span>
-            </div>
-        </div>
     </div>
 
     <!-- Main Navigation -->
@@ -466,12 +457,9 @@
             btn.disabled = false;
         }
 
-        async function loadTicker() {
             try {
-                const res = await fetch('/api/breaking-news');
                 const items = await res.json();
                 if (!items.length) return;
-                const el = document.getElementById('tickerText');
                 if (!el) return;
                 const text = items.map(i => i.title).join('   |   ');
                 el.textContent = text +      |      + text;
@@ -481,7 +469,6 @@
                 });
             } catch(_) {}
         }
-        document.addEventListener('DOMContentLoaded', loadTicker);
     </script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>

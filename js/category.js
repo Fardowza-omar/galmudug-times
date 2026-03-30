@@ -23,20 +23,6 @@ function cleanTitle(raw) {
     return t;
 }
 
-async function loadTicker() {
-    try {
-        const res = await fetch('/api/breaking-news');
-        const items = await res.json();
-        if (items.length) {
-            const el = document.getElementById('tickerText');
-            if (el) {
-                const text = items.map(i => i.title).join('   ·   ');
-                el.textContent = text + '     ·     ' + text;
-                requestAnimationFrame(() => {
-                    const dur = Math.max(25, Math.round(el.scrollWidth / 2 / 70));
-                    el.style.animationDuration = dur + 's';
-                });
-            }
         }
     } catch(e) {}
 }
