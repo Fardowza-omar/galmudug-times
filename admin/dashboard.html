@@ -385,14 +385,8 @@
 
                 <div class="fg"><label>Source Link (Optional)</label><input type="url" id="articleURL" placeholder="https://example.com/original-article"></div>
 
-                <div style="background:#f0fdf4;border-radius:10px;padding:1.25rem;margin:1rem 0;border:1px solid #bbf7d0;">
-                    <h3 style="font-size:.9rem;margin-bottom:1rem;color:#166534;">⚡ Publishing</h3>
-                    <div class="fg" style="margin-bottom:.75rem;"><label>Status</label><select id="articleStatus" required><option value="draft">📝 Draft</option><option value="published">✅ Published</option></select></div>
-                    <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;background:#fff;padding:.85rem;border-radius:8px;border:2px solid #e5e7eb;font-size:.82rem;">
-                        <input type="checkbox" id="articleBreaking" style="width:20px;height:20px;cursor:pointer;">
-                        <div><span style="font-weight:600;color:#dc2626;">🚨 Breaking News</span><p style="font-size:.75rem;color:#888;margin-top:.15rem;font-weight:400;">Shows in the scrolling ticker</p></div>
-                    </label>
-                </div>
+                <input type="hidden" id="articleStatus" value="published">
+                <input type="hidden" id="articleBreaking" value="0">
 
                 <div class="form-actions">
                     <button type="submit" class="btn-submit" id="saveArticleBtn">Save Article</button>
@@ -556,7 +550,7 @@
                 $('articleStatus').value=a.status;
                 $('articleURL').value=a.article_url||'';
                 $('articleVideo').value=a.video_url||'';
-                $('articleBreaking').checked=!!a.is_breaking;
+                // breaking news disabled
                 if(a.featured_image){$('imagePreview').src=a.featured_image;$('imagePreview').style.display='block';}
                 else{$('imagePreview').style.display='none';}
                 $('articleModal').classList.add('active');
@@ -584,7 +578,7 @@
             fd.append('status',$('articleStatus').value);
             fd.append('article_url',$('articleURL').value);
             fd.append('video_url',$('articleVideo').value);
-            fd.append('is_breaking',$('articleBreaking').checked?'1':'0');
+            fd.append('is_breaking','0');
             const fi=$('articleImage');
             if(fi.files.length>0)fd.append('featured_image',fi.files[0]);
             const vf=$('articleVideoFile');
