@@ -556,15 +556,7 @@ app.get('/api/categories/nav/visible', (req, res) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
     }
-    // If no categories are flagged for nav, return all of them
-    if (categories.length === 0) {
-      db.all('SELECT * FROM categories ORDER BY name ASC', (err2, allCats) => {
-        if (err2) return res.status(500).json({ error: 'Database error' });
-        res.json(allCats);
-      });
-    } else {
-      res.json(categories);
-    }
+    res.json(categories);
   });
 });
 
