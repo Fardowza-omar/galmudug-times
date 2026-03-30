@@ -6,7 +6,7 @@
     <title>Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=10">
     <style>
         /* Skeleton animation for loading state */
         @keyframes skeleton-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
@@ -345,6 +345,7 @@
                     <p id="subMsg" style="margin-top:.6rem;font-size:.8rem;display:none;"></p>
                 </div>
             </div>
+            <div id="article-sidebar-ad"></div>
         </aside>`;
         const pu=encodeURIComponent(location.href),pt=encodeURIComponent(a.title);
         document.getElementById('shareWa').href=`https://wa.me/?text=${pt}%20${pu}`;
@@ -469,7 +470,30 @@
         lb.classList.add('active');
     }
 
+    // Load sidebar ad
+    async function loadSidebarAd() {
+        try {
+            const r = await fetch('/api/ads?_t=' + Date.now());
+            const ads = await r.json();
+            if (!ads.length) return;
+            const slot = document.getElementById('article-sidebar-ad');
+            if (!slot) return;
+            const ad = ads[0];
+            let html = '<div class="gt-sidebar-ad"><span class="ad-label">Advertisement</span>';
+            const content = (ad.image ? `<img src="${esc(ad.image)}" alt="Advertisement" loading="lazy">` : '') +
+                (ad.message ? `<div class="ad-message">${esc(ad.message)}</div>` : '');
+            if (ad.link) {
+                html += `<a href="${esc(ad.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
+            } else {
+                html += content;
+            }
+            html += '</div>';
+            slot.innerHTML = html;
+        } catch(e) {}
+    }
+
     loadArticle();
+    loadSidebarAd();
     </script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>

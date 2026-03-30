@@ -1887,7 +1887,100 @@ html { visibility: visible; }
 }
 
 /* ================================================================
-   23. RESPONSIVE DESIGN
+   23. AD BANNERS
+   ================================================================ */
+.gt-ad-banner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    text-align: center;
+}
+
+.gt-ad-banner .ad-label {
+    font-family: var(--gt-font-ui);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gt-meta);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.gt-ad-item {
+    display: inline-block;
+    position: relative;
+    max-width: 728px;
+    width: 100%;
+}
+
+.gt-ad-item a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.gt-ad-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.gt-ad-item .ad-message {
+    font-family: var(--gt-font-ui);
+    font-size: 0.82rem;
+    color: var(--gt-text);
+    margin-top: 0.3rem;
+    line-height: 1.4;
+}
+
+/* Sidebar ad */
+.gt-sidebar-ad {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--gt-bg-light);
+    border: 1px solid var(--gt-border);
+    border-radius: 4px;
+}
+
+.gt-sidebar-ad .ad-label {
+    font-family: var(--gt-font-ui);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gt-meta);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.gt-sidebar-ad img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.gt-sidebar-ad .ad-message {
+    font-family: var(--gt-font-ui);
+    font-size: 0.8rem;
+    color: var(--gt-text);
+    margin-top: 0.4rem;
+    line-height: 1.4;
+}
+
+.gt-sidebar-ad a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .gt-ad-banner { padding: 0.75rem; }
+    .gt-sidebar-ad { margin-top: 1.5rem; padding: 0.75rem; }
+}
+
+/* ================================================================
+   24. RESPONSIVE DESIGN
    ================================================================ */
 
 /* -- Large tablets / Small desktop (≤1100px) -- */
@@ -1922,7 +2015,7 @@ html { visibility: visible; }
     .gt-header { position: sticky !important; top: 0 !important; }
     .gt-header-inner { padding: 0 1rem; }
     .gt-logo { padding: 0.7rem 0 0.4rem; }
-    .gt-logo-text { font-size: 2rem !important; }
+    .gt-logo-text { font-size: 2.5rem !important; }
     .gt-nav {
         display: none;
         position: absolute;
@@ -2021,10 +2114,30 @@ html { visibility: visible; }
 @media (max-width: 480px) {
     html { font-size: 14px !important; }
 
-    .gt-logo-text { font-size: 1.1rem !important; }
-    .gt-logo-tagline { font-size: 0.48rem !important; }
-    .gt-logo { padding: 0.5rem 0.8rem 0.5rem 0 !important; }
+    .gt-logo-text { font-size: 2rem !important; }
+    .gt-logo-tagline { font-size: 0.52rem !important; letter-spacing: 0.15em !important; }
+    .gt-logo { padding: 0.6rem 0 0.4rem !important; }
     .gt-social a { width: 22px; height: 22px; font-size: 0.72rem; }
+
+    /* Hero grid */
+    .gt-hero-card:first-child .gt-hero-title { font-size: 1.6rem !important; line-height: 1.18 !important; }
+    .gt-hero-card:not(:first-child) .gt-hero-title { font-size: 1rem !important; }
+    .gt-hero-caption { padding: 1rem !important; }
+    .gt-hero-cat { font-size: 0.55rem !important; }
+
+    /* Today's news cards */
+    .gt-today-thumb { width: 70px !important; height: 56px !important; }
+    .gt-today-title { font-size: 0.85rem !important; }
+
+    /* Featured cards */
+    .gt-feat-img { height: 110px !important; }
+    .gt-feat-title { font-size: 0.84rem !important; }
+
+    /* Category columns */
+    .gt-cat-feat-img { height: 160px !important; }
+
+    /* Gallery */
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; gap: 0.5rem !important; }
 
     .title { font-size: 1.5rem !important; }
     .masthead { padding: 1rem 0.5rem; }

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=10">
     <style>
     /* Critical CSS - prevent layout shift */
     html{visibility:visible}
@@ -170,6 +170,7 @@
     </section>
 
     <!--  XULKA GALMUDUG (Featured Row)  -->
+    <div class="gt-ad-banner" id="gt-ad-banner" style="display:none;"></div>
     <section class="gt-featured-section">
         <div class="container-wide">
             <div class="gt-section-hdr">
@@ -435,6 +436,29 @@
             } catch(e) {}
         }
 
+        //  Load and display ads 
+        async function loadAds() {
+            try {
+                const r = await fetch('/api/ads?_t=' + Date.now());
+                const ads = await r.json();
+                if (!ads.length) return;
+                const banner = document.getElementById('gt-ad-banner');
+                if (!banner) return;
+                const ad = ads[0]; // Show first active ad as banner
+                let inner = '<span class="ad-label">Advertisement</span><div class="gt-ad-item">';
+                const content = (ad.image ? `<img src="${esc(ad.image)}" alt="Advertisement" loading="lazy">` : '') +
+                    (ad.message ? `<div class="ad-message">${esc(ad.message)}</div>` : '');
+                if (ad.link) {
+                    inner += `<a href="${esc(ad.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
+                } else {
+                    inner += content;
+                }
+                inner += '</div>';
+                banner.innerHTML = inner;
+                banner.style.display = 'block';
+            } catch(e) {}
+        }
+
         //  Main init 
         async function initHomepage() {
             await loadCategoryColors();
@@ -451,6 +475,7 @@
                 if (g) g.innerHTML = '<div style="height:280px;display:flex;align-items:center;justify-content:center;color:#c41e3a;grid-column:1/-1;font-family:Inter,sans-serif;">Error loading articles. Is the server running?</div>';
             }
             loadCategoryColumns();
+            loadAds();
         }
 
         document.addEventListener('DOMContentLoaded', initHomepage);
