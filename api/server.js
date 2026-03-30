@@ -1106,6 +1106,15 @@ app.delete('/api/ads/:id', authenticateToken, (req, res) => {
   });
 });
 
+// ==================== Error Handling ====================
+
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Invalid JSON in request body' });
+  }
+  next(err);
+});
+
 // ==================== Server Start ====================
 
 app.listen(PORT, () => {
