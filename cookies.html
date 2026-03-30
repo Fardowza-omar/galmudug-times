@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Policy – Galmudug Times</title>
+    <title>Cookie Policy | Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css?v=3">
@@ -50,7 +50,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--Â°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -152,7 +152,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news - delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -208,8 +208,8 @@
                 if(!items.length) return;
                 const el=document.getElementById('tickerText');
                 if(!el) return;
-                const text=items.map(i=>i.title).join('   ·   ');
-                el.textContent=text+'     ·     '+text;
+                const text=items.map(i=>i.title).join(   |   );
+                el.textContent=text+     |     +text;
                 requestAnimationFrame(()=>{
                     const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
                     el.style.animationDuration=dur+'s';

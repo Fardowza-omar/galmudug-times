@@ -98,7 +98,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">???è</span>&nbsp;<strong id="wtTemp">--∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon"></span>&nbsp;<strong id="wtTemp">--¬∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -451,8 +451,8 @@
                 if (!items.length) return;
                 const el = document.getElementById('tickerText');
                 if (!el) return;
-                const text = items.map(i => i.title).join('   ∑   ');
-                el.textContent = text + '     ∑     ' + text;
+                const text = items.map(i => i.title).join('   |   ');
+                el.textContent = text + '     |     ' + text;
                 requestAnimationFrame(() => {
                     const dur = Math.max(25, Math.round(el.scrollWidth / 2 / 70));
                     el.style.animationDuration = dur + 's';
