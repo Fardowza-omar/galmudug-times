@@ -294,11 +294,10 @@ function initializeDatabase() {
 
     // Insert default categories (Somali language for Galmudug region)
     const categories = [
-      { name: 'Wararka', slug: 'wararka', color: '#c41e3a', order: 1 },           // News
+      { name: 'Wararka ugu Dambeya', slug: 'wararka-ugu-dambeya', color: '#c41e3a', order: 1 }, // Breaking News
       { name: 'Galmudug', slug: 'galmudug', color: '#1e90ff', order: 2 },         // Local Galmudug news
       { name: 'Bulshada', slug: 'bulshada', color: '#27ae60', order: 3 },         // Community/Society
       { name: 'Caafimaadka', slug: 'caafimaadka', color: '#e74c3c', order: 4 },   // Health
-      { name: 'Waxbarashada', slug: 'waxbarashada', color: '#8e44ad', order: 5 }, // Education
       { name: 'Dhaqaalaha', slug: 'dhaqaalaha', color: '#f39c12', order: 6 },     // Economy
       { name: 'Ciyaaraha', slug: 'ciyaaraha', color: '#00b894', order: 7 },       // Sports
       { name: 'Suugaanta', slug: 'suugaanta', color: '#6c5ce7', order: 8 }        // Culture/Arts

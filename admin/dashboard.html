@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard â€” Galmudug Times</title>
+    <title>Admin Dashboard &mdash; Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
@@ -228,9 +228,9 @@
                 </a>
             </div>
             <div class="sidebar-footer">
-                <a href="/" target="_blank" class="sidebar-btn btn-site">ðŸŒ View Live Site</a>
-                <button onclick="backupDatabase()" class="sidebar-btn btn-backup">ðŸ’¾ Download Backup</button>
-                <button onclick="clearAllArticles()" class="sidebar-btn btn-danger">ðŸ—‘ï¸ Clear All Articles</button>
+                <a href="/" target="_blank" class="sidebar-btn btn-site">🌐 View Live Site</a>
+                <button onclick="backupDatabase()" class="sidebar-btn btn-backup">💾 Download Backup</button>
+                <button onclick="clearAllArticles()" class="sidebar-btn btn-danger">🗑️ Clear All Articles</button>
                 <button class="sidebar-btn btn-logout" id="logoutBtn">Sign Out</button>
             </div>
         </aside>
@@ -244,7 +244,7 @@
                                 <div class="card-body">
                                     <form id="adForm" enctype="multipart/form-data">
                                         <div class="fg"><label>Ad Image</label>
-                                            <div class="file-upload" id="adImgUpload"><input type="file" id="adImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">ðŸ“ Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP â€” max 5MB</p></div>
+                                            <div class="file-upload" id="adImgUpload"><input type="file" id="adImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">&#128193; Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP &mdash; max 5MB</p></div>
                                             <img id="adImgPreview" class="img-preview" style="display:none;max-width:220px;max-height:120px;margin-top:.5rem;">
                                         </div>
                                         <div class="fg"><label>Ad Link</label><input type="url" id="adLink" required placeholder="https://company.com"></div>
@@ -311,36 +311,36 @@
             <div class="section-box" id="profileSection">
                 <div class="profile-grid">
                     <div class="profile-card" style="background:#f8fafc;">
-                        <h3>ðŸ“ Edit Profile</h3>
+                        <h3>&#128193; Edit Profile</h3>
                         <div class="inline-msg" id="profileMsg"></div>
                         <form id="profileForm">
                             <div class="fg"><label>Profile Picture</label>
-                                <div class="file-upload" id="profileImgUpload"><input type="file" id="profileImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">ðŸ“ Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP â€” max 5MB</p></div>
+                                <div class="file-upload" id="profileImgUpload"><input type="file" id="profileImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">&#128193; Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP &mdash; max 5MB</p></div>
                                 <img id="profileImgPreview" class="img-preview" style="display:none;max-width:120px;max-height:120px;border-radius:50%;margin-top:.5rem;">
                             </div>
                             <div class="fg"><label>Username</label><input type="text" id="profileUsername" required placeholder="Your username"></div>
                             <div class="fg"><label>Email</label><input type="email" id="profileEmail" required placeholder="your@email.com"></div>
                             <div class="fg"><label>Member Since</label><input type="text" id="profileMemberSince" readonly style="background:#e8e8e8;cursor:not-allowed;"></div>
-                            <button type="submit" class="btn-submit" id="saveProfileBtn" style="width:100%;">ðŸ’¾ Save Profile</button>
+                            <button type="submit" class="btn-submit" id="saveProfileBtn" style="width:100%;">💾 Save Profile</button>
                         </form>
                     </div>
                     <div class="profile-card" style="background:#fffbf0;border-color:#fed7aa;">
-                        <h3 style="color:#c2410c;">ðŸ” Change Password</h3>
+                        <h3 style="color:#c2410c;">🔒 Change Password</h3>
                         <div class="inline-msg" id="passwordMsg"></div>
                         <form id="passwordForm">
                             <div class="fg"><label>Current Password</label>
-                                <div class="pwd-wrap"><input type="password" id="currentPassword" required placeholder="Enter current password"><button type="button" class="pwd-toggle" data-target="currentPassword">ðŸ‘ï¸</button></div>
+                                <div class="pwd-wrap"><input type="password" id="currentPassword" required placeholder="Enter current password"><button type="button" class="pwd-toggle" data-target="currentPassword">Show</button></div>
                             </div>
                             <div class="fg"><label>New Password</label>
-                                <div class="pwd-wrap"><input type="password" id="newPassword" required placeholder="Min 6 characters"><button type="button" class="pwd-toggle" data-target="newPassword">ðŸ‘ï¸</button></div>
+                                <div class="pwd-wrap"><input type="password" id="newPassword" required placeholder="Min 6 characters"><button type="button" class="pwd-toggle" data-target="newPassword">Show</button></div>
                                 <div class="pwd-bar"><div class="pwd-bar-fill" id="pwdStrength"></div></div>
                                 <small id="pwdStrengthText" style="color:#999;font-size:.68rem;"></small>
                             </div>
                             <div class="fg"><label>Confirm New Password</label>
-                                <div class="pwd-wrap"><input type="password" id="confirmPassword" required placeholder="Re-enter new password"><button type="button" class="pwd-toggle" data-target="confirmPassword">ðŸ‘ï¸</button></div>
+                                <div class="pwd-wrap"><input type="password" id="confirmPassword" required placeholder="Re-enter new password"><button type="button" class="pwd-toggle" data-target="confirmPassword">Show</button></div>
                                 <small id="pwdMatch" style="font-size:.68rem;"></small>
                             </div>
-                            <button type="submit" class="btn-submit" id="changePwdBtn" style="width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);">ðŸ”‘ Change Password</button>
+                            <button type="submit" class="btn-submit" id="changePwdBtn" style="width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);">🔑 Change Password</button>
                         </form>
                     </div>
                 </div>
@@ -361,26 +361,26 @@
                     <div class="fg"><label>Category</label><select id="articleCategory"><option value="">Select Category</option></select></div>
                     <div class="fg"><label>Author</label><div style="display:flex;align-items:center;gap:.6rem;background:#f3f4f6;border-radius:8px;padding:.55rem .9rem;border:1px solid #e5e7eb;"><img id="authorThumb" src="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:none;"><span id="authorDisplayName" style="font-size:.9rem;color:#374151;font-weight:500;">Loading...</span></div></div>
                 </div>
-                <div class="fg"><label>Content</label><textarea id="articleContent" required placeholder="Write your full article content here..." style="min-height:280px;"></textarea><p style="font-size:.78rem;color:#888;margin-top:.4rem;">ðŸ’¡ First paragraph shows as the article introduction on the homepage.</p></div>
+                <div class="fg"><label>Content</label><textarea id="articleContent" required placeholder="Write your full article content here..." style="min-height:280px;"></textarea><p style="font-size:.78rem;color:#888;margin-top:.4rem;">💡 First paragraph shows as the article introduction on the homepage.</p></div>
 
                 <div style="background:#f8f9fa;border-radius:10px;padding:1.25rem;margin:1rem 0;border:1px solid #e5e7eb;">
-                    <h3 style="font-size:.9rem;margin-bottom:1rem;color:#374151;">ðŸ“· Media</h3>
+                    <h3 style="font-size:.9rem;margin-bottom:1rem;color:#374151;">&#128193;· Media</h3>
                     <div class="fg" style="margin-bottom:1rem;">
                         <label>Featured Image</label>
-                        <div class="file-upload" id="fileUpload"><input type="file" id="articleImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">ðŸ“ Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP â€” max 10MB</p></div>
+                        <div class="file-upload" id="fileUpload"><input type="file" id="articleImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">&#128193; Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP &mdash; max 10MB</p></div>
                         <img id="imagePreview" class="img-preview" style="display:none;">
                     </div>
                     <div class="fg" style="margin-bottom:1rem;">
-                        <label>ðŸ“¸ Gallery Images (Optional)</label>
-                        <div class="file-upload" id="galleryUpload"><input type="file" id="articleGallery" accept="image/*" multiple style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">ðŸ“ Click or drag to upload multiple</p><p style="font-size:.78rem;color:#aaa;">Select multiple images for article gallery</p></div>
+                        <label>&#128193;¸ Gallery Images (Optional)</label>
+                        <div class="file-upload" id="galleryUpload"><input type="file" id="articleGallery" accept="image/*" multiple style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">&#128193; Click or drag to upload multiple</p><p style="font-size:.78rem;color:#aaa;">Select multiple images for article gallery</p></div>
                         <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;"></div>
                     </div>
                     <div class="fg" style="margin-bottom:1rem;">
-                        <label>ðŸŽ¬ Video File (Optional)</label>
-                        <div class="file-upload" id="videoUpload"><input type="file" id="articleVideoFile" accept="video/mp4,video/webm,video/quicktime" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">ðŸ“ Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">MP4, WebM, MOV â€” max 100MB</p></div>
+                        <label>🎬 Video File (Optional)</label>
+                        <div class="file-upload" id="videoUpload"><input type="file" id="articleVideoFile" accept="video/mp4,video/webm,video/quicktime" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">&#128193; Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">MP4, WebM, MOV &mdash; max 100MB</p></div>
                         <video id="videoPreview" class="img-preview" style="display:none;max-height:180px;" controls></video>
                     </div>
-                    <div class="fg"><label>ðŸŽ¬ Video URL (Optional)</label><input type="url" id="articleVideo" placeholder="YouTube embed URL..."><small style="color:#888;display:block;margin-top:.25rem;">Use: https://www.youtube.com/embed/VIDEO_ID</small></div>
+                    <div class="fg"><label>🎬 Video URL (Optional)</label><input type="url" id="articleVideo" placeholder="YouTube embed URL..."><small style="color:#888;display:block;margin-top:.25rem;">Use: https://www.youtube.com/embed/VIDEO_ID</small></div>
                 </div>
 
                 <div class="fg"><label>Source Link (Optional)</label><input type="url" id="articleURL" placeholder="https://example.com/original-article"></div>
@@ -490,13 +490,13 @@
         function displayArticles(articles){
             const tbody=$('articlesTableBody');
             if(!articles.length){
-                tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2.5rem;color:#999;">No articles yet â€” create your first one!</td></tr>';
+                tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2.5rem;color:#999;">No articles yet &mdash; create your first one!</td></tr>';
                 return;
             }
             tbody.innerHTML=articles.map(a=>`<tr>
                 <td class="title-cell">${esc(a.title)}</td>
-                <td>${esc(a.category_name)||'â€”'}</td>
-                <td style="text-align:center;">${a.is_breaking?'<span style="color:#dc2626;" title="Breaking">ðŸ”´</span>':'<span style="color:#ddd;">â€”</span>'}</td>
+                <td>${esc(a.category_name)||'&mdash;'}</td>
+                <td style="text-align:center;">${a.is_breaking?'<span style="color:#dc2626;" title="Breaking">&#128308;</span>':'<span style="color:#ddd;">&mdash;</span>'}</td>
                 <td><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
                 <td style="white-space:nowrap;">${new Date(a.created_at).toLocaleDateString()}</td>
                 <td>${a.views}</td>
@@ -704,7 +704,7 @@
                 $('totalSubscribers').textContent=subs.length;
                 if(!subs.length){c.innerHTML='<p style="color:#999;padding:1rem 0;">No subscribers yet.</p>';return;}
                 c.innerHTML='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Email</th><th>Name</th><th>Subscribed</th><th>Action</th></tr></thead><tbody>'+
-                    subs.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.email)}</td><td>${esc(s.name)||'â€”'}</td><td>${new Date(s.subscribed_at).toLocaleDateString()}</td><td><button class="btn-sm btn-del" onclick="removeSubscriber(${s.id})">Remove</button></td></tr>`).join('')+
+                    subs.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.email)}</td><td>${esc(s.name)||'&mdash;'}</td><td>${new Date(s.subscribed_at).toLocaleDateString()}</td><td><button class="btn-sm btn-del" onclick="removeSubscriber(${s.id})">Remove</button></td></tr>`).join('')+
                     '</tbody></table></div>';
             }catch(e){c.innerHTML='<p style="color:#dc2626;">Failed to load subscribers.</p>';}
         }
@@ -777,7 +777,7 @@
                 }
                 else inlineMsg('profileMsg',data.error||'Failed to update profile',false);
             }catch(e){inlineMsg('profileMsg','Network error',false);}
-            btn.disabled=false;btn.textContent='ðŸ’¾ Save Profile';
+            btn.disabled=false;btn.textContent='Save Profile';
         });
 
         // Password strength
@@ -818,7 +818,7 @@
                     showToast('ok','Password changed!');
                 }else inlineMsg('passwordMsg',data.error||'Failed to change password',false);
             }catch(e){inlineMsg('passwordMsg','Network error',false);}
-            btn.disabled=false;btn.textContent='ðŸ”‘ Change Password';
+            btn.disabled=false;btn.textContent='Change Password';
         });
 
         // Password toggles
@@ -829,7 +829,7 @@
                 if(!input)return;
                 const show=input.type==='password';
                 input.type=show?'text':'password';
-                btn.textContent=show?'ðŸ™ˆ':'ðŸ‘ï¸';
+                btn.textContent=show?'Hide':'Show';
             });
         });
 
@@ -845,7 +845,7 @@
         };
 
         window.clearAllArticles=async function(){
-            if(!confirm('âš ï¸ DELETE ALL ARTICLES?\n\nThis will permanently erase every article.\nMake a backup first!\n\nClick OK to confirm.'))return;
+            if(!confirm('âš ï¸ DELETE ALL ARTICLES?\n\nThis will permanently erase every article.\nMake a backup first!\n\nClick OK to confirm.'))return;
             try{
                 const res=await fetch(API+'/admin/reset-articles',{method:'DELETE',headers:authHeaders()});
                 const data=await res.json();
