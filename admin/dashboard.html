@@ -248,6 +248,14 @@
                                             <img id="adImgPreview" class="img-preview" style="display:none;max-width:220px;max-height:120px;margin-top:.5rem;">
                                         </div>
                                         <div class="fg"><label>Ad Link</label><input type="url" id="adLink" required placeholder="https://company.com"></div>
+                                        <div class="fg"><label>Placement / Goobta Xayeysiiska</label>
+                                            <select id="adPlacement" style="width:100%;padding:.6rem .75rem;border:1px solid #e0e0e0;border-radius:8px;font-size:.88rem;background:#fff;">
+                                                <option value="homepage-banner">Homepage Banner (between news sections)</option>
+                                                <option value="article-sidebar">Article Sidebar (right side of articles)</option>
+                                                <option value="article-bottom">Article Bottom (after article content)</option>
+                                                <option value="all-pages-top">All Pages Top (below navigation)</option>
+                                            </select>
+                                        </div>
                                         <div class="fg"><label>Message (Somali)</label><textarea id="adMessage" placeholder="Shirkadaha Soomaaliyeed, waxaad halkan ku xayaysiin kartaa ganacsigaaga. Nala soo xiriir si aad u hesho faahfaahin dheeraad ah." style="min-height:60px;"></textarea></div>
                                         <button type="submit" class="btn-submit" id="saveAdBtn">Add Ad</button>
                                     </form>
@@ -862,6 +870,7 @@
                 displayAds(ads);
             }catch(e){$('adsList').innerHTML='<p style="color:#dc2626;">Failed to load ads.</p>';}
         }
+        const placementLabels={'homepage-banner':'Homepage Banner','article-sidebar':'Article Sidebar','article-bottom':'Article Bottom','all-pages-top':'All Pages Top'};
         function displayAds(ads){
             const el=$('adsList');
             if(!ads.length){el.innerHTML='<p style="color:#999;">No ads yet.</p>';return;}
@@ -870,6 +879,7 @@
                     <img src="${esc(ad.image||'')}" style="width:120px;max-height:60px;object-fit:contain;border-radius:6px;">
                     <div style="flex:1;">
                         <div style="font-size:.9rem;font-weight:600;">${esc(ad.link||'')}</div>
+                        <div style="font-size:.78rem;color:#667eea;margin:.2rem 0;"><i class="fas fa-map-marker-alt"></i> ${esc(placementLabels[ad.placement]||ad.placement||'Homepage Banner')}</div>
                         <div style="font-size:.85rem;color:#666;margin:.3rem 0;">${esc(ad.message||'')}</div>
                     </div>
                     <button class="btn-sm btn-del" onclick="deleteAd(${ad.id})">Delete</button>
@@ -901,6 +911,7 @@
             const fd=new FormData();
             if(adImgInput.files.length>0)fd.append('image',adImgInput.files[0]);
             fd.append('link',$('adLink').value);
+            fd.append('placement',$('adPlacement').value);
             fd.append('message',$('adMessage').value);
             try{
                 const res=await fetch(API+'/ads',{method:'POST',headers:authHeaders(),body:fd});

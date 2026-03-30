@@ -248,10 +248,13 @@ function initializeDatabase() {
         image TEXT,
         link TEXT,
         message TEXT,
+        placement TEXT DEFAULT 'homepage-banner',
         active INTEGER DEFAULT 1,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
+    // Add placement column if missing (migration for existing DBs)
+    db.run(`ALTER TABLE ads ADD COLUMN placement TEXT DEFAULT 'homepage-banner'`, [], () => {});
 
     // Articles table
     db.run(`
@@ -1039,9 +1042,14 @@ app.delete('/api/admin/reset-articles', authenticateToken, (req, res) => {
 
 // ==================== Ads API ====================
 
-// Get all active ads (public)
+// Get all active ads (public, optional placement filter)
 app.get('/api/ads', (req, res) => {
-  db.all('SELECT * FROM ads WHERE active = 1 ORDER BY created_at DESC', [], (err, ads) => {
+  const { placement } = req.query;
+  let sql = 'SELECT * FROM ads WHERE active = 1';
+  const params = [];
+  if (placement) { sql += ' AND placement = ?'; params.push(placement); }
+  sql += ' ORDER BY created_at DESC';
+  db.all(sql, params, (err, ads) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.json(ads);
   });
@@ -1051,14 +1059,16 @@ app.get('/api/ads', (req, res) => {
 app.post('/api/ads', authenticateToken, (req, res) => {
   upload.single('image')(req, res, function(err) {
     if (err) return res.status(400).json({ error: err.message });
-    const { link, message } = req.body;
+    const { link, message, placement } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : null;
+    const validPlacements = ['homepage-banner', 'article-sidebar', 'article-bottom', 'all-pages-top'];
+    const pl = validPlacements.includes(placement) ? placement : 'homepage-banner';
     db.run(
-      'INSERT INTO ads (image, link, message) VALUES (?, ?, ?)',
-      [image, link || null, message || null],
+      'INSERT INTO ads (image, link, message, placement) VALUES (?, ?, ?, ?)',
+      [image, link || null, message || null, pl],
       function(insertErr) {
         if (insertErr) return res.status(500).json({ error: 'Failed to create ad' });
-        res.json({ id: this.lastID, image, link, message, active: 1 });
+        res.json({ id: this.lastID, image, link, message, placement: pl, active: 1 });
       }
     );
   });
@@ -1066,10 +1076,16 @@ app.post('/api/ads', authenticateToken, (req, res) => {
 
 // Update ad (admin only)
 app.put('/api/ads/:id', authenticateToken, (req, res) => {
-  const { link, message, active } = req.body;
+  const { link, message, active, placement } = req.body;
+  const validPlacements = ['homepage-banner', 'article-sidebar', 'article-bottom', 'all-pages-top'];
+  const pl = validPlacements.includes(placement) ? placement : undefined;
+  const updates = ['link = ?', 'message = ?', 'active = ?'];
+  const params = [link || null, message || null, active !== undefined ? active : 1];
+  if (pl) { updates.push('placement = ?'); params.push(pl); }
+  params.push(req.params.id);
   db.run(
-    'UPDATE ads SET link = ?, message = ?, active = ? WHERE id = ?',
-    [link || null, message || null, active !== undefined ? active : 1, req.params.id],
+    `UPDATE ads SET ${updates.join(', ')} WHERE id = ?`,
+    params,
     function(err) {
       if (err) return res.status(500).json({ error: 'Failed to update ad' });
       if (this.changes === 0) return res.status(404).json({ error: 'Ad not found' });

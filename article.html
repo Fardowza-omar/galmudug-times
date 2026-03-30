@@ -146,6 +146,9 @@
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
 
+    <!-- Top ad slot (all-pages-top) -->
+    <div class="gt-ad-banner" id="gt-ad-top" style="display:none;"></div>
+
     <main class="article-container" id="articleContainer">
         <!-- Article skeleton loading -->
         <article class="full-article" style="pointer-events:none;">
@@ -181,6 +184,9 @@
             <div style="padding:1rem 0;border-bottom:1px solid #e0e0e0;"><div class="skeleton" style="width:60px;height:12px;margin-bottom:6px;"></div><div class="skeleton" style="width:85%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:75%;height:14px;"></div></div>
         </aside>
     </main>
+
+    <!-- Bottom ad slot (article-bottom) -->
+    <div class="gt-ad-banner" id="article-bottom-ad" style="display:none;max-width:900px;margin:0 auto;"></div>
 
     <footer class="footer">
         <div class="footer-top-rule double-rule"></div>
@@ -470,30 +476,47 @@
         lb.classList.add('active');
     }
 
-    // Load sidebar ad
-    async function loadSidebarAd() {
+    // Load ads by placement
+    function renderAdHtml(ad, cssClass) {
+        let html = `<div class="${esc(cssClass)}"><span class="ad-label">Advertisement</span>`;
+        const content = (ad.image ? `<img src="${esc(ad.image)}" alt="Advertisement" loading="lazy">` : '') +
+            (ad.message ? `<div class="ad-message">${esc(ad.message)}</div>` : '');
+        if (ad.link) {
+            html += `<a href="${esc(ad.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
+        } else {
+            html += content;
+        }
+        return html + '</div>';
+    }
+
+    async function loadArticleAds() {
         try {
             const r = await fetch('/api/ads?_t=' + Date.now());
             const ads = await r.json();
             if (!ads.length) return;
-            const slot = document.getElementById('article-sidebar-ad');
-            if (!slot) return;
-            const ad = ads[0];
-            let html = '<div class="gt-sidebar-ad"><span class="ad-label">Advertisement</span>';
-            const content = (ad.image ? `<img src="${esc(ad.image)}" alt="Advertisement" loading="lazy">` : '') +
-                (ad.message ? `<div class="ad-message">${esc(ad.message)}</div>` : '');
-            if (ad.link) {
-                html += `<a href="${esc(ad.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
-            } else {
-                html += content;
+            // Sidebar ad
+            const sidebarAd = ads.find(a => a.placement === 'article-sidebar');
+            if (sidebarAd) {
+                const slot = document.getElementById('article-sidebar-ad');
+                if (slot) slot.innerHTML = renderAdHtml(sidebarAd, 'gt-sidebar-ad');
             }
-            html += '</div>';
-            slot.innerHTML = html;
+            // Bottom ad (after article body)
+            const bottomAd = ads.find(a => a.placement === 'article-bottom');
+            if (bottomAd) {
+                const slot = document.getElementById('article-bottom-ad');
+                if (slot) { slot.innerHTML = renderAdHtml(bottomAd, 'gt-ad-banner'); slot.style.display = 'block'; }
+            }
+            // All pages top
+            const topAd = ads.find(a => a.placement === 'all-pages-top');
+            if (topAd) {
+                const slot = document.getElementById('gt-ad-top');
+                if (slot) { slot.innerHTML = renderAdHtml(topAd, 'gt-ad-banner'); slot.style.display = 'block'; }
+            }
         } catch(e) {}
     }
 
     loadArticle();
-    loadSidebarAd();
+    loadArticleAds();
     </script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>

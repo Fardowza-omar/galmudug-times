@@ -138,6 +138,8 @@
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
 
+    <!-- Top ad slot (all-pages-top) -->
+    <div class="gt-ad-banner" id="gt-ad-top" style="display:none;"></div>
 
     <!--  Hero Grid: top 3 featured stories  -->
     <section class="gt-hero-grid" id="gt-hero-grid">
@@ -442,20 +444,42 @@
                 const r = await fetch('/api/ads?_t=' + Date.now());
                 const ads = await r.json();
                 if (!ads.length) return;
-                const banner = document.getElementById('gt-ad-banner');
-                if (!banner) return;
-                const ad = ads[0]; // Show first active ad as banner
-                let inner = '<span class="ad-label">Advertisement</span><div class="gt-ad-item">';
-                const content = (ad.image ? `<img src="${esc(ad.image)}" alt="Advertisement" loading="lazy">` : '') +
-                    (ad.message ? `<div class="ad-message">${esc(ad.message)}</div>` : '');
-                if (ad.link) {
-                    inner += `<a href="${esc(ad.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
-                } else {
-                    inner += content;
+                // Homepage banner
+                const bannerAd = ads.find(a => a.placement === 'homepage-banner' || !a.placement) || null;
+                if (bannerAd) {
+                    const banner = document.getElementById('gt-ad-banner');
+                    if (banner) {
+                        let inner = '<span class="ad-label">Advertisement</span><div class="gt-ad-item">';
+                        const content = (bannerAd.image ? `<img src="${esc(bannerAd.image)}" alt="Advertisement" loading="lazy">` : '') +
+                            (bannerAd.message ? `<div class="ad-message">${esc(bannerAd.message)}</div>` : '');
+                        if (bannerAd.link) {
+                            inner += `<a href="${esc(bannerAd.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
+                        } else {
+                            inner += content;
+                        }
+                        inner += '</div>';
+                        banner.innerHTML = inner;
+                        banner.style.display = 'block';
+                    }
                 }
-                inner += '</div>';
-                banner.innerHTML = inner;
-                banner.style.display = 'block';
+                // All pages top
+                const topAd = ads.find(a => a.placement === 'all-pages-top');
+                if (topAd) {
+                    const slot = document.getElementById('gt-ad-top');
+                    if (slot) {
+                        let inner = '<span class="ad-label">Advertisement</span><div class="gt-ad-item">';
+                        const content = (topAd.image ? `<img src="${esc(topAd.image)}" alt="Advertisement" loading="lazy">` : '') +
+                            (topAd.message ? `<div class="ad-message">${esc(topAd.message)}</div>` : '');
+                        if (topAd.link) {
+                            inner += `<a href="${esc(topAd.link)}" target="_blank" rel="noopener noreferrer nofollow">${content}</a>`;
+                        } else {
+                            inner += content;
+                        }
+                        inner += '</div>';
+                        slot.innerHTML = inner;
+                        slot.style.display = 'block';
+                    }
+                }
             } catch(e) {}
         }
 
