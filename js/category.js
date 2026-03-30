@@ -23,10 +23,6 @@ function cleanTitle(raw) {
     return t;
 }
 
-        }
-    } catch(e) {}
-}
-
 // State for load-more
 let _catAllArticles = [];
 let _catShown = 0;
