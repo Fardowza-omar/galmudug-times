@@ -295,15 +295,18 @@ function initializeDatabase() {
     db.run(`ALTER TABLE categories ADD COLUMN nav_order INTEGER DEFAULT 99`, () => {});
     db.run(`ALTER TABLE categories ADD COLUMN page_file TEXT`, () => {});
 
-    // Insert default categories (Somali language for Galmudug region)
+    // Insert default categories (Somali language)
     const categories = [
       { name: 'Wararka ugu Dambeya', slug: 'wararka-ugu-dambeya', color: '#c41e3a', order: 1 }, // Breaking News
-      { name: 'Galmudug', slug: 'galmudug', color: '#1e90ff', order: 2 },         // Local Galmudug news
-      { name: 'Bulshada', slug: 'bulshada', color: '#27ae60', order: 3 },         // Community/Society
-      { name: 'Caafimaadka', slug: 'caafimaadka', color: '#e74c3c', order: 4 },   // Health
-      { name: 'Dhaqaalaha', slug: 'dhaqaalaha', color: '#f39c12', order: 6 },     // Economy
-      { name: 'Ciyaaraha', slug: 'ciyaaraha', color: '#00b894', order: 7 },       // Sports
-      { name: 'Suugaanta', slug: 'suugaanta', color: '#6c5ce7', order: 8 }        // Culture/Arts
+      { name: 'Soomaaliya', slug: 'soomaaliya', color: '#1e90ff', order: 2 },     // Somalia news
+      { name: 'Caalamka', slug: 'caalamka', color: '#00b894', order: 3 },         // World news
+      { name: 'Ciyaaraha', slug: 'ciyaaraha', color: '#00b894', order: 4 },       // Sports
+      { name: 'Taarikh', slug: 'taarikh', color: '#8e44ad', order: 5 },           // History
+      { name: 'Sheeko Faneed', slug: 'sheeko-faneed', color: '#e17055', order: 6 }, // Fiction Stories
+      { name: 'Bulshada', slug: 'bulshada', color: '#27ae60', order: 7 },         // Community/Society
+      { name: 'Caafimaadka', slug: 'caafimaadka', color: '#e74c3c', order: 8 },   // Health
+      { name: 'Dhaqaalaha', slug: 'dhaqaalaha', color: '#f39c12', order: 9 },     // Economy
+      { name: 'Suugaanta', slug: 'suugaanta', color: '#6c5ce7', order: 10 }       // Culture/Arts
     ];
 
     categories.forEach(cat => {

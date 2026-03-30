@@ -252,7 +252,7 @@
         function esc(str) {
             return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
-        let categoryColorMap = {'wararka-ugu-dambeya':'#c41e3a','galmudug':'#1e90ff','bulshada':'#27ae60','caafimaadka':'#e74c3c','dhaqaalaha':'#f39c12','ciyaaraha':'#00b894','suugaanta':'#6c5ce7','raiyga':'#e17055','somalia':'#1e90ff','somaliland':'#27ae60','caalamka':'#00b894'};
+        let categoryColorMap = {'wararka-ugu-dambeya':'#c41e3a','soomaaliya':'#1e90ff','galmudug':'#1e90ff','bulshada':'#27ae60','caafimaadka':'#e74c3c','dhaqaalaha':'#f39c12','ciyaaraha':'#00b894','suugaanta':'#6c5ce7','raiyga':'#e17055','somalia':'#1e90ff','somaliland':'#27ae60','caalamka':'#00b894','taarikh':'#8e44ad','sheeko-faneed':'#e17055'};
         async function loadCategoryColors() {
             try {
                 const r = await fetch('/api/categories?_t=' + Date.now());
