@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,11 +46,11 @@
             </a>
             <nav class="gt-nav" id="dynamic-nav">
                 <a href="/" class="nav-item">Home</a>
-                <a href="category.html?cat=galmudug" class="nav-item">Galmudug</a>
-                <a href="category.html?cat=muqdisho" class="nav-item">Muqdisho</a>
-                <a href="category.html?cat=hargaysa" class="nav-item">Calamka</a>
-                <a href="category.html?cat=borame" class="nav-item">Somalia</a>
-                <a href="contact.html" class="nav-item">Contact Us</a>
+                <a href="/category?cat=galmudug" class="nav-item">Galmudug</a>
+                <a href="/category?cat=muqdisho" class="nav-item">Muqdisho</a>
+                <a href="/category?cat=hargaysa" class="nav-item">Calamka</a>
+                <a href="/category?cat=borame" class="nav-item">Somalia</a>
+                <a href="/contact" class="nav-item">Contact Us</a>
             </nav>
             <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
             <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
@@ -155,17 +155,17 @@
             <div class="footer-column">
                 <h4 class="footer-title">COMPANY</h4>
                 <ul class="footer-links">
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <h4 class="footer-title">POLICIES</h4>
                 <ul class="footer-links">
-                    <li><a href="terms.html">Terms of Service</a></li>
-                    <li><a href="privacy.html">Privacy</a></li>
-                    <li><a href="cookies.html">Cookie Management</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                    <li><a href="/privacy">Privacy</a></li>
+                    <li><a href="/cookies">Cookie Management</a></li>
                 </ul>
             </div>
 
@@ -251,7 +251,7 @@
         }
 
         function articleUrl(a) {
-            return `/article.html?id=${esc(String(a.id))}&slug=${esc(a.slug)}`;
+            return `/article?id=${esc(String(a.id))}&slug=${esc(a.slug)}`;
         }
 
         // Time-ago helper
@@ -417,7 +417,7 @@
                         ${results.map(a => `
                             <div style="padding:.75rem 0;border-bottom:1px solid #f0f0f0;">
                                 <span style="display:inline-block;background:${esc(a.category_color||'#d63031')};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">${esc(a.category_name||'')}</span>
-                                <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin:.3rem 0;"><a href="/article.html?id=${esc(String(a.id))}&slug=${encodeURIComponent(a.slug)}" style="color:#000;text-decoration:none;">${esc(a.title)}</a></h4>
+                                <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin:.3rem 0;"><a href="/article?id=${esc(String(a.id))}&slug=${encodeURIComponent(a.slug)}" style="color:#000;text-decoration:none;">${esc(a.title)}</a></h4>
                                 <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;">${esc(a.description||'')}</p>
                             </div>`).join('')}
                         <button onclick="document.getElementById('searchResults').style.display='none'" style="margin-top:1rem;background:none;border:none;font-family:'Inter',sans-serif;font-size:.8rem;color:#999;cursor:pointer;">Close</button>

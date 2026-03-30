@@ -59,7 +59,7 @@ async function initCategoryPage(slug, color) {
             heroEl.innerHTML = `
                 <div class="story-header">
                     ${catSpan(hero.category_name || slug, hero.category_color || color)}
-                    <a href="/article.html?id=${hero.id}&slug=${encodeURIComponent(hero.slug)}" style="text-decoration:none;color:inherit;">
+                    <a href="/article?id=${hero.id}&slug=${encodeURIComponent(hero.slug)}" style="text-decoration:none;color:inherit;">
                         <h2 class="story-headline">${esc(hero.title)}</h2>
                     </a>
                     <p class="story-description">${esc(desc)}${desc.length >= 200 ? '...' : ''}</p>
@@ -81,7 +81,7 @@ async function initCategoryPage(slug, color) {
                 const d = s1.description || (s1.content || '').substring(0, 100).replace(/<[^>]*>/g, '');
                 s1el.innerHTML = `
                     ${catSpan(s1.category_name || slug, s1.category_color || color)}
-                    <h3 class="story-headline"><a href="/article.html?id=${s1.id}&slug=${encodeURIComponent(s1.slug)}" style="text-decoration:none;color:inherit;">${esc(s1.title)}</a></h3>
+                    <h3 class="story-headline"><a href="/article?id=${s1.id}&slug=${encodeURIComponent(s1.slug)}" style="text-decoration:none;color:inherit;">${esc(s1.title)}</a></h3>
                     <p class="story-description">${esc(d)}${d.length >= 100 ? '...' : ''}</p>
                     <div class="story-byline"><span class="author-name">By ${esc(s1.author)}</span><span class="publish-date">${fmtDate(s1.published_at)}</span></div>`;
             }
@@ -95,7 +95,7 @@ async function initCategoryPage(slug, color) {
                 const d = s2.description || (s2.content || '').substring(0, 100).replace(/<[^>]*>/g, '');
                 s2el.innerHTML = `
                     ${catSpan(s2.category_name || slug, s2.category_color || color)}
-                    <h3 class="story-headline"><a href="/article.html?id=${s2.id}&slug=${encodeURIComponent(s2.slug)}" style="text-decoration:none;color:inherit;">${esc(s2.title)}</a></h3>
+                    <h3 class="story-headline"><a href="/article?id=${s2.id}&slug=${encodeURIComponent(s2.slug)}" style="text-decoration:none;color:inherit;">${esc(s2.title)}</a></h3>
                     <p class="story-description">${esc(d)}${d.length >= 100 ? '...' : ''}</p>
                     <div class="story-byline"><span class="author-name">By ${esc(s2.author)}</span><span class="publish-date">${fmtDate(s2.published_at)}</span></div>`;
             }
@@ -110,7 +110,7 @@ async function initCategoryPage(slug, color) {
                     const d = a.description || (a.content || '').substring(0, 120).replace(/<[^>]*>/g, '');
                     return `<article class="story story-secondary">
                         ${catSpan(a.category_name || slug, a.category_color || color)}
-                        <h3 class="story-headline"><a href="/article.html?id=${a.id}&slug=${encodeURIComponent(a.slug)}" style="text-decoration:none;color:inherit;">${esc(a.title)}</a></h3>
+                        <h3 class="story-headline"><a href="/article?id=${a.id}&slug=${encodeURIComponent(a.slug)}" style="text-decoration:none;color:inherit;">${esc(a.title)}</a></h3>
                         <div class="story-byline"><span class="author-name">By ${esc(a.author)}</span><span class="publish-date">${fmtDate(a.published_at)}</span></div>
                         <p class="story-description">${esc(d)}${d.length >= 120 ? '...' : ''}</p>
                     </article>`;

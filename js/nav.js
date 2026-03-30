@@ -4,11 +4,14 @@
  * Include this script and add id="dynamic-nav" to your <nav class="main-nav"> element
  */
 
-// Detect current page slug from URL
+// Detect current page slug from URL (supports both clean URLs and .html)
 function getCurrentSlug() {
-    const path = window.location.pathname.toLowerCase();
-    const match = path.match(/([a-z0-9-]+)\.html/i);
-    return match ? match[1] : null;
+    const path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+    // Match /pagename or /pagename.html
+    const match = path.match(/\/([a-z0-9-]+)(\.html)?$/i);
+    if (match) return match[1];
+    if (path === '/' || path === '') return 'index';
+    return null;
 }
 
 // Get the current ?cat= query param value
@@ -20,19 +23,19 @@ function buildNavHTML(categories) {
     const currentSlug = getCurrentSlug();
     const currentCat  = getCurrentCatParam();
 
-    let links = `<a href="index.html" class="nav-item${currentSlug === 'index' || !currentSlug ? ' nav-active' : ''}">Home</a>\n                `;
+    let links = `<a href="/" class="nav-item${currentSlug === 'index' || !currentSlug ? ' nav-active' : ''}">Home</a>\n                `;
 
     links += categories.map(cat => {
-        const page = cat.page_file || `category.html?cat=${cat.slug}`;
+        const page = cat.page_file ? cat.page_file.replace(/\.html(\?|$)/, (m, q) => q ? '?' : '') : `/category?cat=${cat.slug}`;
         const name = cat.name;
         const isActive = (cat.slug === currentSlug) ||
                          (currentSlug === 'category' && currentCat === cat.slug) ||
-                         (cat.page_file && cat.page_file.replace('.html', '') === currentSlug);
+                         (cat.page_file && cat.page_file.replace(/\.html.*/, '') === currentSlug);
         const activeClass = isActive ? ' nav-active' : '';
         return `<a href="${page}" class="nav-item${activeClass}">${escNav(name)}</a>`;
     }).join('\n                ');
 
-    links += `\n                <a href="contact.html" class="nav-item${currentSlug === 'contact' ? ' nav-active' : ''}">Contact Us</a>`;
+    links += `\n                <a href="/contact" class="nav-item${currentSlug === 'contact' ? ' nav-active' : ''}">Contact Us</a>`;
     return links;
 }
 

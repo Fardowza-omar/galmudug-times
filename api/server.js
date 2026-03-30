@@ -135,8 +135,8 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static(join(__dirname, '..')));  // Serve root directory (HTML, CSS, JS)
+// Serve static files with clean URL support (/contact → contact.html)
+app.use(express.static(join(__dirname, '..'), { extensions: ['html'] }));
 app.use('/uploads', express.static(join(__dirname, '../uploads')));  // Serve uploads
 app.use('/admin', express.static(join(__dirname, '../admin')));  // Serve admin pages
 

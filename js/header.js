@@ -151,7 +151,7 @@ window.doSearch = window.doSearch || function doSearch() {
             const items = results.map(a =>
                 `<div class="gt-sr-item">
                     <span class="gt-sr-cat" style="background:${_escHtml(a.category_color || '#8B0000')}">${_escHtml(a.category_name || 'News')}</span>
-                    <a class="gt-sr-title" href="/article.html?id=${encodeURIComponent(a.id)}&slug=${encodeURIComponent(a.slug)}">${_escHtml(a.title)}</a>
+                    <a class="gt-sr-title" href="/article?id=${encodeURIComponent(a.id)}&slug=${encodeURIComponent(a.slug)}">${_escHtml(a.title)}</a>
                 </div>`
             ).join('');
             box.innerHTML = `<div class="gt-search-results-inner">
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.gt-nav .nav-item').forEach(link => {
         const href = (link.getAttribute('href') || '').toLowerCase();
         if (!href || href === '#') return;
-        const isHome    = (href === 'index.html' || href === '/') && (path === '/' || path.endsWith('index.html'));
-        const isSection = href !== 'index.html' && href !== '/' && path.includes(href.split('?')[0].replace('.html','').replace('/',''));
+        const isHome    = href === '/' && (path === '/' || path === '/index' || path.endsWith('index.html'));
+        const isSection = href !== '/' && path.includes(href.split('?')[0].replace('.html','').replace('/',''));
         if (isHome || isSection) link.classList.add('nav-active');
     });
 });
