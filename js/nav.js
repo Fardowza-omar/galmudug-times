@@ -47,7 +47,7 @@ async function loadDynamicNav() {
     const fallbackHTML = navEl.innerHTML;
 
     // ── Step 1: render from cache instantly (no flicker) ──────────────
-    const CACHE_KEY = 'gt_nav_v4';
+    const CACHE_KEY = 'gt_nav_v5';
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
         try {

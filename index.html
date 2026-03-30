@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +6,9 @@
     <title>Galmudug Times - Somalia's Trusted News Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
     <style>
     /* Critical CSS - prevent layout shift */
     html{visibility:visible}
@@ -18,7 +18,7 @@
     .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;border-radius:4px}
     /*  Homepage Redesign  */
     .container-wide{max-width:1200px;margin:0 auto;padding:0 1.5rem}
-    /* ── Hero Grid: WaPo-style asymmetric 2-column ── */
+    /* â”€â”€ Hero Grid: WaPo-style asymmetric 2-column â”€â”€ */
     .gt-hero-grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:280px 280px;gap:3px;background:#111;height:560px}
     .gt-hero-card:first-child{grid-row:1 / span 2;grid-column:1}
     @media(max-width:900px){
@@ -33,17 +33,17 @@
     .gt-hero-card:hover img{transform:scale(1.03)}
     .gt-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.15) 50%,transparent 100%);pointer-events:none}
     .gt-hero-caption{position:absolute;bottom:0;left:0;right:0;padding:1.6rem 1.4rem 1.3rem}
-    .gt-hero-cat{display:inline-block;background:#d63031;color:#fff;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .55rem;margin-bottom:.5rem}
+    .gt-hero-cat{display:inline-block;background:#c41e3a;color:#fff;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.2rem .55rem;margin-bottom:.5rem}
     .gt-hero-title{font-family:'Playfair Display',serif;color:#fff;font-size:1.55rem;font-weight:700;line-height:1.22;margin:0}
     .gt-hero-card:first-child .gt-hero-title{font-size:2.15rem;line-height:1.18}
     .gt-hero-card:not(:first-child) .gt-hero-title{font-size:1.05rem}
     .gt-hero-meta{font-family:'Inter',sans-serif;font-size:.68rem;color:rgba(255,255,255,.6);margin-top:.4rem;display:block}
-    /* ── Section Header ── */
-    .gt-section-hdr{display:flex;align-items:center;justify-content:space-between;border-top:3px solid #d63031;padding-top:.55rem;margin-bottom:1.3rem}
+    /* â”€â”€ Section Header â”€â”€ */
+    .gt-section-hdr{display:flex;align-items:center;justify-content:space-between;border-top:3px solid #c41e3a;padding-top:.55rem;margin-bottom:1.3rem}
     .gt-section-hdr h2{font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#111;margin:0}
-    .gt-section-hdr a{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;color:#d63031;text-decoration:none;letter-spacing:.06em}
+    .gt-section-hdr a{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;color:#c41e3a;text-decoration:none;letter-spacing:.06em}
     .gt-section-hdr a:hover{text-decoration:underline}
-    /* ── Today's News ── */
+    /* â”€â”€ Today's News â”€â”€ */
     .gt-news-section{padding:2.4rem 0 1.8rem}
     .gt-today-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #ebebeb;margin-bottom:.5rem}
     @media(max-width:900px){.gt-today-grid{grid-template-columns:repeat(2,1fr)}}
@@ -57,39 +57,39 @@
     .gt-today-body{flex:1;min-width:0}
     .gt-today-cat{font-family:'Inter',sans-serif;font-size:.59rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block}
     .gt-today-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;line-height:1.32;display:block;color:#111;text-decoration:none;margin:.22rem 0 .28rem}
-    .gt-today-title:hover{color:#d63031}
+    .gt-today-title:hover{color:#c41e3a}
     .gt-today-meta{font-family:'Inter',sans-serif;font-size:.65rem;color:#bbb;display:block}
     .gt-load-more-wrap{text-align:center;padding:.8rem 0 .4rem}
-    .gt-load-more-btn{background:#fff;border:2px solid #d63031;color:#d63031;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 2.2rem;cursor:pointer;transition:background .2s,color .2s}
-    .gt-load-more-btn:hover{background:#d63031;color:#fff}
-    /* ── Featured ── */
+    .gt-load-more-btn{background:#fff;border:2px solid #c41e3a;color:#c41e3a;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 2.2rem;cursor:pointer;transition:background .2s,color .2s}
+    .gt-load-more-btn:hover{background:#c41e3a;color:#fff}
+    /* â”€â”€ Featured â”€â”€ */
     .gt-featured-section{padding:2.4rem 0;background:#faf9f7;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8}
     .gt-featured-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem}
     @media(max-width:900px){.gt-featured-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:500px){.gt-featured-grid{grid-template-columns:1fr 1fr;gap:.75rem}}
     .gt-feat-card{background:#fff;text-decoration:none;color:inherit;display:block;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid #ebebeb;transition:box-shadow .2s}
     .gt-feat-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1)}
-    .gt-feat-card:hover .gt-feat-title{color:#d63031}
+    .gt-feat-card:hover .gt-feat-title{color:#c41e3a}
     .gt-feat-img{width:100%;height:165px;object-fit:cover;display:block}
     @media(max-width:500px){.gt-feat-img{height:120px}}
     .gt-feat-body{padding:.75rem .75rem .9rem}
     .gt-feat-cat{font-family:'Inter',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.28rem}
     .gt-feat-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;line-height:1.32;display:block;color:#111;transition:color .15s}
     .gt-feat-meta{font-family:'Inter',sans-serif;font-size:.65rem;color:#bbb;margin-top:.3rem;display:block}
-    /* ── Category Columns ── */
+    /* â”€â”€ Category Columns â”€â”€ */
     .gt-cat-section{padding:2.8rem 0 3.5rem}
     .gt-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.8rem}
     @media(max-width:900px){.gt-cat-grid{grid-template-columns:1fr 1fr;gap:1.5rem}}
     @media(max-width:580px){.gt-cat-grid{grid-template-columns:1fr}}
     .gt-cat-col-feat{display:block;text-decoration:none;color:inherit;margin-bottom:.9rem}
-    .gt-cat-col-feat:hover .gt-cat-feat-title{color:#d63031}
+    .gt-cat-col-feat:hover .gt-cat-feat-title{color:#c41e3a}
     .gt-cat-feat-img{width:100%;height:190px;object-fit:cover;display:block;margin-bottom:.65rem}
     .gt-cat-feat-cat{font-family:'Inter',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.22rem}
     .gt-cat-feat-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;line-height:1.3;color:#111;display:block;transition:color .15s}
     .gt-cat-col-list{list-style:none;padding:0;margin:.3rem 0 0;border-top:1px solid #ebebeb}
     .gt-cat-col-list li{padding:.6rem 0;border-bottom:1px solid #f0f0f0}
     .gt-cat-col-list li a{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:#111;text-decoration:none;line-height:1.33;display:block;transition:color .15s}
-    .gt-cat-col-list li a:hover{color:#d63031}
+    .gt-cat-col-list li a:hover{color:#c41e3a}
     .gt-cat-col-list .gt-meta{font-family:'Inter',sans-serif;font-size:.63rem;color:#bbb;display:block;margin-top:.12rem}
     </style>
 </head>
@@ -249,7 +249,7 @@
         function esc(str) {
             return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
-        let categoryColorMap = {'wararka':'#d63031','galmudug':'#1e90ff','bulshada':'#27ae60','caafimaadka':'#e74c3c','waxbarashada':'#8e44ad','dhaqaalaha':'#f39c12','ciyaaraha':'#00b894','suugaanta':'#6c5ce7'};
+        let categoryColorMap = {'wararka':'#c41e3a','galmudug':'#1e90ff','bulshada':'#27ae60','caafimaadka':'#e74c3c','waxbarashada':'#8e44ad','dhaqaalaha':'#f39c12','ciyaaraha':'#00b894','suugaanta':'#6c5ce7'};
         async function loadCategoryColors() {
             try {
                 const r = await fetch('/api/categories?_t=' + Date.now());
@@ -286,7 +286,7 @@
             return '/article?id=' + esc(String(a.id)) + '&slug=' + esc(a.slug || '');
         }
         function catColor(a) {
-            return esc(a.category_color || categoryColorMap[a.category_slug] || '#d63031');
+            return esc(a.category_color || categoryColorMap[a.category_slug] || '#c41e3a');
         }
         function catName(a) {
             return esc((a.category_name || a.category_slug || 'News').toUpperCase());
@@ -399,7 +399,7 @@
                 // Render column placeholders
                 grid.innerHTML = cols.map(c =>
                     `<div class="gt-cat-col-inner" id="cat-col-${esc(c.slug)}">
-                        <div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#d63031')}">${esc(c.name.toUpperCase())}</h2></div>
+                        <div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#c41e3a')}">${esc(c.name.toUpperCase())}</h2></div>
                         <div style="color:#aaa;font-family:Inter,sans-serif;font-size:.8rem;">Loading&hellip;</div>
                     </div>`
                 ).join('');
@@ -410,18 +410,18 @@
                         const arts = await res.json();
                         const col = document.getElementById('cat-col-' + c.slug);
                         if (!col) return;
-                        const hdr = `<div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#d63031')}">${esc(c.name.toUpperCase())}</h2></div>`;
+                        const hdr = `<div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#c41e3a')}">${esc(c.name.toUpperCase())}</h2></div>`;
                         if (!arts.length) { col.innerHTML = hdr + '<p style="color:#aaa;font-size:.8rem;font-family:Inter,sans-serif;">No articles yet.</p>'; return; }
                         const featured = arts[0];
                         const rest = arts.slice(1);
                         const ft = cleanTitle(featured.title);
                         const fImg = featured.featured_image
                             ? `<img class="gt-cat-feat-img" src="${esc(featured.featured_image)}" alt="${esc(ft)}" loading="lazy">`
-                            : `<div class="gt-cat-feat-img" style="background:${esc(c.color || '#d63031')};"></div>`;
+                            : `<div class="gt-cat-feat-img" style="background:${esc(c.color || '#c41e3a')};"></div>`;
                         col.innerHTML = hdr +
                             `<a href="${articleUrl(featured)}" class="gt-cat-col-feat">
                                 ${fImg}
-                                <span class="gt-cat-feat-cat" style="color:${esc(c.color || '#d63031')};">${esc(c.name.toUpperCase())}</span>
+                                <span class="gt-cat-feat-cat" style="color:${esc(c.color || '#c41e3a')};">${esc(c.name.toUpperCase())}</span>
                                 <span class="gt-cat-feat-title">${esc(ft)}</span>
                             </a>
                             <ul class="gt-cat-col-list">
@@ -448,7 +448,7 @@
                 renderFeatured(articles.slice(featStart, featStart + 4));
             } catch(e) {
                 const g = document.getElementById('gt-hero-grid');
-                if (g) g.innerHTML = '<div style="height:280px;display:flex;align-items:center;justify-content:center;color:#d63031;grid-column:1/-1;font-family:Inter,sans-serif;">Error loading articles. Is the server running?</div>';
+                if (g) g.innerHTML = '<div style="height:280px;display:flex;align-items:center;justify-content:center;color:#c41e3a;grid-column:1/-1;font-family:Inter,sans-serif;">Error loading articles. Is the server running?</div>';
             }
             loadCategoryColumns();
         }
@@ -474,14 +474,14 @@
                         <p style="font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#666;margin-bottom:1rem;">${results.length} results for &quot;${esc(q)}&quot;</p>
                         ${results.map(a => `
                             <div style="padding:.75rem 0;border-bottom:1px solid #f0f0f0;">
-                                <span style="display:inline-block;background:${esc(a.category_color||'#d63031')};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">${esc(a.category_name||'')}</span>
+                                <span style="display:inline-block;background:${esc(a.category_color||'#c41e3a')};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">${esc(a.category_name||'')}</span>
                                 <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin:.3rem 0;"><a href="/article?id=${esc(String(a.id))}&slug=${encodeURIComponent(a.slug)}" style="color:#000;text-decoration:none;">${esc(a.title)}</a></h4>
                                 <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;">${esc(a.description||'')}</p>
                             </div>`).join('')}
                         <button onclick="document.getElementById('searchResults').style.display='none'" style="margin-top:1rem;background:none;border:none;font-family:'Inter',sans-serif;font-size:.8rem;color:#999;cursor:pointer;">Close</button>
                     </div>`;
             } catch(e) {
-                box.innerHTML = '<p style="color:#d63031;padding:1rem 0;">Search failed. Is the server running?</p>';
+                box.innerHTML = '<p style="color:#c41e3a;padding:1rem 0;">Search failed. Is the server running?</p>';
             }
         }
 
@@ -507,7 +507,7 @@
             background:none;border:none;font-size:1.1rem;
             cursor:pointer;color:#999;line-height:1;">&#x2715;</button>
         <p style="font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;
-            letter-spacing:.18em;text-transform:uppercase;color:#d63031;margin:0 0 .4rem;">Newsletter</p>
+            letter-spacing:.18em;text-transform:uppercase;color:#c41e3a;margin:0 0 .4rem;">Newsletter</p>
         <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
             line-height:1.3;margin:0 0 .5rem;">Stay Informed</p>
         <p style="font-family:'Inter',sans-serif;font-size:.8rem;color:#666;
@@ -519,12 +519,12 @@
             style="width:100%;padding:.55rem .7rem;border:1px solid #ddd;border-radius:3px;
             font-family:'Inter',sans-serif;font-size:.82rem;margin-bottom:.75rem;box-sizing:border-box;">
         <button onclick="gtPopupSubscribe()" style="
-            width:100%;background:#d63031;color:#fff;border:none;
+            width:100%;background:#c41e3a;color:#fff;border:none;
             padding:.7rem;font-family:'Inter',sans-serif;font-size:.78rem;
             font-weight:700;letter-spacing:.1em;text-transform:uppercase;
             cursor:pointer;border-radius:3px;transition:background .2s;"
-            onmouseover="this.style.background='#b71c1c'"
-            onmouseout="this.style.background='#d63031'">Subscribe Now</button>
+            onmouseover="this.style.background='#a01830'"
+            onmouseout="this.style.background='#c41e3a'">Subscribe Now</button>
         <p id="popupSubMsg" style="font-size:.78rem;margin:.5rem 0 0;
             font-family:'Inter',sans-serif;display:none;"></p>
     </div>
@@ -546,13 +546,13 @@
         const name=(document.getElementById('popupSubName').value||'').trim();
         const email=(document.getElementById('popupSubEmail').value||'').trim();
         const msg=document.getElementById('popupSubMsg');
-        if(!email){msg.style.display='block';msg.style.color='#d63031';msg.textContent='Please enter your email.';return;}
+        if(!email){msg.style.display='block';msg.style.color='#c41e3a';msg.textContent='Please enter your email.';return;}
         try{
             const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name})});
             const d=await r.json();
             if(r.ok){msg.style.color='#27ae60';msg.textContent='Subscribed! Thank you.';setTimeout(gtClosePopup,2500);}
-            else{msg.style.color='#d63031';msg.textContent=d.error||'Something went wrong.';}
-        }catch(e){msg.style.color='#d63031';msg.textContent='Server not reachable.';}
+            else{msg.style.color='#c41e3a';msg.textContent=d.error||'Something went wrong.';}
+        }catch(e){msg.style.color='#c41e3a';msg.textContent='Server not reachable.';}
         msg.style.display='block';
     }
     </script>

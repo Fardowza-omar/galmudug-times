@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galmudug Times</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
     <style>
         /* Skeleton animation for loading state */
         @keyframes skeleton-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
@@ -15,7 +15,7 @@
         .full-article{grid-column:1}
         .article-sidebar-col{grid-column:2}
         .article-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;line-height:1.1;margin:1rem 0}
-        .article-subtitle{font-size:1.15rem;font-style:italic;color:#444;line-height:1.5;margin-bottom:1.5rem;border-left:3px solid #d63031;padding-left:1rem}
+        .article-subtitle{font-size:1.15rem;font-style:italic;color:#444;line-height:1.5;margin-bottom:1.5rem;border-left:3px solid #c41e3a;padding-left:1rem}
         .article-meta{display:flex;justify-content:space-between;align-items:flex-start;padding:1.2rem 0;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
         .author-info{display:flex;align-items:center;gap:1rem}
         .author-name-text{font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
@@ -35,8 +35,8 @@
         .article-actions{display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;margin:2rem 0;flex-wrap:wrap}
         .action-label{font-family:'Inter',sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:#666}
         .like-btn{display:flex;align-items:center;gap:.5rem;background:none;border:2px solid #e0e0e0;border-radius:50px;padding:.5rem 1.2rem;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;color:#333}
-        .like-btn:hover{border-color:#d63031;color:#d63031}
-        .like-btn.liked{background:#d63031;border-color:#d63031;color:#fff}
+        .like-btn:hover{border-color:#c41e3a;color:#c41e3a}
+        .like-btn.liked{background:#c41e3a;border-color:#c41e3a;color:#fff}
         .share-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:2px solid #e0e0e0;border-radius:50px;padding:.5rem 1.1rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;color:#333;text-decoration:none}
         .share-btn:hover{border-color:#000;color:#000}
         .share-btn.tw:hover{border-color:#1DA1F2;color:#1DA1F2}
@@ -50,10 +50,10 @@
         .comment-form-label{font-family:'Inter',sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:#666;margin-bottom:.75rem;display:block}
         .c-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
         .c-input,.c-textarea{width:100%;padding:.7rem;border:1px solid #ddd;border-radius:4px;font-family:'Libre Baskerville',serif;font-size:.95rem;transition:border-color .2s}
-        .c-input:focus,.c-textarea:focus{outline:none;border-color:#d63031}
+        .c-input:focus,.c-textarea:focus{outline:none;border-color:#c41e3a}
         .c-textarea{min-height:100px;resize:vertical;margin-bottom:1rem}
         .c-submit{background:#000;color:#fff;border:none;padding:.75rem 2rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:background .2s}
-        .c-submit:hover{background:#d63031}
+        .c-submit:hover{background:#c41e3a}
         .c-success{color:#27ae60;font-family:'Inter',sans-serif;font-size:.85rem;margin-top:.5rem;display:none}
         .comment-item{padding:1.25rem 0;border-bottom:1px solid #e0e0e0}
         .comment-author{font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
@@ -66,19 +66,19 @@
         .related-item{padding:1rem 0;border-bottom:1px solid #e0e0e0}
         .related-item h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin:.4rem 0;line-height:1.3}
         .related-item h4 a{color:#000;text-decoration:none}
-        .related-item h4 a:hover{color:#d63031}
+        .related-item h4 a:hover{color:#c41e3a}
         .related-byline{font-family:'Inter',sans-serif;font-size:.75rem;color:#999}
         .subscribe-box{background:#000;color:#fff;padding:1.5rem;margin-top:2rem}
         .subscribe-box-title{font-family:'Inter',sans-serif;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:.75rem}
         .subscribe-box p{font-size:.9rem;color:#ccc;margin-bottom:1.25rem}
         .subscribe-box button{width:100%;background:#fff;color:#000;border:none;padding:.875rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-        .subscribe-box button:hover{background:#d63031;color:#fff}
+        .subscribe-box button:hover{background:#c41e3a;color:#fff}
         .article-loading{text-align:center;padding:5rem 2rem;color:#999;font-family:'Inter',sans-serif;grid-column:1/-1}
         @media(max-width:900px){.article-container{grid-template-columns:1fr}.article-sidebar-col{grid-column:1;position:static}.article-title{font-size:2rem}.c-row{grid-template-columns:1fr}}
         /* Reading progress bar */
         #read-progress-bar{
             position:fixed;top:0;left:0;height:3px;width:0%;
-            background:linear-gradient(90deg,#d63031,#e74c3c);
+            background:linear-gradient(90deg,#c41e3a,#e74c3c);
             z-index:9999;transition:width .1s linear;
             box-shadow:0 0 6px rgba(214,48,49,.5);
         }
@@ -249,7 +249,7 @@
         `<div class="article-loading"><p>&#9888; ${esc(msg)}</p><p style="margin-top:1rem"><a href="/">&#8592; Back to Home</a></p></div>`;}
 
     function renderArticle(a){
-        const cc=a.category_color||'#d63031',cn=a.category_name||'';
+        const cc=a.category_color||'#c41e3a',cn=a.category_name||'';
         let media='';
         if(a.video_url){
             let vs=a.video_url.replace('youtube.com/watch?v=','youtube.com/embed/').replace('youtu.be/','youtube.com/embed/');
@@ -308,7 +308,7 @@
                 <div id="subForm">
                     <input type="text" id="subName" placeholder="Your name (optional)" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
                     <input type="email" id="subEmail" placeholder="Your email address *" style="width:100%;padding:.6rem .75rem;margin-bottom:.75rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
-                    <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#d63031';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Subscribe Now</button>
+                    <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#c41e3a';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Subscribe Now</button>
                     <p id="subMsg" style="margin-top:.6rem;font-size:.8rem;display:none;"></p>
                 </div>
             </div>
@@ -394,7 +394,7 @@
         const c=document.getElementById('relatedList');if(!c)return;
         if(!rel.length){c.innerHTML='<p style="color:#999;font-size:.85rem">No related stories.</p>';return;}
         c.innerHTML=rel.map(a=>`<article class="related-item">
-            <span style="display:inline-block;background:${a.category_color||'#d63031'};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem">${esc(a.category_name||'')}</span>
+            <span style="display:inline-block;background:${a.category_color||'#c41e3a'};color:#fff;padding:.2rem .5rem;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem">${esc(a.category_name||'')}</span>
             <h4><a href="/article?id=${a.id}&slug=${encodeURIComponent(a.slug)}">${esc(a.title)}</a></h4>
             <p class="related-byline">By ${esc(a.author||'')}</p>
         </article>`).join('');}catch(e){}}
