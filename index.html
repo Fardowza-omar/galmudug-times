@@ -108,16 +108,6 @@
         </div>
     </div>
 
-    <!-- Breaking News Ticker -->
-    <div class="ticker-bar">
-        <div class="ticker-content">
-            <span class="ticker-label">BREAKING</span>
-            <div class="ticker-scroll">
-                <span class="ticker-text" id="tickerText">Loading latest news...</span>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Navigation -->
     <header class="gt-header">
         <div class="gt-header-inner">
@@ -457,27 +447,9 @@
                 if (g) g.innerHTML = '<div style="height:280px;display:flex;align-items:center;justify-content:center;color:#d63031;grid-column:1/-1;font-family:Inter,sans-serif;">Error loading articles. Is the server running?</div>';
             }
             loadCategoryColumns();
-            loadTicker();
         }
 
         document.addEventListener('DOMContentLoaded', initHomepage);
-
-        //  Breaking News Ticker 
-        async function loadTicker() {
-            try {
-                const res = await fetch('/api/breaking-news');
-                const items = await res.json();
-                if (!items.length) return;
-                const el = document.getElementById('tickerText');
-                if (!el) return;
-                const text = items.map(i => i.title).join('   |   ');
-                el.textContent = text + '     |     ' + text;
-                requestAnimationFrame(() => {
-                    const dur = Math.max(25, Math.round(el.scrollWidth / 2 / 70));
-                    el.style.animationDuration = dur + 's';
-                });
-            } catch(e) {}
-        }
 
         //  Search 
         async function doSearch() {

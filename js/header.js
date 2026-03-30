@@ -31,14 +31,14 @@ let _cityIndex   = 0;
 })();
 
 function _weatherIcon(code) {
-    if (code === 0)            return '☀️';
-    if (code <= 2)             return '🌤️';
-    if (code <= 3)             return '⛅';
-    if (code <= 49)            return '🌫️';
-    if (code <= 67)            return '🌧️';
-    if (code <= 77)            return '❄️';
-    if (code <= 82)            return '🌦️';
-    return '⛈️';
+    if (code === 0)            return '\u2600';   // ☀ sun (text presentation, no variation selector)
+    if (code <= 2)             return '\u26C5';   // ⛅ sun behind cloud
+    if (code <= 3)             return '\u2601';   // ☁ cloud
+    if (code <= 49)            return '\u2601';   // ☁ fog/mist
+    if (code <= 67)            return '\u2614';   // ☔ umbrella with rain
+    if (code <= 77)            return '\u2744';   // ❄ snowflake
+    if (code <= 82)            return '\u2602';   // ☂ umbrella
+    return '\u26A1';                              // ⚡ thunderstorm
 }
 
 async function _fetchAllWeather() {
@@ -66,7 +66,7 @@ function _rotateWeather() {
     const city = GT_CITIES[_cityIndex];
     const d    = _weatherData[city.name];
 
-    iconEl.textContent = d ? _weatherIcon(d.code) : '🌡️';
+    iconEl.textContent = d ? _weatherIcon(d.code) : '\u2600';
     tempEl.textContent = d ? d.temp + '°C' : '--°C';
     cityEl.textContent = city.name;
 
