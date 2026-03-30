@@ -121,11 +121,11 @@
         <div class="gt-header-inner">
             <a href="/" class="gt-logo">
                 <div class="gt-logo-text">Galmudug Times</div>
-                <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
+                <div class="gt-logo-tagline">Wararka Soomaaliya ee La Aamino</div>
             </a>
             <nav class="gt-nav" id="dynamic-nav">
-                <a href="/" class="nav-item">Home</a>
-                <a href="/contact" class="nav-item">Contact Us</a>
+                <a href="/" class="nav-item">Bogga Hore</a>
+                <a href="/contact" class="nav-item">Nala Soo Xiriir</a>
             </nav>
             <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
             <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
@@ -134,8 +134,8 @@
         </div>
         <div class="gt-search-expand" id="gtSearchExpand" style="display:none;">
             <div class="gt-search-expand-inner">
-                <input type="text" id="searchInput" placeholder="Search Galmudug Times..." onkeydown="if(event.key==='Enter')doSearch()">
-                <button class="gt-search-go" onclick="doSearch()">Search</button>
+                <input type="text" id="searchInput" placeholder="Raadi Wararka..." onkeydown="if(event.key==='Enter')doSearch()">
+                <button class="gt-search-go" onclick="doSearch()">Raadi</button>
                 <button class="gt-close-btn" onclick="toggleGTSearch()">&#x2715;</button>
             </div>
         </div>
@@ -183,7 +183,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news - delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Ilo wareedka la aamminay ee Soomaaliya - waxaan keenaa warbixin sax ah, cadaalad ah, oo waqtigeeda ah.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -192,33 +192,33 @@
                 </div>
             </div>
             <div class="footer-column">
-                <h4 class="footer-title">COMPANY</h4>
+                <h4 class="footer-title">SHIRKADDA</h4>
                 <ul class="footer-links">
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/about">Nagu Saabsan</a></li>
+                    <li><a href="/contact">Nala Soo Xiriir</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h4 class="footer-title">POLICIES</h4>
+                <h4 class="footer-title">SHURUUCDA</h4>
                 <ul class="footer-links">
-                    <li><a href="/terms">Terms of Service</a></li>
-                    <li><a href="/privacy">Privacy</a></li>
-                    <li><a href="/cookies">Cookie Management</a></li>
+                    <li><a href="/terms">Shuruudaha Adeegga</a></li>
+                    <li><a href="/privacy">Arrimaha Gaarka ah</a></li>
+                    <li><a href="/cookies">Maaraynta Cookies</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h4 class="footer-title">SUBSCRIBE</h4>
-                <p class="footer-text">Get unlimited access to the most important stories.</p>
-                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
+                <h4 class="footer-title">ISU DIIWAAN GELI</h4>
+                <p class="footer-text">Hel wararka ugu muhiimsan oo dhan.</p>
+                <button class="subscribe-btn" onclick="window.location.href='index.html'">Isu Diiwaan Geli</button>
             </div>
         </div>
-        <div class="copyright"><p>&copy; 2026 Galmudug Times. All rights reserved.</p></div>
+        <div class="copyright"><p>&copy; 2026 Galmudug Times. Dhammaan xuquuqda way dhowran yihiin.</p></div>
         <div class="footer-bottom-rule double-rule"></div>
     </footer>
 
     <script>
     function qs(p){return new URLSearchParams(location.search).get(p)}
-    function fmtDate(d){return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}
+    function fmtDate(d){return new Date(d).toLocaleDateString('so-SO',{year:'numeric',month:'long',day:'numeric'})}
     function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
     // Strip copy-paste metadata from article titles

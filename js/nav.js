@@ -23,7 +23,7 @@ function buildNavHTML(categories) {
     const currentSlug = getCurrentSlug();
     const currentCat  = getCurrentCatParam();
 
-    let links = `<a href="/" class="nav-item${currentSlug === 'index' || !currentSlug ? ' nav-active' : ''}">Home</a>\n                `;
+    let links = `<a href="/" class="nav-item${currentSlug === 'index' || !currentSlug ? ' nav-active' : ''}">Bogga Hore</a>\n                `;
 
     links += categories.map(cat => {
         const page = cat.page_file ? cat.page_file.replace(/\.html(\?|$)/, (m, q) => q ? '?' : '') : `/category?cat=${cat.slug}`;
@@ -35,7 +35,7 @@ function buildNavHTML(categories) {
         return `<a href="${page}" class="nav-item${activeClass}">${escNav(name)}</a>`;
     }).join('\n                ');
 
-    links += `\n                <a href="/contact" class="nav-item${currentSlug === 'contact' ? ' nav-active' : ''}">Contact Us</a>`;
+    links += `\n                <a href="/contact" class="nav-item${currentSlug === 'contact' ? ' nav-active' : ''}">Nala Soo Xiriir</a>`;
     return links;
 }
 

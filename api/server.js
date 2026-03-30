@@ -292,22 +292,23 @@ function initializeDatabase() {
     db.run(`ALTER TABLE categories ADD COLUMN nav_order INTEGER DEFAULT 99`, () => {});
     db.run(`ALTER TABLE categories ADD COLUMN page_file TEXT`, () => {});
 
-    // Insert default categories
+    // Insert default categories (Somali language for Galmudug region)
     const categories = [
-      { name: 'Politics', slug: 'politics', color: '#d63031' },
-      { name: 'World', slug: 'world', color: '#1e90ff' },
-      { name: 'Business', slug: 'business', color: '#27ae60' },
-      { name: 'Technology', slug: 'technology', color: '#8e44ad' },
-      { name: 'Opinion', slug: 'opinion', color: '#f39c12' },
-      { name: 'Life & Culture', slug: 'culture', color: '#e74c3c' },
-      { name: 'Analysis', slug: 'analysis', color: '#2c3e50' }
+      { name: 'Wararka', slug: 'wararka', color: '#d63031', order: 1 },           // News
+      { name: 'Galmudug', slug: 'galmudug', color: '#1e90ff', order: 2 },         // Local Galmudug news
+      { name: 'Bulshada', slug: 'bulshada', color: '#27ae60', order: 3 },         // Community/Society
+      { name: 'Caafimaadka', slug: 'caafimaadka', color: '#e74c3c', order: 4 },   // Health
+      { name: 'Waxbarashada', slug: 'waxbarashada', color: '#8e44ad', order: 5 }, // Education
+      { name: 'Dhaqaalaha', slug: 'dhaqaalaha', color: '#f39c12', order: 6 },     // Economy
+      { name: 'Ciyaaraha', slug: 'ciyaaraha', color: '#00b894', order: 7 },       // Sports
+      { name: 'Suugaanta', slug: 'suugaanta', color: '#6c5ce7', order: 8 }        // Culture/Arts
     ];
 
     categories.forEach(cat => {
       db.run(`
-        INSERT OR IGNORE INTO categories (name, slug, color)
-        VALUES (?, ?, ?)
-      `, [cat.name, cat.slug, cat.color]);
+        INSERT OR IGNORE INTO categories (name, slug, color, show_in_nav, nav_order)
+        VALUES (?, ?, ?, 1, ?)
+      `, [cat.name, cat.slug, cat.color, cat.order]);
     });
 
     // Create default admin user (if not exists)
