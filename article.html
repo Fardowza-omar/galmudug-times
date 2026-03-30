@@ -31,6 +31,20 @@
         .article-body ul,.article-body ol{margin:1.5rem 0 1.5rem 2rem}
         .article-body li{margin-bottom:.5rem}
         .article-body p:first-child::first-letter{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;float:left;margin:.1em .1em 0 0;line-height:3rem;color:#000}
+        /* Gallery */
+        .article-gallery{margin:2.5rem 0}
+        .gallery-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid #000}
+        .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem}
+        .gallery-item{margin:0;overflow:hidden;border-radius:6px;cursor:pointer;aspect-ratio:4/3}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+        .gallery-item img:hover{transform:scale(1.03)}
+        /* Video */
+        .article-video{margin:2.5rem 0}
+        /* Lightbox */
+        .lightbox{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);align-items:center;justify-content:center;cursor:zoom-out}
+        .lightbox.active{display:flex}
+        .lightbox img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:4px}
+        .lightbox-close{position:absolute;top:1rem;right:1.5rem;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none;line-height:1}
         /* Actions */
         .article-actions{display:flex;align-items:center;gap:.75rem;padding:1.5rem 0;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;margin:2rem 0;flex-wrap:wrap}
         .action-label{font-family:'Inter',sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:#666}
@@ -250,12 +264,29 @@
 
     function renderArticle(a){
         const cc=a.category_color||'#c41e3a',cn=a.category_name||'';
-        let media='';
+        // Featured image always at top
+        let heroMedia='';
+        if(a.featured_image){
+            heroMedia=`<figure class="article-featured-image"><img src="${esc(a.featured_image)}" alt="${esc(a.title)}"></figure>`;}
+        // Gallery images after body
+        let galleryHtml='';
+        try{
+            const imgs=a.gallery_images?JSON.parse(a.gallery_images):[];
+            if(imgs.length){
+                galleryHtml=`<div class="article-gallery"><h3 class="gallery-title">Sawirro / Photos</h3><div class="gallery-grid">${imgs.map(src=>`<figure class="gallery-item"><img src="${esc(src)}" alt="" loading="lazy" onclick="openLightbox(this.src)"></figure>`).join('')}</div></div>`;
+            }
+        }catch(e){}
+        // Video at the end
+        let videoHtml='';
         if(a.video_url){
-            let vs=a.video_url.replace('youtube.com/watch?v=','youtube.com/embed/').replace('youtu.be/','youtube.com/embed/');
-            media=`<div class="video-wrapper"><iframe src="${esc(vs)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>`;}
-        else if(a.featured_image){
-            media=`<figure class="article-featured-image"><img src="${esc(a.featured_image)}" alt="${esc(a.title)}"></figure>`;}
+            let vs=a.video_url;
+            if(vs.includes('youtube.com')||vs.includes('youtu.be')){
+                vs=vs.replace('youtube.com/watch?v=','youtube.com/embed/').replace('youtu.be/','youtube.com/embed/');
+                videoHtml=`<div class="article-video"><h3 class="gallery-title">Muuqaal / Video</h3><div class="video-wrapper"><iframe src="${esc(vs)}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div></div>`;
+            } else {
+                videoHtml=`<div class="article-video"><h3 class="gallery-title">Muuqaal / Video</h3><div class="video-wrapper"><video src="${esc(vs)}" controls preload="metadata" style="width:100%;border-radius:8px;"></video></div></div>`;
+            }
+        }
         const body=(a.content||'').split(/\n\n+/).map(p=>`<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
         // Author profile image logic
         let authorImgHtml = '';
@@ -281,8 +312,10 @@
                     </div>
                 </div>
             </header>
-            ${media}
+            ${heroMedia}
             <div class="article-body">${body}</div>
+            ${galleryHtml}
+            ${videoHtml}
             <div class="article-actions">
                 <span class="action-label">React:</span>
                 <button class="like-btn" id="likeBtn" data-id="${a.id}">
@@ -421,6 +454,19 @@
             msg.style.display='block';msg.style.color='#f39c12';msg.textContent='Network error. Please try again.';
             btn.disabled=false;btn.textContent='Subscribe Now';
         }
+    }
+
+    // Lightbox for gallery images
+    function openLightbox(src){
+        let lb=document.getElementById('lightbox');
+        if(!lb){
+            lb=document.createElement('div');lb.id='lightbox';lb.className='lightbox';
+            lb.innerHTML='<button class="lightbox-close">&times;</button><img>';
+            lb.addEventListener('click',()=>lb.classList.remove('active'));
+            document.body.appendChild(lb);
+        }
+        lb.querySelector('img').src=src;
+        lb.classList.add('active');
     }
 
     loadArticle();
