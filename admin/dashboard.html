@@ -530,7 +530,7 @@
                 categories=await res.json();
                 const sel=$('articleCategory');
                 if(sel){sel.innerHTML='<option value="">Select Category</option>';
-                    categories.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
+                    categories.filter(c=>c.show_in_nav===1).forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
                 }
             }catch(e){console.error('Categories error:',e);}
         }
