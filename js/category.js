@@ -68,7 +68,6 @@ function catLoadMore() {
 
 async function initCategoryPage(slug, color) {
     _catColor = color || '#d63031';
-    loadTicker();
     try {
         const res = await fetch(`/api/articles?category=${encodeURIComponent(slug)}&limit=60&_t=${Date.now()}`);
         const articles = await res.json();
