@@ -6,8 +6,11 @@
     <title>Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=4">
     <style>
+        /* Skeleton animation for loading state */
+        @keyframes skeleton-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;border-radius:4px}
         .article-container{max-width:1400px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:2fr 1fr;gap:4rem}
         .full-article{grid-column:1}
         .article-sidebar-col{grid-column:2}
@@ -140,7 +143,39 @@
     </header>
 
     <main class="article-container" id="articleContainer">
-        <div class="article-loading">Loading article...</div>
+        <!-- Article skeleton loading -->
+        <article class="full-article" style="pointer-events:none;">
+            <header class="article-header">
+                <div class="skeleton" style="width:80px;height:20px;margin-bottom:1rem;"></div>
+                <div class="skeleton" style="width:90%;height:2.5rem;margin-bottom:.5rem;"></div>
+                <div class="skeleton" style="width:70%;height:2.5rem;margin-bottom:1.5rem;"></div>
+                <div class="skeleton" style="width:100%;height:1rem;margin-bottom:1.5rem;border-left:3px solid #ddd;padding-left:1rem;"></div>
+                <div style="display:flex;justify-content:space-between;padding:1.2rem 0;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;margin-bottom:2rem;">
+                    <div style="display:flex;align-items:center;gap:1rem;">
+                        <div class="skeleton" style="width:48px;height:48px;border-radius:50%;"></div>
+                        <div class="skeleton" style="width:100px;height:14px;"></div>
+                    </div>
+                    <div><div class="skeleton" style="width:120px;height:12px;margin-bottom:6px;"></div><div class="skeleton" style="width:60px;height:10px;"></div></div>
+                </div>
+            </header>
+            <div class="skeleton" style="width:100%;height:400px;margin-bottom:2rem;"></div>
+            <div class="article-body">
+                <div class="skeleton" style="width:100%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:95%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:90%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:100%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:85%;height:1rem;margin-bottom:1.5rem;"></div>
+                <div class="skeleton" style="width:100%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:92%;height:1rem;margin-bottom:.8rem;"></div>
+                <div class="skeleton" style="width:88%;height:1rem;margin-bottom:.8rem;"></div>
+            </div>
+        </article>
+        <aside class="article-sidebar-col" style="pointer-events:none;">
+            <div class="skeleton" style="width:100px;height:14px;border-bottom:2px solid #ddd;margin-bottom:1.5rem;padding-bottom:.5rem;"></div>
+            <div style="padding:1rem 0;border-bottom:1px solid #e0e0e0;"><div class="skeleton" style="width:60px;height:12px;margin-bottom:6px;"></div><div class="skeleton" style="width:100%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:80%;height:14px;"></div></div>
+            <div style="padding:1rem 0;border-bottom:1px solid #e0e0e0;"><div class="skeleton" style="width:60px;height:12px;margin-bottom:6px;"></div><div class="skeleton" style="width:90%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:70%;height:14px;"></div></div>
+            <div style="padding:1rem 0;border-bottom:1px solid #e0e0e0;"><div class="skeleton" style="width:60px;height:12px;margin-bottom:6px;"></div><div class="skeleton" style="width:85%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:75%;height:14px;"></div></div>
+        </aside>
     </main>
 
     <footer class="footer">
@@ -278,10 +313,13 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     <span id="likeCount">0</span> Likes
                 </button>
-                <span class="action-label" style="margin-left:.5rem">Share:</span>
-                <a class="share-btn tw" id="shareTw" href="#" target="_blank" rel="noopener">&#120143; Twitter</a>
-                <a class="share-btn fb" id="shareFb" href="#" target="_blank" rel="noopener">f Facebook</a>
-                <button class="share-btn cp" id="shareCp">&#128279; Copy Link</button>
+                <span class="action-label" style="margin-left:1rem">Share:</span>
+                <a class="share-btn-social share-btn-whatsapp" id="shareWa" href="#" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> <span>WhatsApp</span></a>
+                <a class="share-btn-social share-btn-telegram" id="shareTg" href="#" target="_blank" rel="noopener"><i class="fab fa-telegram-plane"></i> <span>Telegram</span></a>
+                <a class="share-btn-social share-btn-facebook" id="shareFb" href="#" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i> <span>Facebook</span></a>
+                <a class="share-btn-social share-btn-twitter" id="shareTw" href="#" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i> <span>X</span></a>
+                <a class="share-btn-social share-btn-email" id="shareEm" href="#" rel="noopener"><i class="fas fa-envelope"></i> <span>Email</span></a>
+                <button class="share-btn-social share-btn-copy" id="shareCp"><i class="fas fa-link"></i> <span>Copy</span></button>
             </div>
             <div id="commentsSection"></div>
         </article>
@@ -300,12 +338,15 @@
             </div>
         </aside>`;
         const pu=encodeURIComponent(location.href),pt=encodeURIComponent(a.title);
-        document.getElementById('shareTw').href=`https://twitter.com/intent/tweet?url=${pu}&text=${pt}`;
+        document.getElementById('shareWa').href=`https://wa.me/?text=${pt}%20${pu}`;
+        document.getElementById('shareTg').href=`https://t.me/share/url?url=${pu}&text=${pt}`;
         document.getElementById('shareFb').href=`https://www.facebook.com/sharer/sharer.php?u=${pu}`;
+        document.getElementById('shareTw').href=`https://twitter.com/intent/tweet?url=${pu}&text=${pt}`;
+        document.getElementById('shareEm').href=`mailto:?subject=${pt}&body=Check%20out%20this%20article%3A%20${pu}`;
         document.getElementById('shareCp').addEventListener('click',()=>{
             navigator.clipboard.writeText(location.href).then(()=>{
-                const b=document.getElementById('shareCp');b.classList.add('copied');b.textContent='? Copied!';
-                setTimeout(()=>{b.classList.remove('copied');b.textContent='&#128279; Copy Link';},2000);});});
+                const b=document.getElementById('shareCp');b.classList.add('copied');b.innerHTML='<i class="fas fa-check"></i> <span>Copied!</span>';
+                setTimeout(()=>{b.classList.remove('copied');b.innerHTML='<i class="fas fa-link"></i> <span>Copy</span>';},2000);});});
         document.getElementById('likeBtn').addEventListener('click',()=>toggleLike(a.id));}
 
     // Generate or retrieve a persistent per-browser token

@@ -4,25 +4,182 @@
    ======================================== */
 
 /* ========================================
-   ANTI-FLICKER / INITIAL LOAD
+   ANTI-FLICKER / SKELETON LOADING
    ======================================== */
 
-/* Prevent layout shift and flash of unstyled content */
+/* Hide content initially, show when loaded */
 html {
     visibility: visible;
 }
 
-/* Smooth content appearance */
-.gt-hero-grid,
+/* Skeleton loading animation */
+@keyframes skeleton-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text {
+    height: 1em;
+    margin-bottom: 0.5em;
+    border-radius: 3px;
+}
+
+.skeleton-hero {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Content fade-in when loaded */
+.content-loaded {
+    animation: contentFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes contentFadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(8px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Prevent layout shift */
+.gt-hero-grid {
+    min-height: 440px;
+}
+
+@media(max-width:900px) {
+    .gt-hero-grid { min-height: 280px; }
+}
+
+@media(max-width:600px) {
+    .gt-hero-grid { min-height: 240px; }
+}
+
+/* Smooth section transitions */
 .gt-news-section,
 .gt-featured-section,
 .gt-cat-section {
-    animation: fadeInContent 0.3s ease-out;
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
-@keyframes fadeInContent {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+/* ========================================
+   SHARE BUTTONS - SOCIAL SHARING
+   ======================================== */
+
+.share-buttons-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.share-btn-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1rem;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.share-btn-social:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.share-btn-social i {
+    font-size: 1rem;
+}
+
+/* WhatsApp */
+.share-btn-whatsapp {
+    background: #25D366;
+}
+.share-btn-whatsapp:hover {
+    background: #1da851;
+}
+
+/* Telegram */
+.share-btn-telegram {
+    background: #0088cc;
+}
+.share-btn-telegram:hover {
+    background: #0077b5;
+}
+
+/* Facebook */
+.share-btn-facebook {
+    background: #1877F2;
+}
+.share-btn-facebook:hover {
+    background: #166fe5;
+}
+
+/* Twitter/X */
+.share-btn-twitter {
+    background: #000;
+}
+.share-btn-twitter:hover {
+    background: #333;
+}
+
+/* Email */
+.share-btn-email {
+    background: #666;
+}
+.share-btn-email:hover {
+    background: #555;
+}
+
+/* Copy Link */
+.share-btn-copy {
+    background: #fff;
+    color: #333;
+    border: 2px solid #e0e0e0;
+}
+.share-btn-copy:hover {
+    border-color: #27ae60;
+    color: #27ae60;
+}
+.share-btn-copy.copied {
+    background: #27ae60;
+    border-color: #27ae60;
+    color: #fff;
+}
+
+/* Mobile share buttons */
+@media (max-width: 600px) {
+    .share-btn-social {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    .share-btn-social span {
+        display: none;
+    }
+    .share-btn-social i {
+        margin: 0;
+    }
 }
 
 /* ========================================

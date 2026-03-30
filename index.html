@@ -8,11 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=4">
     <style>
     /* Critical CSS - prevent layout shift */
     html{visibility:visible}
     body{margin:0;padding:0;overflow-x:hidden}
+    /* Skeleton animation */
+    @keyframes skeleton-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;border-radius:4px}
     .ticker-bar{background:#c41e3a;padding:.4rem 0}
     @media(max-width:768px){.ticker-bar{padding:.35rem 0}}
     /*  Homepage Redesign  */
@@ -144,7 +147,10 @@
 
     <!--  Hero Grid: top 3 featured stories  -->
     <section class="gt-hero-grid" id="gt-hero-grid">
-        <div style="display:flex;align-items:center;justify-content:center;color:#666;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading featured stories&hellip;</div>
+        <!-- Skeleton loading placeholders -->
+        <div class="gt-hero-card skeleton-hero" style="background:#1a1a1a;"><div style="position:absolute;bottom:1.4rem;left:1.2rem;right:1.2rem;"><div class="skeleton" style="width:60px;height:16px;margin-bottom:8px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div><div class="skeleton" style="width:80%;height:20px;margin-bottom:6px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div><div class="skeleton" style="width:50%;height:12px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div></div></div>
+        <div class="gt-hero-card skeleton-hero" style="background:#1a1a1a;"><div style="position:absolute;bottom:1.4rem;left:1.2rem;right:1.2rem;"><div class="skeleton" style="width:60px;height:16px;margin-bottom:8px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div><div class="skeleton" style="width:70%;height:16px;margin-bottom:6px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div></div></div>
+        <div class="gt-hero-card skeleton-hero" style="background:#1a1a1a;"><div style="position:absolute;bottom:1.4rem;left:1.2rem;right:1.2rem;"><div class="skeleton" style="width:60px;height:16px;margin-bottom:8px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div><div class="skeleton" style="width:70%;height:16px;margin-bottom:6px;background:linear-gradient(90deg,#333 25%,#444 50%,#333 75%);background-size:200% 100%;animation:skeleton-shimmer 1.5s ease-in-out infinite;"></div></div></div>
     </section>
 
     <!--  WARARKA MAANTA (Today's News)  -->
@@ -155,7 +161,13 @@
                 <a href="/category">Dhammaan &rarr;</a>
             </div>
             <div class="gt-today-grid" id="gt-today-grid">
-                <div style="padding:2rem;color:#999;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading articles&hellip;</div>
+                <!-- Skeleton news cards -->
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:90%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:60%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:40%;height:10px;"></div></div></div>
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:85%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:55%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:35%;height:10px;"></div></div></div>
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:80%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:65%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:45%;height:10px;"></div></div></div>
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:75%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:50%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:40%;height:10px;"></div></div></div>
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:88%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:58%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:38%;height:10px;"></div></div></div>
+                <div class="gt-today-card" style="pointer-events:none;"><div class="skeleton" style="width:80px;height:62px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:82%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:62%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:42%;height:10px;"></div></div></div>
             </div>
             <div class="gt-load-more-wrap" id="gt-load-more-wrap" style="display:none;">
                 <button class="gt-load-more-btn" onclick="loadMoreToday()">LOAD MORE</button>
@@ -170,7 +182,11 @@
                 <h2>XULKA GALMUDUG</h2>
             </div>
             <div class="gt-featured-grid" id="gt-featured-grid">
-                <div style="padding:2rem;color:#999;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading&hellip;</div>
+                <!-- Skeleton featured cards -->
+                <div class="gt-feat-card" style="pointer-events:none;"><div class="skeleton" style="width:100%;height:160px;"></div><div style="padding:.7rem;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:90%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:70%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:40%;height:10px;"></div></div></div>
+                <div class="gt-feat-card" style="pointer-events:none;"><div class="skeleton" style="width:100%;height:160px;"></div><div style="padding:.7rem;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:85%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:65%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:35%;height:10px;"></div></div></div>
+                <div class="gt-feat-card" style="pointer-events:none;"><div class="skeleton" style="width:100%;height:160px;"></div><div style="padding:.7rem;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:80%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:60%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:45%;height:10px;"></div></div></div>
+                <div class="gt-feat-card" style="pointer-events:none;"><div class="skeleton" style="width:100%;height:160px;"></div><div style="padding:.7rem;"><div class="skeleton" style="width:50px;height:10px;margin-bottom:6px;"></div><div class="skeleton" style="width:88%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:68%;height:14px;margin-bottom:4px;"></div><div class="skeleton" style="width:42%;height:10px;"></div></div></div>
             </div>
         </div>
     </section>
@@ -179,7 +195,10 @@
     <section class="gt-cat-section">
         <div class="container-wide">
             <div class="gt-cat-grid" id="gt-cat-grid">
-                <div style="padding:2rem;color:#999;font-family:'Inter',sans-serif;font-size:.85rem;grid-column:1/-1;">Loading categories&hellip;</div>
+                <!-- Skeleton category columns -->
+                <div class="gt-cat-col-inner"><div class="gt-section-hdr"><div class="skeleton" style="width:100px;height:16px;"></div></div><div class="skeleton" style="width:100%;height:185px;margin-bottom:.6rem;"></div><div class="skeleton" style="width:50px;height:10px;margin-bottom:4px;"></div><div class="skeleton" style="width:90%;height:14px;margin-bottom:12px;"></div><div style="border-top:1px solid #e8e8e8;padding-top:8px;"><div class="skeleton" style="width:85%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:75%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:80%;height:12px;margin-bottom:10px;"></div></div></div>
+                <div class="gt-cat-col-inner"><div class="gt-section-hdr"><div class="skeleton" style="width:100px;height:16px;"></div></div><div class="skeleton" style="width:100%;height:185px;margin-bottom:.6rem;"></div><div class="skeleton" style="width:50px;height:10px;margin-bottom:4px;"></div><div class="skeleton" style="width:85%;height:14px;margin-bottom:12px;"></div><div style="border-top:1px solid #e8e8e8;padding-top:8px;"><div class="skeleton" style="width:80%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:70%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:75%;height:12px;margin-bottom:10px;"></div></div></div>
+                <div class="gt-cat-col-inner"><div class="gt-section-hdr"><div class="skeleton" style="width:100px;height:16px;"></div></div><div class="skeleton" style="width:100%;height:185px;margin-bottom:.6rem;"></div><div class="skeleton" style="width:50px;height:10px;margin-bottom:4px;"></div><div class="skeleton" style="width:88%;height:14px;margin-bottom:12px;"></div><div style="border-top:1px solid #e8e8e8;padding-top:8px;"><div class="skeleton" style="width:82%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:72%;height:12px;margin-bottom:10px;"></div><div class="skeleton" style="width:78%;height:12px;margin-bottom:10px;"></div></div></div>
             </div>
         </div>
     </section>
