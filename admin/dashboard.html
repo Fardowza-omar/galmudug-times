@@ -214,10 +214,6 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     Comments <span class="nav-badge" id="commentBadge" style="display:none;">0</span>
                 </a>
-                <a href="#categories" class="nav-link" data-section="categories">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    Categories
-                </a>
 
                 <div class="nav-group-label">Audience</div>
                 <a href="#subscribers" class="nav-link" data-section="subscribers">
@@ -302,18 +298,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORIES SECTION -->
-            <div class="section-box" id="categoriesSection">
-                <div class="card">
-                    <div class="card-head">
-                        <h2>Categories</h2>
-                        <button class="btn-primary" id="newCategoryBtn">+ New Category</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="cat-grid" id="categoriesList"><p style="color:#999;">Loading...</p></div>
-                    </div>
-                </div>
-            </div>
 
             <!-- SUBSCRIBERS SECTION -->
             <div class="section-box" id="subscribersSection">
@@ -418,40 +402,12 @@
         </div>
     </div>
 
-    <!-- Category Modal -->
-    <div class="modal" id="categoryModal">
-        <div class="modal-box" style="max-width:520px;">
-            <div class="modal-head">
-                <h2 id="categoryModalTitle">Add New Category</h2>
-                <button class="close-btn" id="closeCategoryModal">&times;</button>
-            </div>
-            <form id="categoryForm">
-                <div class="fg"><label>Category Name</label><input type="text" id="categoryName" required placeholder="e.g., Politics, Business"></div>
-                <div class="fg"><label>Color</label>
-                    <div style="display:flex;gap:1rem;align-items:center;">
-                        <input type="color" id="categoryColor" value="#000000" style="width:50px;height:36px;cursor:pointer;border:none;border-radius:6px;">
-                        <span id="colorPreview" style="font-size:.85rem;color:#888;">Pick a color</span>
-                    </div>
-                </div>
-                <div class="fg"><label>Page File (Optional)</label><input type="text" id="categoryPageFile" placeholder="e.g., politics.html"><small style="color:#888;display:block;margin-top:.25rem;">If blank, links to {slug}.html</small></div>
-                <div class="fg" style="display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;">
-                    <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;margin:0;text-transform:none;font-size:.82rem;"><input type="checkbox" id="categoryShowInNav" style="width:18px;height:18px;cursor:pointer;"> Show in Navigation</label>
-                    <div style="display:flex;align-items:center;gap:.4rem;"><label style="margin:0;font-size:.72rem;">Order:</label><input type="number" id="categoryNavOrder" min="1" max="99" value="99" style="width:55px;padding:.35rem;border:1px solid #e0e0e0;border-radius:6px;font-size:.82rem;"></div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-submit" id="saveCategoryBtn">Save Category</button>
-                    <button type="button" class="btn-cancel" id="cancelCategoryBtn">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script>
     (function(){
         'use strict';
         const API = '/api';
         let currentArticleId = null;
-        let currentCategoryId = null;
         let categories = [];
 
         // ===== HELPERS =====
@@ -501,8 +457,8 @@
         overlay.addEventListener('click',closeSidebar);
 
         // ===== SECTION NAVIGATION =====
-        const sections=['articles','comments','categories','subscribers','profile','ads'];
-        const sectionTitles={articles:'Dashboard',comments:'Comments',categories:'Categories',subscribers:'Subscribers',profile:'My Profile',ads:'Advertising'};
+        const sections=['articles','comments','subscribers','profile','ads'];
+        const sectionTitles={articles:'Dashboard',comments:'Comments',subscribers:'Subscribers',profile:'My Profile',ads:'Advertising'};
 
         function showSection(name){
             sections.forEach(s=>{
@@ -518,7 +474,6 @@
             if(name==='comments')loadComments();
             if(name==='subscribers')loadSubscribers();
             if(name==='profile')loadUserProfile();
-            if(name==='categories')loadCategories();
             if(name==='ads')loadAds();
             closeSidebar();
         }
@@ -575,29 +530,7 @@
                 if(sel){sel.innerHTML='<option value="">Select Category</option>';
                     categories.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
                 }
-                displayCategories(categories);
             }catch(e){console.error('Categories error:',e);}
-        }
-
-        function displayCategories(cats){
-            const list=$('categoriesList');
-            const sorted=[...cats].sort((a,b)=>(a.nav_order||99)-(b.nav_order||99));
-            list.innerHTML=sorted.map(c=>`
-                <div class="cat-card" style="border-left-color:${esc(c.color)};">
-                    <div class="cat-badges">
-                        ${c.show_in_nav?`<span class="badge badge-pub">Menu #${c.nav_order||99}</span>`:`<span class="badge badge-draft">Hidden</span>`}
-                    </div>
-                    <h3>${esc(c.name)}</h3>
-                    <p class="cat-meta">
-                        <span style="display:inline-block;width:14px;height:14px;background:${esc(c.color)};border-radius:3px;vertical-align:middle;margin-right:.3rem;"></span>
-                        ${esc(c.color)} · Slug: <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:3px;font-size:.75rem;">${esc(c.slug)}</code>
-                    </p>
-                    ${c.page_file?`<p class="cat-meta" style="margin-top:.2rem;">Page: ${esc(c.page_file)}</p>`:''}
-                    <div style="display:flex;gap:.4rem;margin-top:.75rem;">
-                        <button class="btn-sm btn-edit" onclick="editCategory(${c.id})">Edit</button>
-                        <button class="btn-sm btn-del" onclick="deleteCategory(${c.id})">Delete</button>
-                    </div>
-                </div>`).join('');
         }
 
         // ===== ARTICLE CRUD =====
@@ -720,66 +653,7 @@
         $('closeModal').addEventListener('click',()=>$('articleModal').classList.remove('active'));
         $('cancelBtn').addEventListener('click',()=>$('articleModal').classList.remove('active'));
 
-        // ===== CATEGORY CRUD =====
-        $('newCategoryBtn').addEventListener('click',()=>{
-            currentCategoryId=null;
-            $('categoryModalTitle').textContent='Add New Category';
-            $('categoryForm').reset();$('categoryColor').value='#000000';
-            $('categoryShowInNav').checked=false;$('categoryNavOrder').value=99;$('categoryPageFile').value='';
-            $('categoryModal').classList.add('active');
-        });
-        $('closeCategoryModal').addEventListener('click',()=>$('categoryModal').classList.remove('active'));
-        $('cancelCategoryBtn').addEventListener('click',()=>$('categoryModal').classList.remove('active'));
 
-        $('categoryColor').addEventListener('change',e=>{
-            $('colorPreview').style.color=e.target.value;
-            $('colorPreview').textContent='Color: '+e.target.value;
-        });
-
-        $('saveCategoryBtn').addEventListener('click',async()=>{
-            const name=$('categoryName').value.trim();
-            const color=$('categoryColor').value;
-            const show_in_nav=$('categoryShowInNav').checked?1:0;
-            const nav_order=parseInt($('categoryNavOrder').value)||99;
-            const page_file=$('categoryPageFile').value.trim()||null;
-            if(!name){showToast('err','Please enter a category name.');return;}
-            const btn=$('saveCategoryBtn');btn.disabled=true;btn.textContent='Saving...';
-            try{
-                const token=getToken();if(!token){window.location.href='login.html';return;}
-                const method=currentCategoryId?'PUT':'POST';
-                const url=currentCategoryId?API+'/categories/'+currentCategoryId:API+'/categories';
-                const res=await fetch(url,{method,headers:jsonAuthHeaders(),body:JSON.stringify({name,color,show_in_nav,nav_order,page_file})});
-                const data=await res.json();
-                if(res.ok){$('categoryModal').classList.remove('active');showToast('ok',data.message||(currentCategoryId?'Category updated!':'Category created!'));loadCategories();loadArticles();}
-                else if(handleUnauth(res))return;
-                else showToast('err',data.error||'Failed to save category');
-            }catch(e){showToast('err','Network error');}finally{btn.disabled=false;btn.textContent='Save Category';}
-        });
-
-        window.editCategory=function(id){
-            const c=categories.find(x=>x.id===id);if(!c)return;
-            currentCategoryId=id;
-            $('categoryModalTitle').textContent='Edit Category';
-            $('categoryName').value=c.name;
-            $('categoryColor').value=c.color;
-            $('colorPreview').style.color=c.color;
-            $('colorPreview').textContent='Color: '+c.color;
-            $('categoryShowInNav').checked=!!c.show_in_nav;
-            $('categoryNavOrder').value=c.nav_order||99;
-            $('categoryPageFile').value=c.page_file||'';
-            $('categoryModal').classList.add('active');
-        };
-
-        window.deleteCategory=async function(id){
-            const c=categories.find(x=>x.id===id);
-            if(!confirm('Delete category "'+esc(c?c.name:'this category')+'"? This cannot be undone.'))return;
-            try{
-                const res=await fetch(API+'/categories/'+id,{method:'DELETE',headers:authHeaders()});
-                const data=await res.json();
-                if(res.ok){showToast('ok','Category deleted');loadCategories();}
-                else showToast('err',data.error||'Failed to delete category');
-            }catch(e){showToast('err','Failed to delete category');}
-        };
 
         // ===== COMMENTS =====
         async function loadComments(){
