@@ -42,6 +42,10 @@ app.use(express.static(join(__dirname, '..')));  // Serve root directory (HTML, 
 app.use('/uploads', express.static(join(__dirname, '../uploads')));  // Serve uploads
 app.use('/admin', express.static(join(__dirname, '../admin')));  // Serve admin pages
 
+// Redirect /admin and /admin/ to login page
+app.get('/admin', (req, res) => res.redirect('/admin/login.html'));
+app.get('/admin/', (req, res) => res.redirect('/admin/login.html'));
+
 // Create uploads directory if it doesn't exist
 const uploadsDir = join(__dirname, '../uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -438,12 +442,21 @@ app.get('/api/categories', (req, res) => {
 });
 
 // Get categories for navigation (only visible ones, ordered)
+// Falls back to showing ALL categories if none are marked show_in_nav
 app.get('/api/categories/nav/visible', (req, res) => {
   db.all('SELECT * FROM categories WHERE show_in_nav = 1 ORDER BY nav_order ASC, name ASC', (err, categories) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
     }
-    res.json(categories);
+    // If no categories are flagged for nav, return all of them
+    if (categories.length === 0) {
+      db.all('SELECT * FROM categories ORDER BY name ASC', (err2, allCats) => {
+        if (err2) return res.status(500).json({ error: 'Database error' });
+        res.json(allCats);
+      });
+    } else {
+      res.json(categories);
+    }
   });
 });
 
