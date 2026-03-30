@@ -157,7 +157,7 @@
         <div class="footer-bottom-rule double-rule"></div>
     </footer>
 
-    <script src="/js/category.js?v=2"></script>
+    <script src="/js/category.js?v=3"></script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
     <script>
@@ -170,21 +170,28 @@
                 return;
             }
             try {
-                const res = await fetch('/api/categories/' + catSlug);
+                const res = await fetch('/api/categories/' + encodeURIComponent(catSlug));
                 if (!res.ok) throw new Error('not found');
                 const cat = await res.json();
                 const color = cat.color || '#d63031';
-                document.title = cat.name + ' - Galmudug Times';
-                document.getElementById('categoryTitle').textContent = cat.name;
-                document.getElementById('categoryDescription').textContent = 'Latest ' + cat.name + ' news and articles';
-                document.getElementById('cat-hero-banner').style.visibility = 'visible';
-                document.getElementById('cat-hero-banner').style.setProperty('--cat-color', color);
-                document.getElementById('cat-page-wrap').style.setProperty('--cat-color', color);
+                document.title = cat.name + ' \u2013 Galmudug Times';
+                const titleEl = document.getElementById('categoryTitle');
+                const descEl = document.getElementById('categoryDescription');
+                const bannerEl = document.getElementById('cat-hero-banner');
+                const wrapEl = document.getElementById('cat-page-wrap');
+                if (titleEl) titleEl.textContent = cat.name;
+                if (descEl) descEl.textContent = 'Latest ' + cat.name + ' news and articles';
+                if (bannerEl) { bannerEl.style.visibility = 'visible'; bannerEl.style.setProperty('--cat-color', color); }
+                if (wrapEl) wrapEl.style.setProperty('--cat-color', color);
                 initCategoryPage(catSlug, color);
             } catch(e) {
-                document.getElementById('categoryTitle').textContent = 'Category Not Found';
-                document.getElementById('categoryDescription').textContent = 'The category "' + catSlug + '" does not exist.';
-                document.getElementById('cat-hero-banner').style.visibility = 'visible';
+                console.error('Category load error:', e);
+                const titleEl = document.getElementById('categoryTitle');
+                const descEl = document.getElementById('categoryDescription');
+                const bannerEl = document.getElementById('cat-hero-banner');
+                if (titleEl) titleEl.textContent = 'Category Not Found';
+                if (descEl) descEl.textContent = 'The category "' + catSlug + '" does not exist.';
+                if (bannerEl) bannerEl.style.visibility = 'visible';
             }
         })();
     </script>
