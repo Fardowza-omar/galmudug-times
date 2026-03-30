@@ -11,22 +11,70 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css?v=10">
     <style>
-        .page-hero{background:#1a1a1a;color:#fff;padding:3.5rem 2rem;text-align:center}
-        .page-hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:#fff;margin:0 0 .5rem}
-        .page-hero p{font-family:'Inter',sans-serif;font-size:1rem;color:rgba(255,255,255,.8);margin:0}
-        .page-body{max-width:860px;margin:0 auto;padding:3.5rem 2rem}
-        .page-body h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin:2.5rem 0 1rem;padding-top:1.5rem;border-top:2px solid #e0e0e0}
-        .page-body h2:first-child{border-top:none;margin-top:0}
-        .page-body p,.page-body li{font-family:'Libre Baskerville',serif;font-size:1rem;line-height:1.85;color:#333;margin-bottom:1rem}
+        .page-hero{background:#1a1a1a;color:#fff;padding:4.5rem 2rem 3.5rem;text-align:center}
+        .page-hero h1{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:900;color:#fff;margin:0 0 .6rem}
+        .page-hero p{font-family:'Libre Baskerville',serif;font-size:1.05rem;color:rgba(255,255,255,.75);margin:0;font-style:italic}
+        .page-hero .hero-rule{width:60px;height:3px;background:#fff;margin:1.2rem auto 0;opacity:.4}
+
+        /* Stats bar */
+        .stats-bar{background:#f7f7f5;border-bottom:1px solid #e5e5e5}
+        .stats-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);text-align:center;padding:2rem 1rem}
+        .stat-item .stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:#1a1a1a;display:block}
+        .stat-item .stat-label{font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#888;margin-top:.25rem;display:block}
+
+        .page-body{max-width:780px;margin:0 auto;padding:3.5rem 2rem 4rem}
+        .page-body p,.page-body li{font-family:'Libre Baskerville',serif;font-size:1rem;line-height:1.9;color:#333;margin-bottom:1.1rem}
         .page-body ul{margin:0 0 1.5rem 1.75rem}
-        .page-body li{margin-bottom:.5rem}
-        .mission-box{background:#1a1a1a;color:#fff;padding:2rem 2.5rem;border-radius:2px;margin:2rem 0}
-        .mission-box p{font-family:'Playfair Display',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:#fff;margin:0}
-        .team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;margin:1.5rem 0}
-        .team-card{text-align:center;padding:1.5rem 1rem;border:1px solid #e0e0e0;border-radius:2px}
-        .team-card .avatar{width:70px;height:70px;border-radius:50%;background:#e0e0e0;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#999}
-        .team-card h4{font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0 0 .2rem}
-        .team-card p{font-family:'Inter',sans-serif;font-size:.8rem;color:#888;margin:0}
+        .page-body li{margin-bottom:.6rem}
+        .section-label{font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#c41e3a;margin-bottom:.5rem;display:block}
+        .section-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:#111;margin:0 0 1.2rem;line-height:1.25}
+        .section-block{margin-bottom:3rem;padding-top:2.5rem;border-top:1px solid #e5e5e5}
+        .section-block:first-child{border-top:none;padding-top:0}
+
+        /* Mission quote */
+        .mission-quote{position:relative;margin:2.5rem 0;padding:2.2rem 2.5rem 2.2rem 3rem;background:#fafaf8;border-left:4px solid #1a1a1a}
+        .mission-quote::before{content:'\201C';position:absolute;top:.3rem;left:.8rem;font-family:'Playfair Display',serif;font-size:3.5rem;color:#ccc;line-height:1}
+        .mission-quote p{font-family:'Playfair Display',serif;font-size:1.2rem;font-style:italic;line-height:1.7;color:#222;margin:0}
+
+        /* Values grid */
+        .values-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0 2rem}
+        .value-card{padding:1.5rem;border:1px solid #e8e8e8;border-radius:2px;transition:border-color .2s}
+        .value-card:hover{border-color:#1a1a1a}
+        .value-card .value-icon{font-size:1.3rem;color:#c41e3a;margin-bottom:.6rem;display:block}
+        .value-card h4{font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#111;margin:0 0 .4rem}
+        .value-card p{font-family:'Libre Baskerville',serif;font-size:.88rem;color:#555;line-height:1.7;margin:0}
+
+        /* Coverage topics */
+        .coverage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.2rem 0}
+        .coverage-item{background:#1a1a1a;color:#fff;padding:1.2rem 1rem;text-align:center;border-radius:2px}
+        .coverage-item i{font-size:1.4rem;display:block;margin-bottom:.5rem;opacity:.8}
+        .coverage-item span{font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+
+        /* CTA */
+        .about-cta{background:#f7f7f5;border-top:1px solid #e5e5e5;padding:3rem 2rem;text-align:center}
+        .about-cta h3{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:#111;margin:0 0 .6rem}
+        .about-cta p{font-family:'Libre Baskerville',serif;font-size:.95rem;color:#555;margin:0 0 1.5rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.7}
+        .cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+        .cta-btn{display:inline-block;padding:.85rem 2rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;border-radius:2px;transition:all .2s}
+        .cta-btn-primary{background:#1a1a1a;color:#fff;border:2px solid #1a1a1a}
+        .cta-btn-primary:hover{background:#333}
+        .cta-btn-outline{background:transparent;color:#1a1a1a;border:2px solid #1a1a1a}
+        .cta-btn-outline:hover{background:#1a1a1a;color:#fff}
+
+        @media(max-width:768px){
+            .page-hero h1{font-size:2.2rem}
+            .stats-inner{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+            .values-grid{grid-template-columns:1fr}
+            .coverage-grid{grid-template-columns:1fr 1fr}
+            .mission-quote{padding:1.5rem 1.5rem 1.5rem 2.2rem}
+        }
+        @media(max-width:480px){
+            .page-hero{padding:3rem 1.5rem 2.5rem}
+            .page-hero h1{font-size:1.8rem}
+            .stat-item .stat-num{font-size:1.7rem}
+            .section-title{font-size:1.5rem}
+            .coverage-grid{grid-template-columns:1fr}
+        }
     </style>
 </head>
 <body>
@@ -43,9 +91,6 @@
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
-        </div>
-    </div>
-
         </div>
     </div>
 
@@ -68,35 +113,122 @@
 
     <div class="page-hero">
         <h1>About Galmudug Times</h1>
-        <p>Somalia's Trusted News network - Independent, Accurate, Accountable</p>
+        <p>Independent. Accurate. Accountable.</p>
+        <div class="hero-rule"></div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <span class="stat-num">2024</span>
+                <span class="stat-label">Founded</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">5</span>
+                <span class="stat-label">News Categories</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">24/7</span>
+                <span class="stat-label">Coverage</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">Global</span>
+                <span class="stat-label">Diaspora Reach</span>
+            </div>
+        </div>
     </div>
 
     <div class="page-body">
-        <h2>Who We Are</h2>
-        <p>Galmudug Times is an independent digital news organisation dedicated to delivering accurate, fair, and timely reporting on events across Somalia and the world. Founded with a commitment to quality journalism, we serve readers in the Galmudug region and throughout the Somali-speaking diaspora.</p>
-        <p>We believe an informed public is the foundation of a healthy democracy. Every article we publish is guided by the principles of accuracy, independence, and public interest.</p>
-
-        <div class="mission-box">
-            <p>"Our mission is to be the most trusted source of news and information for the people of Galmudug and Somalia - delivering stories that matter with honesty and integrity."</p>
+        <div class="section-block">
+            <span class="section-label">Who We Are</span>
+            <h2 class="section-title">Somalia's Independent Voice</h2>
+            <p>Galmudug Times is an independent digital news organisation dedicated to delivering accurate, fair, and timely reporting on events across Somalia and the world. Founded with a commitment to quality journalism, we serve readers in the Galmudug region and throughout the Somali-speaking diaspora.</p>
+            <p>We believe an informed public is the foundation of a healthy democracy. Every article we publish is guided by the principles of accuracy, independence, and public interest.</p>
         </div>
 
-        <h2>Our Values</h2>
-        <ul>
-            <li><strong>Accuracy:</strong> We verify every fact before publication and correct errors promptly and prominently.</li>
-            <li><strong>Independence:</strong> Our editorial decisions are made free from political or commercial pressure.</li>
-            <li><strong>Fairness:</strong> We present all sides of a story and treat every subject with respect.</li>
-            <li><strong>Accountability:</strong> We hold power to account - locally, nationally, and globally.</li>
-            <li><strong>Transparency:</strong> We are open about our methods, funding, and corrections.</li>
-        </ul>
+        <div class="section-block">
+            <span class="section-label">Our Mission</span>
+            <h2 class="section-title">Why We Exist</h2>
+            <div class="mission-quote">
+                <p>Our mission is to be the most trusted source of news and information for the people of Galmudug and Somalia &mdash; delivering stories that matter with honesty and integrity.</p>
+            </div>
+            <p>In a media landscape often defined by misinformation and bias, Galmudug Times stands apart. We are committed to raising the standard of journalism in Somalia &mdash; reporting facts, not narratives, and holding power accountable on behalf of the people we serve.</p>
+        </div>
 
-        <h2>Our Coverage</h2>
-        <p>Galmudug Times covers news across all major areas of public life: politics and governance, business and economics, technology, world affairs, culture, and opinion. We place a special focus on the Galmudug region, Muqdisho, and broader Somali affairs that affect everyday citizens.</p>
+        <div class="section-block">
+            <span class="section-label">Our Principles</span>
+            <h2 class="section-title">The Values That Guide Us</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <span class="value-icon"><i class="fas fa-bullseye"></i></span>
+                    <h4>Accuracy</h4>
+                    <p>We verify every fact before publication and correct errors promptly and prominently.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon"><i class="fas fa-shield-halved"></i></span>
+                    <h4>Independence</h4>
+                    <p>Our editorial decisions are made free from political or commercial pressure.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon"><i class="fas fa-scale-balanced"></i></span>
+                    <h4>Fairness</h4>
+                    <p>We present all sides of a story and treat every subject with respect and dignity.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon"><i class="fas fa-eye"></i></span>
+                    <h4>Transparency</h4>
+                    <p>We are open about our methods, funding, and corrections policy.</p>
+                </div>
+            </div>
+        </div>
 
-        <h2>Editorial Standards</h2>
-        <p>All content published on Galmudug Times adheres to our editorial standards. Our journalists follow a strict code of ethics based on the principles of the International Federation of Journalists. Stories are reviewed by senior editors before publication. We welcome corrections and reader feedback at <a href="mailto:editors@galmudug-times.com" style="color:#1a1a1a;">editors@galmudug-times.com</a>.</p>
+        <div class="section-block">
+            <span class="section-label">What We Cover</span>
+            <h2 class="section-title">Comprehensive News Coverage</h2>
+            <p>Galmudug Times covers all major areas of Somali public life, with a special focus on stories that affect everyday citizens.</p>
+            <div class="coverage-grid">
+                <div class="coverage-item">
+                    <i class="fas fa-flag"></i>
+                    <span>Soomaaliya</span>
+                </div>
+                <div class="coverage-item">
+                    <i class="fas fa-globe-africa"></i>
+                    <span>Caalamka</span>
+                </div>
+                <div class="coverage-item">
+                    <i class="fas fa-futbol"></i>
+                    <span>Ciyaaraha</span>
+                </div>
+                <div class="coverage-item">
+                    <i class="fas fa-landmark"></i>
+                    <span>Taarikh</span>
+                </div>
+                <div class="coverage-item">
+                    <i class="fas fa-book-open"></i>
+                    <span>Sheeko Faneed</span>
+                </div>
+                <div class="coverage-item">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Ra'yi &amp; Faallo</span>
+                </div>
+            </div>
+        </div>
 
-        <h2>Contact the Newsroom</h2>
-        <p>Have a tip, correction, or story idea? Reach our editorial team at <a href="mailto:newsroom@galmudug-times.com" style="color:#1a1a1a;">newsroom@galmudug-times.com</a> or use our <a href="/contact" style="color:#1a1a1a;">contact form</a>.</p>
+        <div class="section-block">
+            <span class="section-label">Editorial Standards</span>
+            <h2 class="section-title">Our Commitment to Quality</h2>
+            <p>All content published on Galmudug Times adheres to our editorial standards. Our journalists follow a strict code of ethics based on the principles of the International Federation of Journalists. Stories are reviewed by senior editors before publication.</p>
+            <p>We welcome corrections and reader feedback at <a href="mailto:editors@galmudugtimes.com" style="color:#c41e3a;font-weight:600;">editors@galmudugtimes.com</a>.</p>
+        </div>
+    </div>
+
+    <div class="about-cta">
+        <h3>Have a Story to Share?</h3>
+        <p>Whether it's a news tip, feedback, or a partnership inquiry &mdash; we'd love to hear from you.</p>
+        <div class="cta-buttons">
+            <a href="/contact" class="cta-btn cta-btn-primary">Contact Us</a>
+            <a href="/" class="cta-btn cta-btn-outline">Read Latest News</a>
+        </div>
     </div>
 
     <footer class="footer">
@@ -104,7 +236,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'UnifrakturMaguntia',cursive;font-weight:400;font-size:1.4rem;color:#fff;letter-spacing:.02em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news - delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news &mdash; delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -117,6 +249,7 @@
                 <ul class="footer-links">
                     <li><a href="/about">About</a></li>
                     <li><a href="/contact">Contact</a></li>
+                    <li><a href="/careers">Careers</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -129,16 +262,14 @@
             </div>
             <div class="footer-column">
                 <h4 class="footer-title">SUBSCRIBE</h4>
-                <p class="footer-text">Get unlimited access to the most important stories.</p>
-                <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe Now</button>
+                <p class="footer-text">Get the latest Somali news delivered to your inbox.</p>
+                <button class="subscribe-btn" onclick="window.location.href='/'">Subscribe Now</button>
             </div>
         </div>
         <div class="copyright"><p>&copy; 2026 Galmudug Times. All rights reserved.</p></div>
         <div class="footer-bottom-rule double-rule"></div>
     </footer>
 
-    <script>
-    </script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
 </body>
