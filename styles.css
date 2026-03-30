@@ -2500,7 +2500,13 @@ body {
     display: flex;
     align-items: stretch;
     flex: 1;
-    overflow: visible;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;          /* Firefox */
+}
+.gt-nav::-webkit-scrollbar {
+    display: none;                  /* Chrome/Safari */
 }
 .gt-nav .nav-item,
 .gt-nav a.nav-item {
@@ -2740,4 +2746,332 @@ body {
 @media (max-width: 768px) {
     .ticker-bar { top: 32px; }
     .gt-header { top: 70px; }
+}
+
+/* ========================================
+   RESPONSIVE MASTER OVERRIDES
+   Final responsive rules — override everything above
+   ======================================== */
+
+/* Global image safety */
+img, video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---- Large Tablets / Small Desktop (≤1100px) ---- */
+@media (max-width: 1100px) {
+    .container {
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .story-hero,
+    .sidebar {
+        grid-column: 1;
+    }
+    .secondary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    .article-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+    }
+    .article-sidebar {
+        grid-column: 1;
+    }
+    .section-hero {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 1.5rem;
+    }
+    .section-accent {
+        display: none;
+    }
+}
+
+/* ---- Tablets (≤768px) ---- */
+@media (max-width: 768px) {
+    /* Reduce sticky stack — hide ticker on mobile to save space */
+    .ticker-bar {
+        position: relative !important;
+        top: auto !important;
+    }
+    .gt-topbar {
+        position: relative !important;
+        top: auto !important;
+    }
+    .gt-header {
+        position: sticky !important;
+        top: 0 !important;
+    }
+
+    /* Typography */
+    .title {
+        font-size: 1.8rem !important;
+    }
+    .tagline {
+        font-size: 0.65rem !important;
+    }
+    .gt-logo-text {
+        font-size: 1.3rem !important;
+    }
+
+    /* Main content */
+    .container {
+        padding: 1.25rem 1rem !important;
+        gap: 1.5rem !important;
+    }
+    .story-headline {
+        font-size: 1.4rem !important;
+    }
+    .story-description {
+        font-size: 0.9rem !important;
+    }
+
+    /* Grids collapse to single column */
+    .secondary-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    .footer-content {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+        padding: 2rem 1.25rem !important;
+    }
+
+    /* Article page */
+    .article-container {
+        padding: 1.5rem 1rem !important;
+    }
+    .article-title {
+        font-size: 1.8rem !important;
+    }
+    .article-subtitle {
+        font-size: 1rem !important;
+    }
+    .article-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .article-dates {
+        text-align: left;
+    }
+
+    /* Section hero */
+    .section-hero {
+        padding: 2rem 1rem !important;
+    }
+
+    /* Secondary section */
+    .secondary-section {
+        padding: 1.5rem 1rem !important;
+    }
+
+    /* Drop cap */
+    .drop-cap {
+        font-size: 2.2rem !important;
+        line-height: 1.8rem;
+    }
+
+    /* Image placeholders */
+    .image-placeholder {
+        height: 220px !important;
+        min-height: auto !important;
+    }
+
+    /* Comments */
+    .comments-title {
+        font-size: 1.3rem !important;
+    }
+    .comment-form {
+        padding: 1rem !important;
+    }
+
+    /* Actions bar */
+    .article-actions {
+        gap: 0.4rem !important;
+        flex-wrap: wrap;
+    }
+    .like-btn, .share-btn {
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.72rem !important;
+    }
+
+    /* Contact page responsive */
+    .contact-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        padding: 2rem 1.25rem !important;
+    }
+    .contact-hero h1 {
+        font-size: 2rem !important;
+    }
+    .contact-form-box {
+        padding: 1.5rem !important;
+    }
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* About page responsive */
+    .page-body {
+        padding: 2rem 1.25rem !important;
+    }
+    .page-hero h1 {
+        font-size: 2rem !important;
+    }
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+    }
+    .mission-box {
+        padding: 1.5rem !important;
+    }
+    .mission-box p {
+        font-size: 1rem !important;
+    }
+
+    /* Touch targets — minimum 44px height for interactive elements */
+    .gt-nav .nav-item {
+        min-height: 44px;
+    }
+    .gt-social a {
+        min-width: 36px;
+        min-height: 36px;
+    }
+    .contact-social-links a {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* ---- Small Phones (≤480px) ---- */
+@media (max-width: 480px) {
+    html {
+        font-size: 14px !important;
+    }
+
+    .gt-logo-text {
+        font-size: 1.1rem !important;
+    }
+    .gt-logo-tagline {
+        font-size: 0.48rem !important;
+    }
+    .gt-logo {
+        padding: 0.5rem 0.8rem 0.5rem 0 !important;
+    }
+
+    .title {
+        font-size: 1.5rem !important;
+    }
+
+    .container {
+        padding: 1rem 0.75rem !important;
+    }
+
+    .story-headline {
+        font-size: 1.15rem !important;
+        line-height: 1.3 !important;
+    }
+
+    .story-description {
+        font-size: 0.82rem !important;
+    }
+
+    .story-byline {
+        flex-direction: column;
+        gap: 0.3rem !important;
+    }
+
+    /* Footer */
+    .footer-content {
+        padding: 1.5rem 0.75rem !important;
+    }
+    .footer-column {
+        padding: 0.75rem 0;
+    }
+    .copyright {
+        padding: 1rem 0.75rem !important;
+        font-size: 0.72rem !important;
+    }
+
+    /* Article page */
+    .article-container {
+        padding: 1rem 0.75rem !important;
+    }
+    .article-title {
+        font-size: 1.5rem !important;
+    }
+    .article-body {
+        font-size: 0.92rem !important;
+    }
+
+    /* Contact page */
+    .contact-hero {
+        padding: 2rem 1rem !important;
+    }
+    .contact-hero h1 {
+        font-size: 1.6rem !important;
+    }
+    .contact-wrapper {
+        padding: 1.5rem 0.75rem !important;
+    }
+    .contact-form-box {
+        padding: 1.2rem !important;
+    }
+
+    /* About page */
+    .page-hero {
+        padding: 2rem 1rem !important;
+    }
+    .page-hero h1 {
+        font-size: 1.6rem !important;
+    }
+    .page-body {
+        padding: 1.5rem 0.75rem !important;
+    }
+    .team-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Section hero */
+    .section-hero {
+        padding: 1.5rem 0.75rem !important;
+    }
+    .section-title {
+        font-size: 0.8rem !important;
+    }
+
+    /* Sidebar */
+    .sb-headline {
+        font-size: 0.82rem !important;
+    }
+    .sb-card-img img {
+        width: 65px !important;
+        height: 55px !important;
+    }
+
+    /* Hide ticker text animation on very small screens — just show static */
+    .ticker-text {
+        animation: none !important;
+        white-space: normal !important;
+        font-size: 0.72rem !important;
+    }
+
+    /* Subscribe popup / buttons */
+    .subscribe-btn {
+        width: 100%;
+        text-align: center;
+    }
+    .subscribe-btn-large {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.72rem !important;
+    }
 }

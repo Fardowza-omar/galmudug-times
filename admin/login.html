@@ -4,293 +4,292 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login — Galmudug Times</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(102,126,234,0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(118,75,162,0.1) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-2%, 2%) rotate(3deg); }
         }
 
         .login-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-            padding: 3rem;
+            position: relative; z-index: 1;
+            width: 100%; max-width: 420px; padding: 1.5rem;
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .login-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+
+        .login-header { text-align: center; margin-bottom: 2.5rem; }
+
+        .brand-icon {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.25rem; font-size: 1.5rem;
         }
 
         .login-title {
             font-family: 'Pirata One', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: #000;
+            font-size: 1.8rem; color: #fff; letter-spacing: 0.02em;
         }
 
         .login-subtitle {
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: #666;
+            font-size: 0.8rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: rgba(255,255,255,0.35);
+            margin-top: 0.4rem; font-weight: 500;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.25rem; }
 
         label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.5rem;
-            color: #000;
+            display: block; font-size: 0.72rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 0.5rem; color: rgba(255,255,255,0.5);
         }
 
-        input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
+        .input-wrapper { position: relative; }
+
+        .input-wrapper input {
+            width: 100%; padding: 0.85rem 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; font-size: 0.95rem;
+            font-family: inherit; color: #fff; transition: all 0.3s ease;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .input-wrapper input::placeholder { color: rgba(255,255,255,0.25); }
+
+        .input-wrapper input:focus {
+            outline: none; border-color: #667eea;
+            background: rgba(102,126,234,0.08);
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
         }
+
+        .toggle-pwd {
+            position: absolute; right: 0.85rem; top: 50%;
+            transform: translateY(-50%); background: none;
+            border: none; cursor: pointer; color: rgba(255,255,255,0.3);
+            font-size: 0.85rem; padding: 0.25rem; transition: color 0.2s;
+        }
+        .toggle-pwd:hover { color: rgba(255,255,255,0.6); }
 
         .login-btn {
-            width: 100%;
-            padding: 0.875rem;
+            width: 100%; padding: 0.95rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            color: white; border: none; border-radius: 10px;
+            font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-top: 0.75rem; position: relative; overflow: hidden;
         }
 
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+        .login-btn:active { transform: translateY(0); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .login-btn .btn-text { transition: opacity 0.2s; }
+        .login-btn .btn-loader {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); display: none;
+        }
+        .login-btn.loading .btn-text { opacity: 0; }
+        .login-btn.loading .btn-loader { display: flex; gap: 0.4rem; }
+
+        .dot {
+            width: 6px; height: 6px; background: white;
+            border-radius: 50%; animation: bounce 1s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.15s; }
+        .dot:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
-        .login-btn:active {
-            transform: translateY(0);
+        .alert {
+            padding: 0.75rem 1rem; border-radius: 10px;
+            margin-bottom: 1.25rem; font-size: 0.82rem;
+            display: none; animation: slideIn 0.3s ease;
+        }
+        .alert.show { display: block; }
+
+        .alert-error {
+            background: rgba(214,48,49,0.12); color: #f87171;
+            border: 1px solid rgba(214,48,49,0.2);
+        }
+        .alert-success {
+            background: rgba(39,174,96,0.12); color: #6ee7b7;
+            border: 1px solid rgba(39,174,96,0.2);
         }
 
-        .error-message {
-            background-color: #fee;
-            color: #c33;
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            display: none;
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .success-message {
-            background-color: #efe;
-            color: #3c3;
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            display: none;
+        .footer-text {
+            text-align: center; margin-top: 2rem;
+            font-size: 0.72rem; color: rgba(255,255,255,0.2);
+            letter-spacing: 0.05em;
         }
 
-        .demo-credentials {
-            background: #f9f9f9;
-            border-left: 3px solid #667eea;
-            padding: 1rem;
-            margin-top: 2rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
+        @media (max-width: 480px) {
+            .login-card { padding: 2rem 1.5rem; }
+            .login-title { font-size: 1.5rem; }
+            .brand-icon { width: 48px; height: 48px; font-size: 1.25rem; }
+            .login-btn { padding: 0.85rem; font-size: 0.8rem; }
         }
 
-        .demo-credentials strong {
-            display: block;
-            margin-bottom: 0.5rem;
+        @media (max-width: 360px) {
+            .login-container { padding: 0.75rem; }
+            .login-card { padding: 1.5rem 1.15rem; border-radius: 12px; }
+            .login-title { font-size: 1.3rem; }
+            .login-subtitle { font-size: 0.7rem; }
+            .input-wrapper input { padding: 0.75rem 0.85rem; font-size: 0.88rem; }
         }
 
-        .demo-credentials p {
-            margin: 0.25rem 0;
-            color: #666;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            gap: 0.4rem;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: spin 1s infinite;
-        }
-
-        @keyframes spin {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        @media (max-height: 600px) {
+            .login-card { padding: 1.5rem 2rem; }
+            .login-header { margin-bottom: 1.5rem; }
+            .form-group { margin-bottom: 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <div class="login-header">
-            <h1 class="login-title">Galmudug Times</h1>
-            <p class="login-subtitle">Admin Dashboard</p>
-        </div>
-
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required placeholder="Enter your username">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="brand-icon">📰</div>
+                <h1 class="login-title">Galmudug Times</h1>
+                <p class="login-subtitle">Content Management</p>
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div style="position: relative; display: flex; align-items: center;">
-                    <input type="password" id="password" name="password" required placeholder="Enter your password" style="flex: 1; padding-right: 2.5rem;">
-                    <button type="button" id="togglePassword" style="position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; color: #667eea; font-size: 1rem; padding: 0.5rem;" title="Show/Hide password">👁️</button>
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-success" id="successAlert"></div>
+
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username" required placeholder="Enter username" autocomplete="username">
+                    </div>
                 </div>
-            </div>
 
-            <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required placeholder="Enter password" autocomplete="current-password" style="padding-right: 2.5rem;">
+                        <button type="button" class="toggle-pwd" id="togglePwd" tabindex="-1">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
 
-            <div class="loading" id="loadingIndicator">
-                <span class="spinner"></span>
-                <span class="spinner"></span>
-                <span class="spinner"></span>
-            </div>
-        </form>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loader"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+                </button>
+            </form>
 
-        <div class="demo-credentials">
-            <strong>Demo Credentials:</strong>
-            <p><strong>Username:</strong> admin</p>
-            <p><strong>Password:</strong> admin123</p>
+            <p class="footer-text">Galmudug Times &copy; 2026</p>
         </div>
     </div>
 
     <script>
         const form = document.getElementById('loginForm');
         const loginBtn = document.getElementById('loginBtn');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
-
-        // Password visibility toggle
-        const togglePassword = document.getElementById('togglePassword');
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+        const togglePwd = document.getElementById('togglePwd');
         const passwordInput = document.getElementById('password');
-        if (togglePassword) {
-            togglePassword.addEventListener('click', (e) => {
-                e.preventDefault();
-                const isPassword = passwordInput.type === 'password';
-                passwordInput.type = isPassword ? 'text' : 'password';
-                togglePassword.textContent = isPassword ? '🙈' : '👁️';
-            });
+
+        togglePwd.addEventListener('click', () => {
+            const showing = passwordInput.type === 'text';
+            passwordInput.type = showing ? 'password' : 'text';
+            togglePwd.innerHTML = showing
+                ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+                : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+        });
+
+        function showAlert(type, msg) {
+            const el = type === 'error' ? errorAlert : successAlert;
+            const other = type === 'error' ? successAlert : errorAlert;
+            other.classList.remove('show');
+            el.textContent = msg;
+            el.classList.add('show');
         }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
 
-            // Validate inputs
             if (!username || !password) {
-                showError('Username and password are required');
+                showAlert('error', 'Please enter both username and password');
                 return;
             }
 
-            try {
-                loginBtn.disabled = true;
-                loginBtn.style.display = 'none';
-                loadingIndicator.style.display = 'flex';
-                loadingIndicator.style.justifyContent = 'center';
-                loadingIndicator.style.marginTop = '1rem';
+            loginBtn.disabled = true;
+            loginBtn.classList.add('loading');
 
+            try {
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
 
                 const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Login failed');
-                }
+                if (!response.ok) throw new Error(data.error || 'Invalid credentials');
 
-                // Store token
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
-
-                showSuccess('Login successful! Redirecting...');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1000);
-
-            } catch (error) {
-                showError(error.message);
+                showAlert('success', 'Login successful! Redirecting...');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+            } catch (err) {
+                showAlert('error', err.message);
                 loginBtn.disabled = false;
-                loginBtn.style.display = 'block';
-                loadingIndicator.style.display = 'none';
+                loginBtn.classList.remove('loading');
             }
         });
 
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
-        }
-
-        function showSuccess(message) {
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-        }
-
-        // Check if already logged in
         window.addEventListener('load', () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                window.location.href = 'dashboard.html';
-            }
+            if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
         });
     </script>
 </body>

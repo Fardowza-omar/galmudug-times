@@ -258,12 +258,12 @@
     <!-- Main Navigation -->
     <header class="gt-header">
         <div class="gt-header-inner">
-            <a href="index.html" class="gt-logo">
+            <a href="/" class="gt-logo">
                 <div class="gt-logo-text">Galmudug Times</div>
                 <div class="gt-logo-tagline">Somalia's Trusted News Network</div>
             </a>
             <nav class="gt-nav" id="dynamic-nav">
-                <a href="index.html" class="nav-item">Home</a>
+                <a href="/" class="nav-item">Home</a>
                 <a href="category.html?cat=galmudug" class="nav-item">Galmudug</a>
                 <a href="category.html?cat=muqdisho" class="nav-item">Muqdisho</a>
                 <a href="category.html?cat=hargaysa" class="nav-item">Calamka</a>
@@ -284,6 +284,35 @@
         </div>
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
+    <!-- Advertising Banner -->
+    <div id="adsBar" style="width:100%;background:#f0f7ff;padding:1rem 0 .5rem;margin-bottom:1.5rem;display:none;border-bottom:1px solid #dde8f5;">
+        <div id="adsListMain" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:0 1rem;"></div>
+        <div style="text-align:center;font-size:1rem;color:#0c4a6e;margin-top:.6rem;font-weight:600;padding:.4rem 1rem;">
+            &#x1F4E2; Ogow: Haddii aad rabto in xayaysiiskaaga lagu soo bandhigo halkan, fadlan nala soo xiriir!
+        </div>
+    </div>
+    <script>
+    (function(){
+        function adEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+        async function loadSiteAds(){
+            try{
+                var res=await fetch('/api/ads');
+                var ads=await res.json();
+                if(ads&&ads.length){
+                    document.getElementById('adsBar').style.display='block';
+                    var el=document.getElementById('adsListMain');
+                    el.innerHTML=ads.map(function(ad){
+                        return '<a href="'+adEsc(ad.link)+'" target="_blank" rel="noopener" style="display:inline-block;background:#fff;border-radius:8px;padding:7px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px;max-width:220px;text-align:center;text-decoration:none;">'
+                            +'<img src="'+adEsc(ad.image)+'" alt="" style="width:100%;max-width:180px;max-height:60px;object-fit:contain;border-radius:6px;">'
+                            +(ad.message?'<div style="font-size:.85rem;color:#0c4a6e;margin-top:3px;">'+adEsc(ad.message)+'</div>':'')
+                        +'</a>';
+                    }).join('');
+                }
+            }catch(e){}
+        }
+        loadSiteAds();
+    })();
+    </script>
 
     <!-- Hero -->
     <div class="contact-hero">

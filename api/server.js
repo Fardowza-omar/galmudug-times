@@ -1,3 +1,52 @@
+// ==================== Ads API ====================
+
+// Get all active ads (public)
+app.get('/api/ads', (req, res) => {
+  db.all('SELECT * FROM ads WHERE active = 1 ORDER BY created_at DESC', (err, ads) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.json(ads);
+  });
+});
+
+// Create ad (admin only, with image upload)
+app.post('/api/ads', authenticateToken, (req, res, next) => {
+  upload.single('image')(req, res, function(err) {
+    if (err) return res.status(400).json({ error: err.message });
+    const { link, message } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    if (!image || !link) return res.status(400).json({ error: 'Image and link are required' });
+    db.run('INSERT INTO ads (image, link, message, active) VALUES (?, ?, ?, 1)', [image, link, message || null], function(err) {
+      if (err) return res.status(500).json({ error: 'Failed to create ad' });
+      res.json({ id: this.lastID, image, link, message });
+    });
+  });
+});
+
+// Update ad (admin only)
+app.put('/api/ads/:id', authenticateToken, (req, res, next) => {
+  upload.single('image')(req, res, function(err) {
+    if (err) return res.status(400).json({ error: err.message });
+    const { link, message, active } = req.body;
+    const id = req.params.id;
+    let setStr = 'link = ?, message = ?';
+    let params = [link, message];
+    if (typeof active !== 'undefined') { setStr += ', active = ?'; params.push(active ? 1 : 0); }
+    if (req.file) { setStr += ', image = ?'; params.push(`/uploads/${req.file.filename}`); }
+    params.push(id);
+    db.run(`UPDATE ads SET ${setStr} WHERE id = ?`, params, function(err) {
+      if (err) return res.status(500).json({ error: 'Failed to update ad' });
+      res.json({ message: 'Ad updated' });
+    });
+  });
+});
+
+// Delete ad (admin only)
+app.delete('/api/ads/:id', authenticateToken, (req, res) => {
+  db.run('DELETE FROM ads WHERE id = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json({ error: 'Failed to delete ad' });
+    res.json({ message: 'Ad deleted' });
+  });
+});
 import express from 'express';
 import sqlite3 from 'sqlite3';
 import multer from 'multer';
@@ -32,8 +81,57 @@ function getOrCreateSecret() {
 }
 const SECRET_KEY = getOrCreateSecret();
 
+// ---- Simple in-memory rate limiter (no extra dependency) ----
+const loginAttempts = new Map(); // key = IP, value = { count, firstAttempt }
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+const MAX_LOGIN_ATTEMPTS = 10;
+
+function loginRateLimiter(req, res, next) {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
+  const now = Date.now();
+  const record = loginAttempts.get(ip);
+
+  if (record) {
+    if (now - record.firstAttempt > RATE_LIMIT_WINDOW) {
+      loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    } else if (record.count >= MAX_LOGIN_ATTEMPTS) {
+      const retryAfter = Math.ceil((RATE_LIMIT_WINDOW - (now - record.firstAttempt)) / 1000);
+      return res.status(429).json({ error: 'Too many login attempts. Please try again later.', retryAfter });
+    } else {
+      record.count++;
+    }
+  } else {
+    loginAttempts.set(ip, { count: 1, firstAttempt: now });
+  }
+  next();
+}
+
+// Clean up stale entries every 30 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, record] of loginAttempts) {
+    if (now - record.firstAttempt > RATE_LIMIT_WINDOW) loginAttempts.delete(ip);
+  }
+}, 30 * 60 * 1000);
+
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'https://galmudugtimes.com',
+  'https://www.galmudugtimes.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, same-origin)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -68,11 +166,14 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedMimes = [
+      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+      'video/mp4', 'video/webm'
+    ];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only JPEG, PNG, GIF and WebP images are allowed'));
+      cb(new Error('Only JPEG, PNG, GIF, WebP images and MP4/WebM videos are allowed'));
     }
   }
 });
@@ -108,6 +209,17 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // Initialize Database Tables
 function initializeDatabase() {
+      // Ads table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS ads (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          image TEXT,
+          link TEXT,
+          message TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          active INTEGER DEFAULT 1
+        )
+      `);
   db.serialize(() => {
     // Users table
     db.run(`
@@ -117,8 +229,15 @@ function initializeDatabase() {
         password TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            ,profile_image TEXT
       )
     `);
+        // Migration: add profile_image column if missing
+        db.get("PRAGMA table_info(users)", (err, columns) => {
+          if (!err && columns && !columns.some(col => col.name === 'profile_image')) {
+            db.run("ALTER TABLE users ADD COLUMN profile_image TEXT");
+          }
+        });
 
     // Categories table
     db.run(`
@@ -315,8 +434,8 @@ function addSampleArticles() {
 
 // ==================== Authentication Routes ====================
 
-// Login endpoint
-app.post('/api/auth/login', (req, res) => {
+// Login endpoint (rate-limited)
+app.post('/api/auth/login', loginRateLimiter, (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -343,7 +462,7 @@ app.post('/api/auth/login', (req, res) => {
 
 // Get current user profile
 app.get('/api/auth/profile', authenticateToken, (req, res) => {
-  db.get('SELECT id, username, email, created_at FROM users WHERE id = ?', [req.user.id], (err, user) => {
+  db.get('SELECT id, username, email, created_at, profile_image FROM users WHERE id = ?', [req.user.id], (err, user) => {
     if (err) {
       return res.status(500).json({ error: 'Database error' });
     }
@@ -356,26 +475,40 @@ app.get('/api/auth/profile', authenticateToken, (req, res) => {
 
 // Update user profile (username and email)
 app.put('/api/auth/profile', authenticateToken, (req, res) => {
-  const { username, email } = req.body;
-  
-  if (!username || !email) {
-    return res.status(400).json({ error: 'Username and email are required' });
-  }
-
-  // Check if username is taken by another user
-  db.get('SELECT id FROM users WHERE username = ? AND id != ?', [username, req.user.id], (err, existing) => {
-    if (err) {
-      return res.status(500).json({ error: 'Database error' });
+  upload.single('profile_image')(req, res, function(err) {
+    if (err) return res.status(400).json({ error: err.message });
+    const username = req.body.username;
+    const email = req.body.email;
+    let profile_image = null;
+    if (req.file) profile_image = `/uploads/${req.file.filename}`;
+    if (!username || !email) {
+      return res.status(400).json({ error: 'Username and email are required' });
     }
-    if (existing) {
-      return res.status(400).json({ error: 'Username is already taken' });
-    }
-
-    db.run('UPDATE users SET username = ?, email = ? WHERE id = ?', [username, email, req.user.id], function(err) {
+    db.get('SELECT id FROM users WHERE username = ? AND id != ?', [username, req.user.id], (err, existing) => {
       if (err) {
-        return res.status(500).json({ error: 'Failed to update profile' });
+        return res.status(500).json({ error: 'Database error' });
       }
-      res.json({ message: 'Profile updated successfully', username, email });
+      if (existing) {
+        return res.status(400).json({ error: 'Username is already taken' });
+      }
+      // If new image uploaded, update it, else keep old
+      if (profile_image) {
+        db.run('UPDATE users SET username = ?, email = ?, profile_image = ? WHERE id = ?', [username, email, profile_image, req.user.id], function(err) {
+          if (err) {
+            return res.status(500).json({ error: 'Failed to update profile' });
+          }
+          res.json({ message: 'Profile updated successfully', username, email, profile_image });
+        });
+      } else {
+        db.run('UPDATE users SET username = ?, email = ? WHERE id = ?', [username, email, req.user.id], function(err) {
+          if (err) {
+            return res.status(500).json({ error: 'Failed to update profile' });
+          }
+          db.get('SELECT profile_image FROM users WHERE id = ?', [req.user.id], (err2, row) => {
+            res.json({ message: 'Profile updated successfully', username, email, profile_image: row ? row.profile_image : null });
+          });
+        });
+      }
     });
   });
 });
@@ -584,9 +717,11 @@ app.get('/api/articles/featured/latest', (req, res) => {
 // Get single article by slug
 app.get('/api/articles/:slug', (req, res) => {
   db.get(`
-    SELECT a.*, c.name as category_name, c.slug as category_slug, c.color as category_color
+    SELECT a.*, c.name as category_name, c.slug as category_slug, c.color as category_color,
+      u.profile_image as author_profile_image
     FROM articles a
     LEFT JOIN categories c ON a.category_id = c.id
+    LEFT JOIN users u ON lower(a.author) = lower(u.username)
     WHERE a.slug = ? AND a.status = 'published'
   `, [req.params.slug], (err, article) => {
     if (err) {
@@ -595,65 +730,75 @@ app.get('/api/articles/:slug', (req, res) => {
     if (!article) {
       return res.status(404).json({ error: 'Article not found' });
     }
-    
     // Increment view count
     db.run('UPDATE articles SET views = views + 1 WHERE id = ?', [article.id]);
     res.json(article);
   });
 });
 
-// Create new article (admin only)
-app.post('/api/articles', authenticateToken, uploadSingle('featured_image'), (req, res) => {
-  const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
-  const baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const featured_image = req.file ? `/uploads/${req.file.filename}` : null;
-  const published_at = status === 'published' ? new Date().toISOString() : null;
-  // Auto-generate description from content if not provided
-  const autoDesc = description || content.replace(/<[^>]*>/g, '').substring(0, 220).trim();
 
-  if (!title || !content) {
-    return res.status(400).json({ error: 'Title and content are required' });
-  }
-
-  // Ensure unique slug by appending a timestamp if needed
-  db.get('SELECT id FROM articles WHERE slug = ?', [baseSlug], (slugErr, existing) => {
-    const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
-
-    db.run(`
-      INSERT INTO articles (title, slug, description, content, category_id, featured_image, article_url, video_url, author, status, is_breaking, published_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [title, slug, autoDesc, content, category_id || null, featured_image, article_url || null, video_url || null, author || 'Galmudug Times', status || 'draft', is_breaking ? 1 : 0, published_at], function(err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({ id: this.lastID, slug, message: 'Article created successfully' });
+// Create article (admin only, support image and video upload)
+app.post('/api/articles', authenticateToken, (req, res, next) => {
+  upload.fields([
+    { name: 'featured_image', maxCount: 1 },
+    { name: 'video_file', maxCount: 1 }
+  ])(req, res, function(err) {
+    if (err) return res.status(400).json({ error: err.message });
+    const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
+    const baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const featured_image = req.files && req.files['featured_image'] ? `/uploads/${req.files['featured_image'][0].filename}` : null;
+    // Prefer uploaded video file over URL if present
+    let videoPath = req.files && req.files['video_file'] ? `/uploads/${req.files['video_file'][0].filename}` : null;
+    const finalVideoUrl = videoPath || (video_url || null);
+    const published_at = status === 'published' ? new Date().toISOString() : null;
+    const autoDesc = description || content.replace(/<[^>]*>/g, '').substring(0, 220).trim();
+    if (!title || !content) {
+      return res.status(400).json({ error: 'Title and content are required' });
+    }
+    db.get('SELECT id FROM articles WHERE slug = ?', [baseSlug], (slugErr, existing) => {
+      const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
+      db.run(`
+        INSERT INTO articles (title, slug, description, content, category_id, featured_image, article_url, video_url, author, status, is_breaking, published_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [title, slug, autoDesc, content, category_id || null, featured_image, article_url || null, finalVideoUrl, author || 'Galmudug Times', status || 'draft', is_breaking ? 1 : 0, published_at], function(err) {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ id: this.lastID, slug, message: 'Article created successfully' });
+      });
     });
   });
 });
 
-// Update article (admin only)
-app.put('/api/articles/:id', authenticateToken, uploadSingle('featured_image'), (req, res) => {
-  const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
-  const id = req.params.id;
 
-  db.get('SELECT * FROM articles WHERE id = ?', [id], (err, article) => {
-    if (err || !article) {
-      return res.status(404).json({ error: 'Article not found' });
-    }
-
-    const featured_image = req.file ? `/uploads/${req.file.filename}` : article.featured_image;
-    const published_at = status === 'published' && !article.published_at ? new Date().toISOString() : article.published_at;
-    const breakingVal = is_breaking !== undefined ? (is_breaking ? 1 : 0) : article.is_breaking;
-
-    db.run(`
-      UPDATE articles
-      SET title = ?, description = ?, content = ?, category_id = ?, featured_image = ?, article_url = ?, video_url = ?, author = ?, status = ?, is_breaking = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `, [title || article.title, description || article.description, content || article.content, category_id || article.category_id, featured_image, article_url || article.article_url || null, video_url || article.video_url || null, author || article.author, status || article.status, breakingVal, published_at, id], (updateErr) => {
-      if (updateErr) {
-        return res.status(500).json({ error: 'Failed to update article' });
+// Update article (admin only, support image and video upload)
+app.put('/api/articles/:id', authenticateToken, (req, res, next) => {
+  upload.fields([
+    { name: 'featured_image', maxCount: 1 },
+    { name: 'video_file', maxCount: 1 }
+  ])(req, res, function(err) {
+    if (err) return res.status(400).json({ error: err.message });
+    const { title, description, content, category_id, author, status, article_url, video_url, is_breaking } = req.body;
+    const id = req.params.id;
+    db.get('SELECT * FROM articles WHERE id = ?', [id], (err, article) => {
+      if (err || !article) {
+        return res.status(404).json({ error: 'Article not found' });
       }
-      res.json({ message: 'Article updated successfully' });
+      const featured_image = req.files && req.files['featured_image'] ? `/uploads/${req.files['featured_image'][0].filename}` : article.featured_image;
+      let videoPath = req.files && req.files['video_file'] ? `/uploads/${req.files['video_file'][0].filename}` : null;
+      const finalVideoUrl = videoPath || video_url || article.video_url;
+      const published_at = status === 'published' && !article.published_at ? new Date().toISOString() : article.published_at;
+      const breakingVal = is_breaking !== undefined ? (is_breaking ? 1 : 0) : article.is_breaking;
+      db.run(`
+        UPDATE articles
+        SET title = ?, description = ?, content = ?, category_id = ?, featured_image = ?, article_url = ?, video_url = ?, author = ?, status = ?, is_breaking = ?, published_at = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `, [title || article.title, description || article.description, content || article.content, category_id || article.category_id, featured_image, article_url || article.article_url || null, finalVideoUrl, author || article.author, status || article.status, breakingVal, published_at, id], (updateErr) => {
+        if (updateErr) {
+          return res.status(500).json({ error: 'Failed to update article' });
+        }
+        res.json({ message: 'Article updated successfully' });
+      });
     });
   });
 });

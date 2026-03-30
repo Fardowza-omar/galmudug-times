@@ -40,12 +40,16 @@ async function loadDynamicNav() {
     const navEl = document.getElementById('dynamic-nav');
     if (!navEl) return;
 
+    // Save the original server-rendered HTML as fallback
+    const fallbackHTML = navEl.innerHTML;
+
     // ── Step 1: render from cache instantly (no flicker) ──────────────
     const CACHE_KEY = 'gt_nav_categories';
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
         try {
-            navEl.innerHTML = buildNavHTML(JSON.parse(cached));
+            const parsed = JSON.parse(cached);
+            if (parsed.length > 0) navEl.innerHTML = buildNavHTML(parsed);
         } catch(e) { /* ignore bad cache */ }
     }
 
@@ -53,12 +57,15 @@ async function loadDynamicNav() {
     try {
         const res = await fetch('/api/categories/nav/visible');
         const categories = await res.json();
-        const fresh = JSON.stringify(categories);
-        // Only repaint if data actually changed
-        if (fresh !== cached) {
-            sessionStorage.setItem(CACHE_KEY, fresh);
-            navEl.innerHTML = buildNavHTML(categories);
+        // Only replace nav if API returned actual categories
+        if (categories.length > 0) {
+            const fresh = JSON.stringify(categories);
+            if (fresh !== cached) {
+                sessionStorage.setItem(CACHE_KEY, fresh);
+                navEl.innerHTML = buildNavHTML(categories);
+            }
         }
+        // If API returned empty, keep the fallback HTML as-is
     } catch (e) {
         // If fetch fails and we already rendered from cache, that's fine
         if (!cached) console.error('Failed to load navigation:', e);
