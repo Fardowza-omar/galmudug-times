@@ -3,10 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category ‚Äì Galmudug Times</title>
+    <title>Category ñ Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
+    <style>
+    /* -- Category Page Layout -- */
+    .cat-page-wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+    .cat-hero-banner{padding:2rem 0 1.5rem;border-bottom:3px solid var(--cat-color,#d63031);margin-bottom:2rem}
+    .cat-hero-banner h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;margin:0 0 .3rem;color:#111}
+    .cat-hero-banner p{font-family:'Inter',sans-serif;font-size:.85rem;color:#777;margin:0}
+    /* Featured top card */
+    .cat-top-card{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-bottom:2.5rem;background:#fff;border:1px solid #eee}
+    @media(max-width:700px){.cat-top-card{grid-template-columns:1fr}}
+    .cat-top-img{width:100%;height:300px;object-fit:cover;display:block}
+    @media(max-width:700px){.cat-top-img{height:220px}}
+    .cat-top-body{padding:1.4rem 1.5rem 1.4rem .5rem;display:flex;flex-direction:column;justify-content:center}
+    @media(max-width:700px){.cat-top-body{padding:1rem 1rem 1.2rem}}
+    .cat-top-cat{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:inline-block;padding:.2rem .55rem;color:#fff;margin-bottom:.6rem}
+    .cat-top-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;line-height:1.28;color:#111;text-decoration:none;display:block;margin-bottom:.6rem}
+    .cat-top-title:hover{color:#d63031}
+    .cat-top-desc{font-family:'Libre Baskerville',serif;font-size:.88rem;color:#555;line-height:1.6;margin-bottom:.9rem}
+    .cat-top-meta{font-family:'Inter',sans-serif;font-size:.7rem;color:#aaa}
+    /* Article grid */
+    .cat-grid-hdr{display:flex;align-items:center;justify-content:space-between;border-top:3px solid var(--cat-color,#d63031);padding-top:.5rem;margin-bottom:1.3rem}
+    .cat-grid-hdr h2{font-family:'Inter',sans-serif;font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#111;margin:0}
+    .cat-article-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:1.5rem}
+    @media(max-width:900px){.cat-article-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:550px){.cat-article-grid{grid-template-columns:1fr}}
+    .cat-card{display:flex;flex-direction:column;background:#fff;border:1px solid #eee;text-decoration:none;color:inherit;transition:box-shadow .15s}
+    .cat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.09)}
+    .cat-card:hover .cat-card-title{color:#d63031}
+    .cat-card-img{width:100%;height:170px;object-fit:cover;display:block}
+    .cat-card-no-img{width:100%;height:6px;display:block}
+    .cat-card-body{padding:.85rem .9rem 1rem;flex:1;display:flex;flex-direction:column}
+    .cat-card-cat{font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.3rem}
+    .cat-card-title{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;line-height:1.32;color:#111;display:block;margin-bottom:.4rem}
+    .cat-card-desc{font-family:'Inter',sans-serif;font-size:.78rem;color:#666;line-height:1.5;flex:1;margin-bottom:.5rem}
+    .cat-card-meta{font-family:'Inter',sans-serif;font-size:.65rem;color:#bbb;display:block;margin-top:auto}
+    .cat-load-more{text-align:center;padding:.5rem 0 2rem}
+    .cat-load-more-btn{background:#fff;border:2px solid #d63031;color:#d63031;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 2.2rem;cursor:pointer;transition:background .2s,color .2s}
+    .cat-load-more-btn:hover{background:#d63031;color:#fff}
+    .cat-load-more-btn:disabled{opacity:.5;cursor:default}
+    </style>
 </head>
 <body>
     <!-- GT Top Bar -->
@@ -20,7 +59,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">üå°Ô∏è</span>&nbsp;<strong id="wtTemp">--¬∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -46,10 +85,6 @@
             </a>
             <nav class="gt-nav" id="dynamic-nav">
                 <a href="/" class="nav-item">Home</a>
-                <a href="/category?cat=galmudug" class="nav-item">Galmudug</a>
-                <a href="/category?cat=muqdisho" class="nav-item">Muqdisho</a>
-                <a href="/category?cat=hargaysa" class="nav-item">Calamka</a>
-                <a href="/category?cat=borame" class="nav-item">Somalia</a>
                 <a href="/contact" class="nav-item">Contact Us</a>
             </nav>
             <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
@@ -66,79 +101,27 @@
         </div>
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
-    <!-- Advertising Banner -->
-    <div id="adsBar" style="width:100%;background:#f0f7ff;padding:1rem 0 .5rem;margin-bottom:1.5rem;display:none;border-bottom:1px solid #dde8f5;">
-        <div id="adsListMain" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:0 1rem;"></div>
-        <div style="text-align:center;font-size:1rem;color:#0c4a6e;margin-top:.6rem;font-weight:600;padding:.4rem 1rem;">
-            &#x1F4E2; Ogow: Haddii aad rabto in xayaysiiskaaga lagu soo bandhigo halkan, fadlan nala soo xiriir!
+
+    <!-- -- Category Content -- -->
+    <div class="cat-page-wrap" id="cat-page-wrap">
+        <!-- Hero banner (title + color bar) -->
+        <div class="cat-hero-banner" id="cat-hero-banner">
+            <h1 id="categoryTitle">Loading&hellip;</h1>
+            <p id="categoryDescription"></p>
+        </div>
+        <!-- Top featured card -->
+        <div id="cat-top-card"></div>
+        <!-- Grid section header -->
+        <div class="cat-grid-hdr" id="cat-grid-hdr" style="display:none">
+            <h2 id="cat-grid-hdr-title">MORE STORIES</h2>
+        </div>
+        <!-- Article grid -->
+        <div class="cat-article-grid" id="cat-article-grid"></div>
+        <!-- Load more -->
+        <div class="cat-load-more" id="cat-load-more" style="display:none">
+            <button class="cat-load-more-btn" id="cat-load-more-btn" onclick="catLoadMore()">LOAD MORE</button>
         </div>
     </div>
-    <script>
-    (function(){
-        function adEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-        async function loadSiteAds(){
-            try{
-                var res=await fetch('/api/ads');
-                var ads=await res.json();
-                if(ads&&ads.length){
-                    document.getElementById('adsBar').style.display='block';
-                    var el=document.getElementById('adsListMain');
-                    el.innerHTML=ads.map(function(ad){
-                        return '<a href="'+adEsc(ad.link)+'" target="_blank" rel="noopener" style="display:inline-block;background:#fff;border-radius:8px;padding:7px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px;max-width:220px;text-align:center;text-decoration:none;">'
-                            +'<img src="'+adEsc(ad.image)+'" alt="" style="width:100%;max-width:180px;max-height:60px;object-fit:contain;border-radius:6px;">'
-                            +(ad.message?'<div style="font-size:.85rem;color:#0c4a6e;margin-top:3px;">'+adEsc(ad.message)+'</div>':'')
-                        +'</a>';
-                    }).join('');
-                }
-            }catch(e){}
-        }
-        loadSiteAds();
-    })();
-    </script>
-
-    <!-- Section Hero -->
-    <section class="section-hero">
-        <div class="section-hero-content">
-            <h1 class="section-title" id="categoryTitle">Loading...</h1>
-            <p class="section-description" id="categoryDescription">Loading category content...</p>
-        </div>
-        <div class="section-accent" id="categoryAccent" style="background-color: #333;"></div>
-    </section>
-
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Featured Story (8 columns) -->
-        <article class="story story-hero">
-            <div id="dynamic-hero">
-                <p style="color:#999;padding:2rem 0;">Loading articles...</p>
-            </div>
-        </article>
-
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div id="dynamic-sidebar-1"></div>
-            <div class="sidebar-divider"></div>
-            <div id="dynamic-sidebar-2"></div>
-            <div class="sidebar-divider"></div>
-
-            <!-- Newsletter -->
-            <section class="sidebar-module">
-                <h4 class="module-title">GALMUDUG TIMES NEWSLETTER</h4>
-                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Get the latest stories delivered to your inbox.</p>
-                <button class="sidebar-btn">Subscribe</button>
-            </section>
-        </aside>
-    </main>
-
-    <!-- Secondary Grid Stories -->
-    <section class="secondary-section">
-        <div class="secondary-divider double-rule"></div>
-        
-        <h2 class="section-title" id="moreTitle">MORE STORIES</h2>
-
-        <div class="secondary-grid" id="dynamic-grid">
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -147,7 +130,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news ‚Äî delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news ó delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -184,48 +167,34 @@
         <div class="footer-bottom-rule double-rule"></div>
     </footer>
 
-    <script src="/js/category.js"></script>
+    <script src="/js/category.js?v=2"></script>
     <script src="/js/header.js"></script>
     <script src="/js/nav.js"></script>
     <script>
-        // Get category slug from URL parameter
-        const params = new URLSearchParams(window.location.search);
-        const catSlug = params.get('cat');
-
-        if (!catSlug) {
-            document.getElementById('categoryTitle').textContent = 'Category Not Found';
-            document.getElementById('categoryDescription').textContent = 'Please select a category from the menu.';
-            document.getElementById('dynamic-hero').innerHTML = '<p style="color:#999;padding:2rem 0;">No category specified.</p>';
-        } else {
-            // Fetch category details and initialize page
-            (async function() {
-                try {
-                    const res = await fetch('/api/categories/' + catSlug + '?_t=' + Date.now());
-                    if (res.ok) {
-                        const cat = await res.json();
-                        const color = cat.color || '#333';
-                        
-                        // Update page title and meta
-                        document.title = cat.name + ' ‚Äì Galmudug Times';
-                        document.getElementById('categoryTitle').textContent = cat.name;
-                        document.getElementById('categoryDescription').textContent = 'Latest ' + cat.name.toLowerCase() + ' news and articles.';
-                        document.getElementById('categoryAccent').style.backgroundColor = color;
-                        document.getElementById('moreTitle').textContent = 'MORE IN ' + cat.name.toUpperCase();
-                        
-                        // Initialize the category page with loaded data
-                        initCategoryPage(catSlug, color);
-                    } else {
-                        document.getElementById('categoryTitle').textContent = 'Category Not Found';
-                        document.getElementById('categoryDescription').textContent = 'The category "' + catSlug + '" does not exist.';
-                        document.getElementById('dynamic-hero').innerHTML = '<p style="color:#999;padding:2rem 0;">Category not found.</p>';
-                    }
-                } catch (e) {
-                    console.error('Failed to load category:', e);
-                    document.getElementById('categoryTitle').textContent = 'Error';
-                    document.getElementById('categoryDescription').textContent = 'Failed to load category data.';
-                }
-            })();
-        }
+        (async function() {
+            const params = new URLSearchParams(window.location.search);
+            const catSlug = params.get('cat');
+            if (!catSlug) {
+                document.getElementById('categoryTitle').textContent = 'Category Not Found';
+                document.getElementById('categoryDescription').textContent = 'Please select a category from the menu.';
+                return;
+            }
+            try {
+                const res = await fetch('/api/categories/' + catSlug);
+                if (!res.ok) throw new Error('not found');
+                const cat = await res.json();
+                const color = cat.color || '#d63031';
+                document.title = cat.name + ' ñ Galmudug Times';
+                document.getElementById('categoryTitle').textContent = cat.name;
+                document.getElementById('categoryDescription').textContent = 'Latest ' + cat.name + ' news and articles';
+                document.getElementById('cat-hero-banner').style.setProperty('--cat-color', color);
+                document.getElementById('cat-page-wrap').style.setProperty('--cat-color', color);
+                initCategoryPage(catSlug, color);
+            } catch(e) {
+                document.getElementById('categoryTitle').textContent = 'Category Not Found';
+                document.getElementById('categoryDescription').textContent = 'The category "' + catSlug + '" does not exist.';
+            }
+        })();
     </script>
 </body>
 </html>

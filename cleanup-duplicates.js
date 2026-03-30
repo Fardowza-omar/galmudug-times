@@ -36,7 +36,7 @@ function makeRequest(method, path, data, token = null) {
 }
 
 async function cleanup() {
-  console.log('\n🗑️  CLEANUP - Removing Duplicate Test Articles\n');
+  console.log('\nCLEANUP - Removing Duplicate Test Articles\n');
 
   try {
     // Login
@@ -51,7 +51,7 @@ async function cleanup() {
     }
 
     const token = loginRes.body.token;
-    console.log('✓ Logged in successfully\n');
+    console.log('[OK] Logged in successfully\n');
 
     // Get all articles
     const articlesRes = await makeRequest('GET', '/api/admin/articles', null, token);
@@ -59,7 +59,7 @@ async function cleanup() {
 
     console.log(`Found ${articles.length} total articles\n`);
     console.log('Articles to review:');
-    console.log('─────────────────────────────────────────────────────────\n');
+    console.log('-----------------------------------------------------\n');
 
     let testCount = 0;
     const toDelete = [];
@@ -73,7 +73,7 @@ async function cleanup() {
           article.title.includes('Test Published Article') ||
           article.title.includes('Updated Draft Article') ||
           article.title.includes('Test Article')) {
-        console.log(`   ⚠️  TEST/DUPLICATE ARTICLE - Will be deleted\n`);
+        console.log(`   [!] TEST/DUPLICATE ARTICLE - Will be deleted\n`);
         toDelete.push(article.id);
         testCount++;
       } else {
@@ -82,30 +82,30 @@ async function cleanup() {
     });
 
     if (toDelete.length === 0) {
-      console.log('✓ No test articles found. Database is clean!\n');
+      console.log('[OK] No test articles found. Database is clean!\n');
       return;
     }
 
-    console.log('─────────────────────────────────────────────────────────');
-    console.log(`\n📋 Found ${toDelete.length} test/duplicate articles to remove\n`);
+    console.log('-----------------------------------------------------');
+    console.log(`[!] Found ${toDelete.length} test/duplicate articles to remove\n`);
 
     // Delete test articles
     console.log('Deleting...\n');
     for (const id of toDelete) {
       const deleteRes = await makeRequest('DELETE', `/api/articles/${id}`, null, token);
       if (deleteRes.status === 200) {
-        console.log(`✓ Deleted article ID ${id}`);
+        console.log(`[OK] Deleted article ID ${id}`);
       } else {
-        console.log(`✗ Failed to delete article ID ${id}`);
+        console.log(`[FAIL] Failed to delete article ID ${id}`);
       }
     }
 
-    console.log('\n✅ Cleanup complete!\n');
+console.log('\n[DONE] Cleanup complete!\n');
 
     // Verify
     const finalRes = await makeRequest('GET', '/api/admin/articles', null, token);
-    console.log(`📊 Now have ${finalRes.body.length} articles in database`);
-    console.log('─────────────────────────────────────────────────────────\n');
+    console.log(`Now have ${finalRes.body.length} articles in database`);
+    console.log('-----------------------------------------------------\n');
 
   } catch (error) {
     console.error('Error:', error.message);

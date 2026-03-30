@@ -1,59 +1,3 @@
-        // ===== ADS SECTION =====
-        async function loadAds(){
-            try{
-                const res=await fetch(API+'/ads',{headers:authHeaders()});
-                const ads=await res.json();
-                displayAds(ads);
-            }catch(e){$('adsList').innerHTML='<p style="color:#dc2626;">Failed to load ads.</p>'}
-        }
-        function displayAds(ads){
-            const el=$('adsList');
-            if(!ads.length){el.innerHTML='<p style="color:#999;">No ads yet.</p>';return;}
-            el.innerHTML=ads.map(ad=>`
-                <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;background:#f8fafc;padding:1rem 1.5rem;border-radius:10px;">
-                    <img src="${esc(ad.image)}" style="width:120px;max-height:60px;object-fit:contain;border-radius:6px;">
-                    <div style="flex:1;">
-                        <div style="font-size:.9rem;font-weight:600;">${esc(ad.link)}</div>
-                        <div style="font-size:.85rem;color:#666;margin:.3rem 0;">${esc(ad.message||'')}</div>
-                    </div>
-                    <button class="btn-sm btn-del" onclick="deleteAd(${ad.id})">Delete</button>
-                </div>
-            `).join('');
-        }
-        window.deleteAd=async function(id){
-            if(!confirm('Delete this ad?'))return;
-            try{
-                const res=await fetch(API+'/ads/'+id,{method:'DELETE',headers:authHeaders()});
-                if(res.ok){showToast('ok','Ad deleted');loadAds();}
-                else showToast('err','Failed to delete ad');
-            }catch(e){showToast('err','Error deleting ad');}
-        }
-        // Ad image upload/preview
-        const adImgUpload=$('adImgUpload'),adImgInput=$('adImage');
-        adImgUpload.addEventListener('click',()=>adImgInput.click());
-        adImgUpload.addEventListener('dragover',e=>{e.preventDefault();adImgUpload.style.borderColor='#667eea';adImgUpload.style.background='#f8f9ff';});
-        adImgUpload.addEventListener('dragleave',()=>{adImgUpload.style.borderColor='#e0e0e0';adImgUpload.style.background='';});
-        adImgUpload.addEventListener('drop',e=>{e.preventDefault();adImgUpload.style.borderColor='#e0e0e0';adImgUpload.style.background='';adImgInput.files=e.dataTransfer.files;previewAdImg();});
-        adImgInput.addEventListener('change',previewAdImg);
-        function previewAdImg(){
-            const f=adImgInput.files[0];
-            if(f){const r=new FileReader();r.onload=e=>{$('adImgPreview').src=e.target.result;$('adImgPreview').style.display='block';};r.readAsDataURL(f);}
-        }
-        // Ad form submit
-        $('adForm').addEventListener('submit',async e=>{
-            e.preventDefault();
-            const btn=$('saveAdBtn');btn.disabled=true;btn.textContent='Saving...';
-            const fd=new FormData();
-            if(adImgInput.files.length>0)fd.append('image',adImgInput.files[0]);
-            fd.append('link',$('adLink').value);
-            fd.append('message',$('adMessage').value);
-            try{
-                const res=await fetch(API+'/ads',{method:'POST',headers:authHeaders(),body:fd});
-                if(res.ok){showToast('ok','Ad added');$('adForm').reset();$('adImgPreview').style.display='none';loadAds();}
-                else{const d=await res.json();showToast('err',d.error||'Failed to add ad');}
-            }catch(e){showToast('err','Error adding ad');}
-            btn.disabled=false;btn.textContent='Add Ad';
-        });
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,7 +375,7 @@
                 <div class="fg"><label>Title</label><input type="text" id="articleTitle" required placeholder="Article title"></div>
                 <div class="form-row">
                     <div class="fg"><label>Category</label><select id="articleCategory"><option value="">Select Category</option></select></div>
-                    <div class="fg"><label>Author</label><input type="text" id="articleAuthor" placeholder="Article author"></div>
+                    <div class="fg"><label>Author</label><div style="display:flex;align-items:center;gap:.6rem;background:#f3f4f6;border-radius:8px;padding:.55rem .9rem;border:1px solid #e5e7eb;"><img id="authorThumb" src="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:none;"><span id="authorDisplayName" style="font-size:.9rem;color:#374151;font-weight:500;">Loading...</span></div></div>
                 </div>
                 <div class="fg"><label>Content</label><textarea id="articleContent" required placeholder="Write your full article content here..." style="min-height:280px;"></textarea><p style="font-size:.78rem;color:#888;margin-top:.4rem;">💡 First paragraph shows as the article introduction on the homepage.</p></div>
 
@@ -439,12 +383,17 @@
                     <h3 style="font-size:.9rem;margin-bottom:1rem;color:#374151;">📷 Media</h3>
                     <div class="fg" style="margin-bottom:1rem;">
                         <label>Featured Image</label>
-                        <div class="file-upload" id="fileUpload"><input type="file" id="articleImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">📁 Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP — max 5MB</p></div>
+                        <div class="file-upload" id="fileUpload"><input type="file" id="articleImage" accept="image/*" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">📁 Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">PNG, JPG, GIF, WebP — max 10MB</p></div>
                         <img id="imagePreview" class="img-preview" style="display:none;">
                     </div>
                     <div class="fg" style="margin-bottom:1rem;">
+                        <label>📸 Gallery Images (Optional)</label>
+                        <div class="file-upload" id="galleryUpload"><input type="file" id="articleGallery" accept="image/*" multiple style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">📁 Click or drag to upload multiple</p><p style="font-size:.78rem;color:#aaa;">Select multiple images for article gallery</p></div>
+                        <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;"></div>
+                    </div>
+                    <div class="fg" style="margin-bottom:1rem;">
                         <label>🎬 Video File (Optional)</label>
-                        <div class="file-upload" id="videoUpload"><input type="file" id="articleVideoFile" accept="video/mp4,video/webm" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">📁 Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">MP4, WebM — max 5MB</p></div>
+                        <div class="file-upload" id="videoUpload"><input type="file" id="articleVideoFile" accept="video/mp4,video/webm,video/quicktime" style="display:none;"><p style="font-size:1rem;margin-bottom:.3rem;">📁 Click or drag to upload</p><p style="font-size:.78rem;color:#aaa;">MP4, WebM, MOV — max 100MB</p></div>
                         <video id="videoPreview" class="img-preview" style="display:none;max-height:180px;" controls></video>
                     </div>
                     <div class="fg"><label>🎬 Video URL (Optional)</label><input type="url" id="articleVideo" placeholder="YouTube embed URL..."><small style="color:#888;display:block;margin-top:.25rem;">Use: https://www.youtube.com/embed/VIDEO_ID</small></div>
@@ -529,6 +478,12 @@
         // ===== AUTH CHECK =====
         function checkAuth(){
             if(!getToken()){window.location.href='login.html';return false;}
+            // Populate author display from stored user
+            const u=JSON.parse(localStorage.getItem('user')||'{}');
+            if(u.username){
+                $('authorDisplayName').textContent=u.username;
+                if(u.profile_image){$('authorThumb').src=u.profile_image;$('authorThumb').style.display='block';}
+            }
             return true;
         }
         function handleUnauth(res){
@@ -664,7 +619,6 @@
                 $('modalTitle').textContent='Edit Article';
                 $('articleTitle').value=a.title;
                 $('articleCategory').value=a.category_id||'';
-                $('articleAuthor').value=a.author||'';
                 $('articleContent').value=a.content;
                 $('articleStatus').value=a.status;
                 $('articleURL').value=a.article_url||'';
@@ -693,7 +647,6 @@
             const fd=new FormData();
             fd.append('title',$('articleTitle').value);
             fd.append('category_id',$('articleCategory').value);
-            fd.append('author',$('articleAuthor').value);
             fd.append('content',$('articleContent').value);
             fd.append('status',$('articleStatus').value);
             fd.append('article_url',$('articleURL').value);
@@ -703,6 +656,11 @@
             if(fi.files.length>0)fd.append('featured_image',fi.files[0]);
             const vf=$('articleVideoFile');
             if(vf.files.length>0)fd.append('video_file',vf.files[0]);
+            // Gallery images (multiple)
+            const gi=$('articleGallery');
+            if(gi.files.length>0){
+                Array.from(gi.files).forEach(f=>fd.append('gallery_images',f));
+            }
             try{
                 const url=currentArticleId?API+'/articles/'+currentArticleId:API+'/articles';
                 const method=currentArticleId?'PUT':'POST';
@@ -735,6 +693,28 @@
         function previewVideo(){
             const f=videoInput.files[0];
             if(f){const r=new FileReader();r.onload=e=>{$('videoPreview').src=e.target.result;$('videoPreview').style.display='block';};r.readAsDataURL(f);}
+        }
+
+        // Gallery file upload (multiple images)
+        const galleryUpload=$('galleryUpload'),galleryInput=$('articleGallery');
+        galleryUpload.addEventListener('click',()=>galleryInput.click());
+        galleryUpload.addEventListener('dragover',e=>{e.preventDefault();galleryUpload.style.borderColor='#667eea';galleryUpload.style.background='#f8f9ff';});
+        galleryUpload.addEventListener('dragleave',()=>{galleryUpload.style.borderColor='#e0e0e0';galleryUpload.style.background='';});
+        galleryUpload.addEventListener('drop',e=>{e.preventDefault();galleryUpload.style.borderColor='#e0e0e0';galleryUpload.style.background='';galleryInput.files=e.dataTransfer.files;previewGallery();});
+        galleryInput.addEventListener('change',previewGallery);
+        function previewGallery(){
+            const preview=$('galleryPreview');
+            preview.innerHTML='';
+            Array.from(galleryInput.files).forEach((f,i)=>{
+                const r=new FileReader();
+                r.onload=e=>{
+                    const wrap=document.createElement('div');
+                    wrap.style.cssText='position:relative;width:80px;height:80px;';
+                    wrap.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid #ddd;">`;
+                    preview.appendChild(wrap);
+                };
+                r.readAsDataURL(f);
+            });
         }
 
         $('closeModal').addEventListener('click',()=>$('articleModal').classList.remove('active'));
@@ -915,7 +895,18 @@
             try{
                 const res=await fetch(API+'/auth/profile',{method:'PUT',headers:authHeaders(),body:fd});
                 const data=await res.json();
-                if(res.ok){inlineMsg('profileMsg','Profile updated successfully!',true);showToast('ok','Profile updated!');loadUserProfile();}
+                if(res.ok){
+                    inlineMsg('profileMsg','Profile updated successfully!',true);showToast('ok','Profile updated!');
+                    loadUserProfile();
+                    // Update stored user so author display reflects new name/image
+                    const me=await fetch(API+'/auth/profile',{headers:authHeaders()}).then(r=>r.json()).catch(()=>null);
+                    if(me){
+                        const stored=JSON.parse(localStorage.getItem('user')||'{}');
+                        localStorage.setItem('user',JSON.stringify({...stored,username:me.username,email:me.email,profile_image:me.profile_image||null}));
+                        $('authorDisplayName').textContent=me.username;
+                        if(me.profile_image){$('authorThumb').src=me.profile_image;$('authorThumb').style.display='block';}
+                    }
+                }
                 else inlineMsg('profileMsg',data.error||'Failed to update profile',false);
             }catch(e){inlineMsg('profileMsg','Network error',false);}
             btn.disabled=false;btn.textContent='💾 Save Profile';
@@ -995,10 +986,67 @@
             }catch(e){showToast('err','Error: '+e.message);}
         };
 
+        // ===== ADS SECTION =====
+        async function loadAds(){
+            try{
+                const res=await fetch(API+'/ads',{headers:authHeaders()});
+                const ads=await res.json();
+                displayAds(ads);
+            }catch(e){$('adsList').innerHTML='<p style="color:#dc2626;">Failed to load ads.</p>';}
+        }
+        function displayAds(ads){
+            const el=$('adsList');
+            if(!ads.length){el.innerHTML='<p style="color:#999;">No ads yet.</p>';return;}
+            el.innerHTML=ads.map(ad=>`
+                <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;background:#f8fafc;padding:1rem 1.5rem;border-radius:10px;">
+                    <img src="${esc(ad.image||'')}" style="width:120px;max-height:60px;object-fit:contain;border-radius:6px;">
+                    <div style="flex:1;">
+                        <div style="font-size:.9rem;font-weight:600;">${esc(ad.link||'')}</div>
+                        <div style="font-size:.85rem;color:#666;margin:.3rem 0;">${esc(ad.message||'')}</div>
+                    </div>
+                    <button class="btn-sm btn-del" onclick="deleteAd(${ad.id})">Delete</button>
+                </div>
+            `).join('');
+        }
+        window.deleteAd=async function(id){
+            if(!confirm('Delete this ad?'))return;
+            try{
+                const res=await fetch(API+'/ads/'+id,{method:'DELETE',headers:authHeaders()});
+                if(res.ok){showToast('ok','Ad deleted');loadAds();}
+                else showToast('err','Failed to delete ad');
+            }catch(e){showToast('err','Error deleting ad');}
+        };
+        // Ad image upload/preview
+        const adImgUpload=$('adImgUpload'),adImgInput=$('adImage');
+        adImgUpload.addEventListener('click',()=>adImgInput.click());
+        adImgUpload.addEventListener('dragover',e=>{e.preventDefault();adImgUpload.style.borderColor='#667eea';adImgUpload.style.background='#f8f9ff';});
+        adImgUpload.addEventListener('dragleave',()=>{adImgUpload.style.borderColor='#e0e0e0';adImgUpload.style.background='';});
+        adImgUpload.addEventListener('drop',e=>{e.preventDefault();adImgUpload.style.borderColor='#e0e0e0';adImgUpload.style.background='';adImgInput.files=e.dataTransfer.files;previewAdImg();});
+        adImgInput.addEventListener('change',previewAdImg);
+        function previewAdImg(){
+            const f=adImgInput.files[0];
+            if(f){const r=new FileReader();r.onload=e=>{$('adImgPreview').src=e.target.result;$('adImgPreview').style.display='block';};r.readAsDataURL(f);}
+        }
+        $('adForm').addEventListener('submit',async e=>{
+            e.preventDefault();
+            const btn=$('saveAdBtn');btn.disabled=true;btn.textContent='Saving...';
+            const fd=new FormData();
+            if(adImgInput.files.length>0)fd.append('image',adImgInput.files[0]);
+            fd.append('link',$('adLink').value);
+            fd.append('message',$('adMessage').value);
+            try{
+                const res=await fetch(API+'/ads',{method:'POST',headers:authHeaders(),body:fd});
+                const data=await res.json();
+                if(res.ok){showToast('ok','Ad added!');$('adForm').reset();$('adImgPreview').style.display='none';loadAds();}
+                else showToast('err',data.error||'Failed to add ad');
+            }catch(err){showToast('err','Network error');}
+            btn.disabled=false;btn.textContent='Add Ad';
+        });
+
         // ===== LOGOUT =====
         $('logoutBtn').addEventListener('click',()=>{
             localStorage.removeItem('token');localStorage.removeItem('user');
-            window.location.href='login.html';
+            window.location.href='/admin/login';
         });
 
         // ===== INIT =====

@@ -3,10 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galmudug Times — A Journal of Record News Portal</title>
+    <title>Galmudug Times - Somalia's Trusted News Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
+    <style>
+    /* Critical CSS - prevent layout shift */
+    html{visibility:visible}
+    body{margin:0;padding:0;overflow-x:hidden}
+    .ticker-bar{background:#c41e3a;padding:.4rem 0}
+    @media(max-width:768px){.ticker-bar{padding:.35rem 0}}
+    /*  Homepage Redesign  */
+    .container-wide{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+    /* Hero Grid */
+    .gt-hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:#222;height:440px}
+    @media(max-width:900px){.gt-hero-grid{grid-template-columns:1fr 1fr;height:auto}}
+    @media(max-width:600px){.gt-hero-grid{grid-template-columns:1fr;height:auto}}
+    .gt-hero-card{position:relative;overflow:hidden;display:block;text-decoration:none;height:100%;background:#1a1a1a}
+    @media(max-width:900px){.gt-hero-card{height:280px}}
+    @media(max-width:600px){.gt-hero-card{height:240px}}
+    .gt-hero-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+    .gt-hero-card:hover img{transform:scale(1.04)}
+    .gt-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.83) 0%,rgba(0,0,0,.18) 55%,transparent 100%);pointer-events:none}
+    .gt-hero-caption{position:absolute;bottom:0;left:0;right:0;padding:1.4rem 1.2rem 1.1rem}
+    .gt-hero-cat{display:inline-block;background:#d63031;color:#fff;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;margin-bottom:.4rem}
+    .gt-hero-title{font-family:'Playfair Display',serif;color:#fff;font-size:1.3rem;font-weight:700;line-height:1.24;margin:0}
+    .gt-hero-card:not(:first-child) .gt-hero-title{font-size:1rem}
+    .gt-hero-meta{font-family:'Inter',sans-serif;font-size:.68rem;color:rgba(255,255,255,.65);margin-top:.35rem;display:block}
+    /* Section Header */
+    .gt-section-hdr{display:flex;align-items:center;justify-content:space-between;border-top:3px solid #d63031;padding-top:.55rem;margin-bottom:1.3rem}
+    .gt-section-hdr h2{font-family:'Inter',sans-serif;font-size:.82rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#111;margin:0}
+    .gt-section-hdr a{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;color:#d63031;text-decoration:none;letter-spacing:.06em}
+    .gt-section-hdr a:hover{text-decoration:underline}
+    /* Today's News */
+    .gt-news-section{padding:2.2rem 0 1.6rem}
+    .gt-today-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8e8e8;margin-bottom:.5rem}
+    @media(max-width:900px){.gt-today-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:580px){.gt-today-grid{grid-template-columns:1fr}}
+    .gt-today-card{display:flex;gap:.75rem;padding:.85rem;border-bottom:1px solid #e8e8e8;border-right:1px solid #e8e8e8;align-items:flex-start;background:#fff;text-decoration:none;color:inherit;transition:background .15s}
+    .gt-today-card:hover{background:#fafafa}
+    .gt-today-card:nth-child(3n){border-right:none}
+    @media(max-width:900px){.gt-today-card:nth-child(3n){border-right:1px solid #e8e8e8}.gt-today-card:nth-child(2n){border-right:none}}
+    @media(max-width:580px){.gt-today-card{border-right:none}}
+    .gt-today-thumb{width:80px;height:62px;object-fit:cover;flex-shrink:0;display:block}
+    .gt-today-body{flex:1;min-width:0}
+    .gt-today-cat{font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block}
+    .gt-today-title{font-family:'Playfair Display',serif;font-size:.875rem;font-weight:700;line-height:1.3;display:block;color:#111;text-decoration:none;margin:.2rem 0 .25rem}
+    .gt-today-title:hover{color:#d63031}
+    .gt-today-meta{font-family:'Inter',sans-serif;font-size:.66rem;color:#aaa;display:block}
+    .gt-load-more-wrap{text-align:center;padding:.8rem 0 .4rem}
+    .gt-load-more-btn{background:#fff;border:2px solid #d63031;color:#d63031;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 2.2rem;cursor:pointer;transition:background .2s,color .2s}
+    .gt-load-more-btn:hover{background:#d63031;color:#fff}
+    /* Featured (XULKA) */
+    .gt-featured-section{padding:2.2rem 0;background:#f4f4f4;border-top:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0}
+    .gt-featured-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    @media(max-width:900px){.gt-featured-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:500px){.gt-featured-grid{grid-template-columns:1fr 1fr;gap:.75rem}}
+    .gt-feat-card{background:#fff;text-decoration:none;color:inherit;display:block;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .gt-feat-card:hover .gt-feat-title{color:#d63031}
+    .gt-feat-img{width:100%;height:160px;object-fit:cover;display:block}
+    @media(max-width:500px){.gt-feat-img{height:120px}}
+    .gt-feat-body{padding:.7rem .7rem .8rem}
+    .gt-feat-cat{font-family:'Inter',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.25rem}
+    .gt-feat-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;line-height:1.3;display:block;color:#111}
+    .gt-feat-meta{font-family:'Inter',sans-serif;font-size:.65rem;color:#aaa;margin-top:.3rem;display:block}
+    /* Category Columns */
+    .gt-cat-section{padding:2.5rem 0 3rem}
+    .gt-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem}
+    @media(max-width:900px){.gt-cat-grid{grid-template-columns:1fr 1fr;gap:1.5rem}}
+    @media(max-width:580px){.gt-cat-grid{grid-template-columns:1fr}}
+    .gt-cat-col-feat{display:block;text-decoration:none;color:inherit;margin-bottom:.9rem}
+    .gt-cat-col-feat:hover .gt-cat-feat-title{color:#d63031}
+    .gt-cat-feat-img{width:100%;height:185px;object-fit:cover;display:block;margin-bottom:.6rem}
+    .gt-cat-feat-cat{font-family:'Inter',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.2rem}
+    .gt-cat-feat-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;line-height:1.3;color:#111;display:block}
+    .gt-cat-col-list{list-style:none;padding:0;margin:.25rem 0 0;border-top:1px solid #e8e8e8}
+    .gt-cat-col-list li{padding:.55rem 0;border-bottom:1px solid #eee}
+    .gt-cat-col-list li a{font-family:'Playfair Display',serif;font-size:.875rem;font-weight:700;color:#111;text-decoration:none;line-height:1.33;display:block}
+    .gt-cat-col-list li a:hover{color:#d63031}
+    .gt-cat-col-list .gt-meta{font-family:'Inter',sans-serif;font-size:.63rem;color:#bbb;display:block;margin-top:.12rem}
+    </style>
 </head>
 <body>
     <!-- GT Top Bar -->
@@ -20,7 +98,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">🌡️</span>&nbsp;<strong id="wtTemp">--°C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon">???�</span>&nbsp;<strong id="wtTemp">--�C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -46,10 +124,6 @@
             </a>
             <nav class="gt-nav" id="dynamic-nav">
                 <a href="/" class="nav-item">Home</a>
-                <a href="/category?cat=galmudug" class="nav-item">Galmudug</a>
-                <a href="/category?cat=muqdisho" class="nav-item">Muqdisho</a>
-                <a href="/category?cat=hargaysa" class="nav-item">Calamka</a>
-                <a href="/category?cat=borame" class="nav-item">Somalia</a>
                 <a href="/contact" class="nav-item">Contact Us</a>
             </nav>
             <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
@@ -66,73 +140,47 @@
         </div>
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
-    <!-- Advertising Banner -->
-    <div id="adsBar" style="width:100%;background:#f0f7ff;padding:1rem 0 .5rem;margin-bottom:1.5rem;display:none;border-bottom:1px solid #dde8f5;">
-        <div id="adsListMain" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:0 1rem;"></div>
-        <div style="text-align:center;font-size:1rem;color:#0c4a6e;margin-top:.6rem;font-weight:600;padding:.4rem 1rem;">
-            &#x1F4E2; Ogow: Haddii aad rabto in xayaysiiskaaga lagu soo bandhigo halkan, fadlan nala soo xiriir!
+
+
+    <!--  Hero Grid: top 3 featured stories  -->
+    <section class="gt-hero-grid" id="gt-hero-grid">
+        <div style="display:flex;align-items:center;justify-content:center;color:#666;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading featured stories&hellip;</div>
+    </section>
+
+    <!--  WARARKA MAANTA (Today's News)  -->
+    <section class="gt-news-section">
+        <div class="container-wide">
+            <div class="gt-section-hdr">
+                <h2>WARARKA MAANTA</h2>
+                <a href="/category">Dhammaan &rarr;</a>
+            </div>
+            <div class="gt-today-grid" id="gt-today-grid">
+                <div style="padding:2rem;color:#999;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading articles&hellip;</div>
+            </div>
+            <div class="gt-load-more-wrap" id="gt-load-more-wrap" style="display:none;">
+                <button class="gt-load-more-btn" onclick="loadMoreToday()">LOAD MORE</button>
+            </div>
         </div>
-    </div>
-    <script>
-    (function(){
-        function adEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-        async function loadSiteAds(){
-            try{
-                var res=await fetch('/api/ads');
-                var ads=await res.json();
-                if(ads&&ads.length){
-                    document.getElementById('adsBar').style.display='block';
-                    var el=document.getElementById('adsListMain');
-                    el.innerHTML=ads.map(function(ad){
-                        return '<a href="'+adEsc(ad.link)+'" target="_blank" rel="noopener" style="display:inline-block;background:#fff;border-radius:8px;padding:7px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px;max-width:220px;text-align:center;text-decoration:none;">'
-                            +'<img src="'+adEsc(ad.image)+'" alt="" style="width:100%;max-width:180px;max-height:60px;object-fit:contain;border-radius:6px;">'
-                            +(ad.message?'<div style="font-size:.85rem;color:#0c4a6e;margin-top:3px;">'+adEsc(ad.message)+'</div>':'')
-                        +'</a>';
-                    }).join('');
-                }
-            }catch(e){}
-        }
-        loadSiteAds();
-    })();
-    </script>
+    </section>
 
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Hero Story (8 columns) - Loaded Dynamically -->
-        <article class="story story-hero" id="hero-article">
-            <div style="text-align: center; padding: 2rem; color: #999;">
-                <p>Loading featured article...</p>
+    <!--  XULKA GALMUDUG (Featured Row)  -->
+    <section class="gt-featured-section">
+        <div class="container-wide">
+            <div class="gt-section-hdr">
+                <h2>XULKA GALMUDUG</h2>
             </div>
-        </article>
-
-        <!-- Sidebar Stories (4 columns) -->
-        <aside class="sidebar" id="sidebar-container">
-            <!-- Top Stories compact horizontal cards -->
-            <div class="sb-section-hdr">Top Stories</div>
-            <div id="sb-top-stories">
-                <p style="color:#bbb;padding:.8rem 0;font-size:.82rem;font-family:'Inter',sans-serif;">Loading...</p>
+            <div class="gt-featured-grid" id="gt-featured-grid">
+                <div style="padding:2rem;color:#999;grid-column:1/-1;font-family:'Inter',sans-serif;font-size:.85rem;">Loading&hellip;</div>
             </div>
+        </div>
+    </section>
 
-            <div class="sidebar-divider"></div>
-
-            <!-- Editors' Picks - dynamic numbered list -->
-            <section class="sidebar-module">
-                <h4 class="module-title">EDITORS' PICKS</h4>
-                <ol class="module-picks" id="editors-picks-list">
-                    <li style="color:#bbb;font-size:.82rem;font-family:'Inter',sans-serif;display:block;border:none;padding:.5rem 0;">Loading...</li>
-                </ol>
-            </section>
-        </aside>
-    </main>
-
-    <!-- Secondary Grid Stories -->
-    <section class="secondary-section">
-        <div class="secondary-divider double-rule"></div>
-        
-        <h2 class="section-title">IN DEPTH</h2>
-
-        <div class="secondary-grid" id="secondary-grid">
-            <p style="text-align: center; color: #999; padding: 2rem; grid-column: 1/-1;">Loading articles...</p>
+    <!--  Category Columns  -->
+    <section class="gt-cat-section">
+        <div class="container-wide">
+            <div class="gt-cat-grid" id="gt-cat-grid">
+                <div style="padding:2rem;color:#999;font-family:'Inter',sans-serif;font-size:.85rem;grid-column:1/-1;">Loading categories&hellip;</div>
+            </div>
         </div>
     </section>
 
@@ -143,7 +191,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news - delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -184,202 +232,218 @@
     </footer>
 
     <script>
-        // HTML escape helper to prevent XSS
+        //  Utilities 
         function esc(str) {
             return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
-
-        // Category color mapping (backup for display)
-        let categoryColorMap = {
-            'politics': '#d63031',
-            'world': '#1e90ff',
-            'business': '#27ae60',
-            'technology': '#8e44ad',
-            'opinion': '#f39c12',
-            'culture': '#e74c3c',
-            'analysis': '#2c3e50'
-        };
-
-        // Load categories from API to get latest colors
+        let categoryColorMap = {'politics':'#d63031','world':'#1e90ff','business':'#27ae60','technology':'#8e44ad','opinion':'#f39c12','culture':'#e74c3c','analysis':'#2c3e50'};
         async function loadCategoryColors() {
             try {
-                const response = await fetch('/api/categories?_t=' + Date.now());
-                const categories = await response.json();
-                categories.forEach(cat => {
-                    categoryColorMap[cat.slug] = cat.color;
-                });
-            } catch (error) {
-                console.error('Error loading categories:', error);
-            }
+                const r = await fetch('/api/categories?_t=' + Date.now());
+                const cats = await r.json();
+                cats.forEach(c => { categoryColorMap[c.slug] = c.color; });
+            } catch(e) {}
         }
-
-        // Format date
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
         }
-
-        // Strip copy-paste metadata from titles (same logic as article.html)
-        function cleanTitle(raw) {
-            if (!raw) return '';
-            const cuts = [
-                /\s+\d{4}\s+[Bb]y\s+/,
-                /\s+[Bb]y\s+[A-Z\u00C0-\u024F][a-z]/,
-                /\s+\d+\s*min/i,
-                /\s+[Bb]ookmark\b/i,
-                /\s+[Ss]hare\b/i,
-            ];
-            let t = raw.trim();
-            for (const re of cuts) {
-                const i = t.search(re);
-                if (i > 20) { t = t.substring(0, i).trim(); break; }
-            }
-            return t;
-        }
-
-        // Truncate plain text to max chars, strip HTML tags
-        function excerpt(str, max) {
-            const plain = (str || '').replace(/<[^>]*>/g, '').trim();
-            return plain.length > max ? plain.substring(0, max).replace(/\s+\S*$/, '') + '…' : plain;
-        }
-
-        // Create category span with color from API
-        function createCategorySpan(categoryName, categorySlug, categoryColor) {
-            const color = esc(categoryColor || categoryColorMap[categorySlug] || '#000');
-            const name = esc(categoryName || categorySlug || 'News');
-            return `<span class="story-category" style="background:${color};color:#fff;padding:.25rem .6rem;font-size:.68rem;font-weight:700;letter-spacing:.08em;display:inline-block;margin-bottom:.5rem;">${name.toUpperCase()}</span>`;
-        }
-
-        function articleUrl(a) {
-            return `/article?id=${esc(String(a.id))}&slug=${esc(a.slug)}`;
-        }
-
-        // Time-ago helper
-        function timeAgo(dateStr) {
-            const diff = Date.now() - new Date(dateStr).getTime();
-            const mins = Math.floor(diff / 60000);
+        function timeAgo(d) {
+            const diff = Date.now() - new Date(d).getTime(), mins = Math.floor(diff / 60000);
             if (mins < 2) return 'Just now';
-            if (mins < 60) return `${mins} min ago`;
+            if (mins < 60) return mins + 'm ago';
             const hrs = Math.floor(mins / 60);
-            if (hrs < 24) return `${hrs}h ago`;
+            if (hrs < 24) return hrs + 'h ago';
             const days = Math.floor(hrs / 24);
             if (days === 1) return 'Yesterday';
-            if (days < 7) return `${days} days ago`;
-            return formatDate(dateStr);
+            if (days < 7) return days + ' days ago';
+            return formatDate(d);
+        }
+        function cleanTitle(raw) {
+            if (!raw) return '';
+            const cuts = [/\s+\d{4}\s+[Bb]y\s+/, /\s+[Bb]y\s+[A-Z\u00C0-\u024F][a-z]/, /\s+\d+\s*min/i, /\s+[Bb]ookmark\b/i, /\s+[Ss]hare\b/i];
+            let t = raw.trim();
+            for (const re of cuts) { const i = t.search(re); if (i > 20) { t = t.substring(0, i).trim(); break; } }
+            return t;
+        }
+        function excerpt(str, max) {
+            const p = (str || '').replace(/<[^>]*>/g, '').trim();
+            return p.length > max ? p.substring(0, max).replace(/\s+\S*$/, '') + '...' : p;
+        }
+        function articleUrl(a) {
+            return '/article?id=' + esc(String(a.id)) + '&slug=' + esc(a.slug || '');
+        }
+        function catColor(a) {
+            return esc(a.category_color || categoryColorMap[a.category_slug] || '#d63031');
+        }
+        function catName(a) {
+            return esc((a.category_name || a.category_slug || 'News').toUpperCase());
         }
 
-        // Load featured articles
-        async function loadArticles() {
-            try {
-                const response = await fetch('/api/articles/featured/latest?_t=' + Date.now());
-                const articles = await response.json();
-
-                if (articles.length === 0) {
-                    document.getElementById('hero-article').innerHTML = '<p style="text-align:center;padding:2rem;color:#999;">No articles published yet</p>';
-                    return;
-                }
-
-                // ── Hero Article ──────────────────────────────────────────
-                const hero = articles[0];
-                const heroTitle = cleanTitle(hero.title);
-                const heroDesc  = excerpt(hero.description || hero.content, 160);
-                const heroImg   = hero.featured_image
-                    ? `<a href="${articleUrl(hero)}"><figure class="story-image" style="margin:1rem 0 0"><img src="${esc(hero.featured_image)}" alt="${esc(heroTitle)}" style="width:100%;height:220px;object-fit:cover;display:block;"></figure></a>`
-                    : '';
-                document.getElementById('hero-article').innerHTML = `
-                    <div class="story-header">
-                        ${createCategorySpan(hero.category_name, hero.category_slug, hero.category_color)}
-                        <a href="${articleUrl(hero)}" style="text-decoration:none;color:inherit;">
-                            <h2 class="story-headline" style="margin:.4rem 0 .6rem;line-height:1.2;">${esc(heroTitle)}</h2>
-                        </a>
-                        ${heroDesc ? `<p class="story-description" style="margin:.4rem 0 .8rem;font-size:.95rem;color:#444;line-height:1.55;">${esc(heroDesc)}</p>` : ''}
-                    </div>
-                    <div class="story-byline" style="margin-bottom:.6rem;">
-                        <span class="author-name">By ${esc(hero.author)}</span>
-                        <span class="publish-date">${formatDate(hero.published_at)}</span>
-                    </div>
-                    ${heroImg}
-                    <a href="${articleUrl(hero)}" style="display:inline-block;margin-top:.9rem;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d63031;text-decoration:none;border-bottom:2px solid #d63031;padding-bottom:2px;">Read more →</a>
-                `;
-
-                // ── Sidebar Top Stories (compact horizontal cards) ────────
-                const sbArticles = articles.slice(1, 5);
-                if (sbArticles.length > 0) {
-                    document.getElementById('sb-top-stories').innerHTML = sbArticles.map(s => {
-                        const sTitle = cleanTitle(s.title);
-                        const catColor = esc(s.category_color || categoryColorMap[s.category_slug] || '#d63031');
-                        const thumb = s.featured_image
-                            ? `<div class="sb-card-img"><a href="${articleUrl(s)}"><img src="${esc(s.featured_image)}" alt="${esc(sTitle)}" loading="lazy"></a></div>`
-                            : '';
-                        return `
-                        <div class="sb-card">
-                            <div class="sb-card-text">
-                                <span class="sb-cat" style="color:${catColor};">${esc((s.category_name || s.category_slug || 'News').toUpperCase())}</span>
-                                <h3 class="sb-headline"><a href="${articleUrl(s)}">${esc(sTitle)}</a></h3>
-                                <span class="sb-meta">${timeAgo(s.published_at)}</span>
-                            </div>
-                            ${thumb}
-                        </div>`;
-                    }).join('');
-                }
-
-                // ── Editors' Picks (numbered list, different articles) ────
-                const pickStart = articles.length > 5 ? 5 : 1;
-                const pickArticles = articles.slice(pickStart, pickStart + 5);
-                if (pickArticles.length > 0) {
-                    document.getElementById('editors-picks-list').innerHTML = pickArticles.map(s => {
-                        const sTitle = cleanTitle(s.title);
-                        const catColor = esc(s.category_color || categoryColorMap[s.category_slug] || '#d63031');
-                        return `
-                        <li>
-                            <div>
-                                <a href="${articleUrl(s)}">${esc(sTitle)}</a>
-                                <span class="mp-meta"><span style="color:${catColor};font-weight:700;">${esc((s.category_name || '').toUpperCase())}</span> &middot; <span style="color:#aaa;">${timeAgo(s.published_at)}</span></span>
-                            </div>
-                        </li>`;
-                    }).join('');
-                } else {
-                    document.getElementById('editors-picks-list').innerHTML = '';
-                }
-
-                // ── Secondary Grid ────────────────────────────────────────
-                const secondaryArticles = articles.slice(3);
-                if (secondaryArticles.length > 0) {
-                    document.getElementById('secondary-grid').innerHTML = secondaryArticles.map(a => {
-                        const t = cleanTitle(a.title);
-                        const d = excerpt(a.description || a.content, 90);
-                        const img = a.featured_image
-                            ? `<a href="${articleUrl(a)}"><img src="${esc(a.featured_image)}" alt="${esc(t)}" style="width:100%;height:150px;object-fit:cover;display:block;margin-bottom:.7rem;"></a>`
-                            : `<div style="width:100%;height:8px;background:${esc(a.category_color||'#d63031')};margin-bottom:.7rem;"></div>`;
-                        return `
-                        <article class="story story-secondary" style="border:1px solid #ebebeb;padding:1rem;border-top:3px solid ${esc(a.category_color||'#d63031')};">
-                            ${img}
-                            ${createCategorySpan(a.category_name, a.category_slug, a.category_color)}
-                            <h3 class="story-headline" style="font-size:1.05rem;margin:.3rem 0 .45rem;line-height:1.3;">
-                                <a href="${articleUrl(a)}" style="text-decoration:none;color:inherit;">${esc(t)}</a>
-                            </h3>
-                            ${d ? `<p class="story-description" style="font-size:.82rem;color:#555;margin:.3rem 0 .6rem;line-height:1.5;">${esc(d)}</p>` : ''}
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
-                                <span style="font-family:'Inter',sans-serif;font-size:.68rem;color:#aaa;">${timeAgo(a.published_at)}</span>
-                                <a href="${articleUrl(a)}" style="font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#d63031;text-decoration:none;">Read more →</a>
-                            </div>
-                        </article>`;
-                    }).join('');
-                }
-            } catch (error) {
-                console.error('Error loading articles:', error);
-                document.getElementById('hero-article').innerHTML = '<p style="text-align:center;padding:2rem;color:#999;">Error loading articles. Is the server running?</p>';
+        //  Hero Grid 
+        function renderHero(articles) {
+            const grid = document.getElementById('gt-hero-grid');
+            if (!grid) return;
+            if (!articles.length) {
+                grid.innerHTML = '<div style="height:440px;display:flex;align-items:center;justify-content:center;color:#666;grid-column:1/-1;font-family:Inter,sans-serif;">No featured articles yet.</div>';
+                return;
             }
+            grid.innerHTML = articles.slice(0, 3).map((a, i) => {
+                const t = cleanTitle(a.title);
+                const img = a.featured_image
+                    ? `<img src="${esc(a.featured_image)}" alt="${esc(t)}" loading="${i === 0 ? 'eager' : 'lazy'}">`
+                    : `<div style="width:100%;height:100%;background:#222;"></div>`;
+                return `<a href="${articleUrl(a)}" class="gt-hero-card">
+                    ${img}
+                    <div class="gt-hero-overlay"></div>
+                    <div class="gt-hero-caption">
+                        <span class="gt-hero-cat" style="background:${catColor(a)};">${catName(a)}</span>
+                        <h2 class="gt-hero-title">${esc(t)}</h2>
+                        <span class="gt-hero-meta">${esc(a.author || 'Galmudug Times')} &middot; ${timeAgo(a.published_at)}</span>
+                    </div>
+                </a>`;
+            }).join('');
         }
 
-        // Load articles when page loads
-        document.addEventListener('DOMContentLoaded', async function() {
-            await loadCategoryColors();
-            loadArticles();
-            loadTicker();
-        });
+        //  WARARKA MAANTA (Today's News) 
+        let allTodayArticles = [];
+        let todayShown = 0;
+        const TODAY_BATCH = 9;
 
-        // ====== Dynamic Breaking News Ticker ======
+        function renderTodayCards(articles) {
+            return articles.map(a => {
+                const t = cleanTitle(a.title);
+                const thumb = a.featured_image
+                    ? `<img class="gt-today-thumb" src="${esc(a.featured_image)}" alt="${esc(t)}" loading="lazy">`
+                    : `<div class="gt-today-thumb" style="background:${catColor(a)};flex-shrink:0;"></div>`;
+                return `<a href="${articleUrl(a)}" class="gt-today-card">
+                    ${thumb}
+                    <div class="gt-today-body">
+                        <span class="gt-today-cat" style="color:${catColor(a)};">${catName(a)}</span>
+                        <span class="gt-today-title">${esc(t)}</span>
+                        <span class="gt-today-meta">${timeAgo(a.published_at)}</span>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+
+        function renderTodayNews(articles) {
+            allTodayArticles = articles.slice(3); // skip hero articles
+            todayShown = 0;
+            const grid = document.getElementById('gt-today-grid');
+            if (!grid) return;
+            if (!allTodayArticles.length) {
+                grid.innerHTML = '<div style="padding:2rem;color:#999;font-family:Inter,sans-serif;grid-column:1/-1;">No articles yet.</div>';
+                return;
+            }
+            const firstBatch = allTodayArticles.slice(0, TODAY_BATCH);
+            grid.innerHTML = renderTodayCards(firstBatch);
+            todayShown = firstBatch.length;
+            const wrap = document.getElementById('gt-load-more-wrap');
+            if (wrap) wrap.style.display = allTodayArticles.length > TODAY_BATCH ? 'block' : 'none';
+        }
+
+        function loadMoreToday() {
+            const grid = document.getElementById('gt-today-grid');
+            if (!grid) return;
+            const nextBatch = allTodayArticles.slice(todayShown, todayShown + TODAY_BATCH);
+            if (!nextBatch.length) return;
+            grid.innerHTML += renderTodayCards(nextBatch);
+            todayShown += nextBatch.length;
+            const wrap = document.getElementById('gt-load-more-wrap');
+            if (wrap) wrap.style.display = todayShown < allTodayArticles.length ? 'block' : 'none';
+        }
+
+        //  XULKA GALMUDUG (Featured Row) 
+        function renderFeatured(articles) {
+            const grid = document.getElementById('gt-featured-grid');
+            if (!grid) return;
+            const items = articles.slice(0, 4);
+            if (!items.length) { grid.parentElement.parentElement.style.display = 'none'; return; }
+            grid.innerHTML = items.map(a => {
+                const t = cleanTitle(a.title);
+                const img = a.featured_image
+                    ? `<img class="gt-feat-img" src="${esc(a.featured_image)}" alt="${esc(t)}" loading="lazy">`
+                    : `<div class="gt-feat-img" style="background:${catColor(a)};"></div>`;
+                return `<a href="${articleUrl(a)}" class="gt-feat-card">
+                    ${img}
+                    <div class="gt-feat-body">
+                        <span class="gt-feat-cat" style="color:${catColor(a)};">${catName(a)}</span>
+                        <span class="gt-feat-title">${esc(t)}</span>
+                        <span class="gt-feat-meta">${timeAgo(a.published_at)}</span>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+
+        //  Category Columns 
+        async function loadCategoryColumns() {
+            try {
+                const r = await fetch('/api/categories/nav/visible');
+                const cats = await r.json();
+                const cols = cats.slice(0, 3);
+                const grid = document.getElementById('gt-cat-grid');
+                if (!grid || !cols.length) { if (grid) grid.closest('section').style.display = 'none'; return; }
+                // Render column placeholders
+                grid.innerHTML = cols.map(c =>
+                    `<div class="gt-cat-col-inner" id="cat-col-${esc(c.slug)}">
+                        <div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#d63031')}">${esc(c.name.toUpperCase())}</h2></div>
+                        <div style="color:#aaa;font-family:Inter,sans-serif;font-size:.8rem;">Loading&hellip;</div>
+                    </div>`
+                ).join('');
+                // Load articles per category
+                cols.forEach(async c => {
+                    try {
+                        const res = await fetch(`/api/articles?category=${encodeURIComponent(c.slug)}&limit=6&_t=${Date.now()}`);
+                        const arts = await res.json();
+                        const col = document.getElementById('cat-col-' + c.slug);
+                        if (!col) return;
+                        const hdr = `<div class="gt-section-hdr"><h2 style="color:${esc(c.color || '#d63031')}">${esc(c.name.toUpperCase())}</h2></div>`;
+                        if (!arts.length) { col.innerHTML = hdr + '<p style="color:#aaa;font-size:.8rem;font-family:Inter,sans-serif;">No articles yet.</p>'; return; }
+                        const featured = arts[0];
+                        const rest = arts.slice(1);
+                        const ft = cleanTitle(featured.title);
+                        const fImg = featured.featured_image
+                            ? `<img class="gt-cat-feat-img" src="${esc(featured.featured_image)}" alt="${esc(ft)}" loading="lazy">`
+                            : `<div class="gt-cat-feat-img" style="background:${esc(c.color || '#d63031')};"></div>`;
+                        col.innerHTML = hdr +
+                            `<a href="${articleUrl(featured)}" class="gt-cat-col-feat">
+                                ${fImg}
+                                <span class="gt-cat-feat-cat" style="color:${esc(c.color || '#d63031')};">${esc(c.name.toUpperCase())}</span>
+                                <span class="gt-cat-feat-title">${esc(ft)}</span>
+                            </a>
+                            <ul class="gt-cat-col-list">
+                                ${rest.map(a => {
+                                    const at = cleanTitle(a.title);
+                                    return `<li><a href="${articleUrl(a)}">${esc(at)}</a><span class="gt-meta">${timeAgo(a.published_at)}</span></li>`;
+                                }).join('')}
+                            </ul>`;
+                    } catch(e) {}
+                });
+            } catch(e) {}
+        }
+
+        //  Main init 
+        async function initHomepage() {
+            await loadCategoryColors();
+            try {
+                const r = await fetch('/api/articles/featured/latest?_t=' + Date.now());
+                const articles = await r.json();
+                renderHero(articles.slice(0, 3));
+                renderTodayNews(articles);
+                // Featured (XULKA): use articles 3-6 if available, else top articles
+                const featStart = articles.length > 6 ? 3 : 0;
+                renderFeatured(articles.slice(featStart, featStart + 4));
+            } catch(e) {
+                const g = document.getElementById('gt-hero-grid');
+                if (g) g.innerHTML = '<div style="height:280px;display:flex;align-items:center;justify-content:center;color:#d63031;grid-column:1/-1;font-family:Inter,sans-serif;">Error loading articles. Is the server running?</div>';
+            }
+            loadCategoryColumns();
+            loadTicker();
+        }
+
+        document.addEventListener('DOMContentLoaded', initHomepage);
+
+        //  Breaking News Ticker 
         async function loadTicker() {
             try {
                 const res = await fetch('/api/breaking-news');
@@ -387,17 +451,16 @@
                 if (!items.length) return;
                 const el = document.getElementById('tickerText');
                 if (!el) return;
-                const text = items.map(i => i.title).join('   ·   ');
-                el.textContent = text + '     ·     ' + text; // duplicate for seamless loop
+                const text = items.map(i => i.title).join('   �   ');
+                el.textContent = text + '     �     ' + text;
                 requestAnimationFrame(() => {
-                    // target ~70px/sec; half scrollWidth = one copy width
                     const dur = Math.max(25, Math.round(el.scrollWidth / 2 / 70));
                     el.style.animationDuration = dur + 's';
                 });
             } catch(e) {}
         }
 
-        // ====== Search ======
+        //  Search 
         async function doSearch() {
             const q = (document.getElementById('searchInput').value || '').trim();
             const box = document.getElementById('searchResults');
@@ -408,7 +471,7 @@
                 const res = await fetch('/api/search?q=' + encodeURIComponent(q));
                 const results = await res.json();
                 if (!results.length) {
-                    box.innerHTML = '<p style="color:#999;padding:1rem 0;">No results found for "' + q + '"</p>';
+                    box.innerHTML = '<p style="color:#999;padding:1rem 0;">No results found for "' + esc(q) + '"</p>';
                     return;
                 }
                 box.innerHTML = `
@@ -427,14 +490,13 @@
             }
         }
 
-        // Search on Enter key (single handler)
         document.addEventListener('DOMContentLoaded', function() {
             const inp = document.getElementById('searchInput');
             if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
         });
     </script>
-    <script src="/js/header.js"></script>
-    <script src="/js/nav.js"></script>
+    <script src="/js/header.js?v=2"></script>
+    <script src="/js/nav.js?v=2"></script>
 
     <!-- Subscribe Popup (bottom-right corner) -->
     <div id="gt-subscribe-popup" style="

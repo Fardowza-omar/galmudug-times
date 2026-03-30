@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life & Culture â€” Galmudug Times</title>
+    <title>Life & Culture — Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
     <!-- GT Top Bar -->
@@ -20,7 +20,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--ï¿½C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--?C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -46,10 +46,6 @@
             </a>
             <nav class="gt-nav" id="dynamic-nav">
                 <a href="/" class="nav-item">Home</a>
-                <a href="/category?cat=galmudug" class="nav-item">Galmudug</a>
-                <a href="/category?cat=muqdisho" class="nav-item">Muqdisho</a>
-                <a href="/category?cat=hargaysa" class="nav-item">Calamka</a>
-                <a href="/category?cat=borame" class="nav-item">Somalia</a>
                 <a href="/contact" class="nav-item">Contact Us</a>
             </nav>
             <button class="gt-hamburger" id="gtHamburger" onclick="toggleGTMobileNav()" aria-label="Menu">&#9776;</button>
@@ -66,35 +62,6 @@
         </div>
         <div id="searchResults" style="display:none;" class="gt-search-results"></div>
     </header>
-    <!-- Advertising Banner -->
-    <div id="adsBar" style="width:100%;background:#f0f7ff;padding:1rem 0 .5rem;margin-bottom:1.5rem;display:none;border-bottom:1px solid #dde8f5;">
-        <div id="adsListMain" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:0 1rem;"></div>
-        <div style="text-align:center;font-size:1rem;color:#0c4a6e;margin-top:.6rem;font-weight:600;padding:.4rem 1rem;">
-            &#x1F4E2; Ogow: Haddii aad rabto in xayaysiiskaaga lagu soo bandhigo halkan, fadlan nala soo xiriir!
-        </div>
-    </div>
-    <script>
-    (function(){
-        function adEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-        async function loadSiteAds(){
-            try{
-                var res=await fetch('/api/ads');
-                var ads=await res.json();
-                if(ads&&ads.length){
-                    document.getElementById('adsBar').style.display='block';
-                    var el=document.getElementById('adsListMain');
-                    el.innerHTML=ads.map(function(ad){
-                        return '<a href="'+adEsc(ad.link)+'" target="_blank" rel="noopener" style="display:inline-block;background:#fff;border-radius:8px;padding:7px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px;max-width:220px;text-align:center;text-decoration:none;">'
-                            +'<img src="'+adEsc(ad.image)+'" alt="" style="width:100%;max-width:180px;max-height:60px;object-fit:contain;border-radius:6px;">'
-                            +(ad.message?'<div style="font-size:.85rem;color:#0c4a6e;margin-top:3px;">'+adEsc(ad.message)+'</div>':'')
-                        +'</a>';
-                    }).join('');
-                }
-            }catch(e){}
-        }
-        loadSiteAds();
-    })();
-    </script>
 
     <section class="section-hero">
         <div class="section-hero-content">
@@ -113,7 +80,7 @@
             </div>
             <div class="story-byline">
                 <span class="author-name">By Alexandra Brown</span>
-                <span class="publish-date">March 11, 2026 â€” 8:00 PM</span>
+                <span class="publish-date">March 11, 2026 — 8:00 PM</span>
             </div>
             <figure class="story-image">
                 <div class="image-placeholder"></div>
@@ -121,12 +88,12 @@
             </figure>
             <div class="story-body">
                 <p><span class="drop-cap">T</span>he news of this morning's historic trade accord has inspired a remarkable cultural response, with artists, musicians, filmmakers, and writers reflecting on what the agreement means for international cooperation and human exchange. At the Whitney Museum in New York, a panel of contemporary artists gathered to discuss how this moment in geopolitical history might shape artistic practice in the coming decades.</p>
-                <p>"What strikes me most is the possibility of genuine cultural interchange," said renowned artist Julian Chambers. "For too long, we've been trapped in nationalist boxes. This accord opens doorsâ€”literally and metaphoricallyâ€”for artists, musicians, and thinkers to collaborate across borders in ways that seemed impossible just months ago."</p>
+                <p>"What strikes me most is the possibility of genuine cultural interchange," said renowned artist Julian Chambers. "For too long, we've been trapped in nationalist boxes. This accord opens doors—literally and metaphorically—for artists, musicians, and thinkers to collaborate across borders in ways that seemed impossible just months ago."</p>
                 <aside class="pull-quote">
-                    <blockquote>"This accord opens doorsâ€”literally and metaphoricallyâ€”for artists, musicians, and thinkers to collaborate across borders."</blockquote>
-                    <cite>â€” Julian Chambers, Visual Artist</cite>
+                    <blockquote>"This accord opens doors—literally and metaphorically—for artists, musicians, and thinkers to collaborate across borders."</blockquote>
+                    <cite>— Julian Chambers, Visual Artist</cite>
                 </aside>
-                <p>In London, the National Theatre announced plans for a collaborative production bringing together directors, playwrights, and performers from twelve nationsâ€”mirroring the nations party to the accord. "We want to create art that embodies this moment of possibility," said director Sarah Williams.</p>
+                <p>In London, the National Theatre announced plans for a collaborative production bringing together directors, playwrights, and performers from twelve nations—mirroring the nations party to the accord. "We want to create art that embodies this moment of possibility," said director Sarah Williams.</p>
             </div>
         </article>
 
@@ -198,7 +165,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news â€” delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news — delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>

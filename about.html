@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us ‚Äì Galmudug Times</title>
+    <title>About Us ñ Galmudug Times</title>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3">
     <style>
         .page-hero{background:#8B0000;color:#fff;padding:3.5rem 2rem;text-align:center}
         .page-hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:#fff;margin:0 0 .5rem}
@@ -36,7 +36,7 @@
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
             <div class="gt-topbar-center">
-                <span id="weatherWidget"><span id="wtIcon">üå°Ô∏è</span>&nbsp;<strong id="wtTemp">--¬∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
+                <span id="weatherWidget"><span id="wtIcon">???</span>&nbsp;<strong id="wtTemp">--∞C</strong>&nbsp;<span class="gt-weather-city" id="wtCity">Mogadishu</span></span>
                 <span class="gt-sep">|</span>
                 <span id="topbarDate"></span>
             </div>
@@ -66,39 +66,10 @@
             </button>
         </div>
     </header>
-    <!-- Advertising Banner -->
-    <div id="adsBar" style="width:100%;background:#f0f7ff;padding:1rem 0 .5rem;margin-bottom:1.5rem;display:none;border-bottom:1px solid #dde8f5;">
-        <div id="adsListMain" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:0 1rem;"></div>
-        <div style="text-align:center;font-size:1rem;color:#0c4a6e;margin-top:.6rem;font-weight:600;padding:.4rem 1rem;">
-            &#x1F4E2; Ogow: Haddii aad rabto in xayaysiiskaaga lagu soo bandhigo halkan, fadlan nala soo xiriir!
-        </div>
-    </div>
-    <script>
-    (function(){
-        function adEsc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-        async function loadSiteAds(){
-            try{
-                var res=await fetch('/api/ads');
-                var ads=await res.json();
-                if(ads&&ads.length){
-                    document.getElementById('adsBar').style.display='block';
-                    var el=document.getElementById('adsListMain');
-                    el.innerHTML=ads.map(function(ad){
-                        return '<a href="'+adEsc(ad.link)+'" target="_blank" rel="noopener" style="display:inline-block;background:#fff;border-radius:8px;padding:7px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:120px;max-width:220px;text-align:center;text-decoration:none;">'
-                            +'<img src="'+adEsc(ad.image)+'" alt="" style="width:100%;max-width:180px;max-height:60px;object-fit:contain;border-radius:6px;">'
-                            +(ad.message?'<div style="font-size:.85rem;color:#0c4a6e;margin-top:3px;">'+adEsc(ad.message)+'</div>':'')
-                        +'</a>';
-                    }).join('');
-                }
-            }catch(e){}
-        }
-        loadSiteAds();
-    })();
-    </script>
 
     <div class="page-hero">
         <h1>About Galmudug Times</h1>
-        <p>Somalia's Trusted News Network ‚Äî Independent, Accurate, Accountable</p>
+        <p>Somalia's Trusted News Network ó Independent, Accurate, Accountable</p>
     </div>
 
     <div class="page-body">
@@ -107,7 +78,7 @@
         <p>We believe an informed public is the foundation of a healthy democracy. Every article we publish is guided by the principles of accuracy, independence, and public interest.</p>
 
         <div class="mission-box">
-            <p>"Our mission is to be the most trusted source of news and information for the people of Galmudug and Somalia ‚Äî delivering stories that matter with honesty and integrity."</p>
+            <p>"Our mission is to be the most trusted source of news and information for the people of Galmudug and Somalia ó delivering stories that matter with honesty and integrity."</p>
         </div>
 
         <h2>Our Values</h2>
@@ -115,7 +86,7 @@
             <li><strong>Accuracy:</strong> We verify every fact before publication and correct errors promptly and prominently.</li>
             <li><strong>Independence:</strong> Our editorial decisions are made free from political or commercial pressure.</li>
             <li><strong>Fairness:</strong> We present all sides of a story and treat every subject with respect.</li>
-            <li><strong>Accountability:</strong> We hold power to account ‚Äî locally, nationally, and globally.</li>
+            <li><strong>Accountability:</strong> We hold power to account ó locally, nationally, and globally.</li>
             <li><strong>Transparency:</strong> We are open about our methods, funding, and corrections.</li>
         </ul>
 
@@ -134,7 +105,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <div style="font-family:'Pirata One',cursive;font-size:1.4rem;color:#fff;letter-spacing:.04em;margin-bottom:.6rem;">Galmudug Times</div>
-                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news ‚Äî delivering accurate, fair, and timely reporting on the stories that matter.</p>
+                <p class="footer-text" style="color:#aaa;line-height:1.7;font-size:.88rem;">Somalia's trusted source for independent news ó delivering accurate, fair, and timely reporting on the stories that matter.</p>
                 <div style="display:flex;gap:.75rem;margin-top:1rem;">
                     <a href="#" aria-label="Facebook" style="color:#aaa;font-size:1rem;"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" aria-label="Instagram" style="color:#aaa;font-size:1rem;"><i class="fab fa-instagram"></i></a>
@@ -174,8 +145,8 @@
                 if(!items.length) return;
                 const el=document.getElementById('tickerText');
                 if(!el) return;
-                const text=items.map(i=>i.title).join('   ¬∑   ');
-                el.textContent=text+'     ¬∑     '+text;
+                const text=items.map(i=>i.title).join('   ∑   ');
+                el.textContent=text+'     ∑     '+text;
                 requestAnimationFrame(()=>{
                     const dur=Math.max(25,Math.round(el.scrollWidth/2/70));
                     el.style.animationDuration=dur+'s';

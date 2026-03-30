@@ -40,27 +40,27 @@ function makeRequest(method, path, data, token = null) {
 
 function test(name, passed, details = '') {
   if (passed) {
-    console.log(`✓ ${name}`);
+    console.log(`[PASS] ${name}`);
     testsPassed++;
   } else {
-    console.log(`✗ ${name}`);
+    console.log(`[FAIL] ${name}`);
     if (details) console.log(`  Error: ${details}`);
     testsFailed++;
   }
 }
 
 async function runTests() {
-  console.log('\n═══════════════════════════════════════════════════');
+  console.log('\n===================================================');
   console.log('  GALMUDUG TIMES - COMPREHENSIVE FUNCTIONALITY TEST');
-  console.log('═══════════════════════════════════════════════════\n');
+  console.log('===================================================\n');
 
   let authToken = null;
   let articleId = null;
 
   try {
     // ========== AUTHENTICATION TESTS ==========
-    console.log('📋 AUTHENTICATION TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('[1] AUTHENTICATION TESTS');
+    console.log('---------------------------------------------');
 
     // Test 1: Admin Login
     const loginRes = await makeRequest('POST', '/api/auth/login', {
@@ -84,8 +84,8 @@ async function runTests() {
       profileRes.status === 200 && profileRes.body.username === 'admin');
 
     // ========== CATEGORIES TESTS ==========
-    console.log('\n📁 CATEGORY TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[2] CATEGORY TESTS');
+    console.log('---------------------------------------------');
 
     // Test 4: Get Categories
     const catsRes = await makeRequest('GET', '/api/categories', null);
@@ -104,8 +104,8 @@ async function runTests() {
       newCatRes.status === 200 && newCatRes.body.id);
 
     // ========== ARTICLE TESTS ==========
-    console.log('\n📰 ARTICLE TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[3] ARTICLE TESTS');
+    console.log('---------------------------------------------');
 
     // Test 6: Create Draft Article
     const draftRes = await makeRequest('POST', '/api/articles', {
@@ -160,8 +160,8 @@ async function runTests() {
       breakingRes.status === 200 && Array.isArray(breakingRes.body));
 
     // ========== SEARCH TESTS ==========
-    console.log('\n🔍 SEARCH TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[4] SEARCH TESTS');
+    console.log('---------------------------------------------');
 
     // Test 12: Search Articles
     const searchRes = await makeRequest('GET', '/api/search?q=breaking', null);
@@ -169,8 +169,8 @@ async function runTests() {
       searchRes.status === 200 && Array.isArray(searchRes.body));
 
     // ========== COMMENTS TESTS ==========
-    console.log('\n💬 COMMENT TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[5] COMMENT TESTS');
+    console.log('---------------------------------------------');
 
     // Test 13: Post Comment
     if (articleId) {
@@ -190,8 +190,8 @@ async function runTests() {
     }
 
     // ========== LIKES TESTS ==========
-    console.log('\n👍 LIKES TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[6] LIKES TESTS');
+    console.log('---------------------------------------------');
 
     // Test 15: Toggle Like
     if (articleId) {
@@ -208,8 +208,8 @@ async function runTests() {
     }
 
     // ========== ADMIN ONLY TESTS ==========
-    console.log('\n🔐 ADMIN OPERATIONS TESTS');
-    console.log('─────────────────────────────────────────────────');
+    console.log('\n[7] ADMIN OPERATIONS TESTS');
+    console.log('---------------------------------------------');
 
     // Test 17: Get Admin Comments
     const adminCommentsRes = await makeRequest('GET', '/api/admin/comments', null, authToken);
@@ -222,24 +222,24 @@ async function runTests() {
       unauthorizedRes.status === 401 || unauthorizedRes.status === 403);
 
   } catch (error) {
-    console.error('\n❌ Test suite error:', error.message);
+    console.error('\n[ERROR] Test suite error:', error.message);
     testsFailed++;
   }
 
   // ========== SUMMARY ==========
-  console.log('\n═══════════════════════════════════════════════════');
+  console.log('\n===================================================');
   console.log('  TEST SUMMARY');
-  console.log('═══════════════════════════════════════════════════');
-  console.log(`✓ Passed: ${testsPassed}`);
-  console.log(`✗ Failed: ${testsFailed}`);
-  console.log(`📊 Total: ${testsPassed + testsFailed}`);
-  console.log(`⚡ Success Rate: ${Math.round((testsPassed / (testsPassed + testsFailed)) * 100)}%`);
-  console.log('═══════════════════════════════════════════════════\n');
+  console.log('===================================================');
+  console.log(`[PASS] Passed: ${testsPassed}`);
+  console.log(`[FAIL] Failed: ${testsFailed}`);
+  console.log(`Total: ${testsPassed + testsFailed}`);
+  console.log(`Success Rate: ${Math.round((testsPassed / (testsPassed + testsFailed)) * 100)}%`);
+  console.log('===================================================\n');
 
   if (testsFailed === 0) {
-    console.log('🎉 ALL TESTS PASSED! Your CMS is working perfectly!\n');
+    console.log('ALL TESTS PASSED! Your CMS is working perfectly!\n');
   } else {
-    console.log('⚠️  Some tests failed. Please review the errors above.\n');
+    console.log('[!] Some tests failed. Please review the errors above.\n');
   }
 }
 

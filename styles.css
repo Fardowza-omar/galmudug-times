@@ -4,6 +4,28 @@
    ======================================== */
 
 /* ========================================
+   ANTI-FLICKER / INITIAL LOAD
+   ======================================== */
+
+/* Prevent layout shift and flash of unstyled content */
+html {
+    visibility: visible;
+}
+
+/* Smooth content appearance */
+.gt-hero-grid,
+.gt-news-section,
+.gt-featured-section,
+.gt-cat-section {
+    animation: fadeInContent 0.3s ease-out;
+}
+
+@keyframes fadeInContent {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
    1. RESET & BASE STYLES
    ======================================== */
 
@@ -2798,10 +2820,34 @@ img, video, iframe, embed, object {
 
 /* ---- Tablets (≤768px) ---- */
 @media (max-width: 768px) {
-    /* Reduce sticky stack — hide ticker on mobile to save space */
+    /* Make ticker much more compact on mobile */
     .ticker-bar {
         position: relative !important;
         top: auto !important;
+        padding: 0.4rem 0 !important;
+        background: #c41e3a !important;
+    }
+    .ticker-content {
+        padding: 0 0.6rem !important;
+        gap: 0.5rem !important;
+    }
+    .ticker-label {
+        font-size: 0.55rem !important;
+        padding: 0.2rem 0.45rem !important;
+        letter-spacing: 0.08em !important;
+        flex-shrink: 0;
+        background: rgba(0,0,0,0.25);
+        border-radius: 2px;
+    }
+    .ticker-scroll {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .ticker-text {
+        font-size: 0.68rem !important;
+        animation-duration: 25s !important;
+        white-space: nowrap;
     }
     .gt-topbar {
         position: relative !important;
@@ -3058,11 +3104,26 @@ img, video, iframe, embed, object {
         height: 55px !important;
     }
 
-    /* Hide ticker text animation on very small screens — just show static */
+    /* Compact ticker on very small screens */
+    .ticker-bar {
+        padding: 0.35rem 0 !important;
+    }
+    .ticker-content {
+        padding: 0 0.5rem !important;
+        gap: 0.5rem !important;
+    }
+    .ticker-label {
+        font-size: 0.5rem !important;
+        padding: 0.2rem 0.4rem !important;
+        letter-spacing: 0.08em !important;
+    }
     .ticker-text {
         animation: none !important;
-        white-space: normal !important;
-        font-size: 0.72rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-size: 0.65rem !important;
+        max-width: calc(100vw - 80px) !important;
     }
 
     /* Subscribe popup / buttons */

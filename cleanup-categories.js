@@ -36,7 +36,7 @@ function makeRequest(method, path, data, token = null) {
 }
 
 async function cleanupCategories() {
-  console.log('\n🗑️  CLEANUP - Removing Duplicate Test Categories\n');
+  console.log('\nCLEANUP - Removing Duplicate Test Categories\n');
 
   try {
     // Login
@@ -51,7 +51,7 @@ async function cleanupCategories() {
     }
 
     const token = loginRes.body.token;
-    console.log('✓ Logged in successfully\n');
+    console.log('[OK] Logged in successfully\n');
 
     // Get all categories
     const catsRes = await makeRequest('GET', '/api/categories', null);
@@ -59,7 +59,7 @@ async function cleanupCategories() {
 
     console.log(`Found ${categories.length} total categories\n`);
     console.log('Categories:');
-    console.log('─────────────────────────────────────────────────────────\n');
+    console.log('-----------------------------------------------------\n');
 
     const toDelete = [];
     const defaultCategories = [
@@ -74,42 +74,42 @@ async function cleanupCategories() {
       // Identify test/duplicate categories
       if (cat.name.includes('Test Category') || 
           /\d{13}/.test(cat.name)) { // Timestamp pattern
-        console.log(`   ⚠️  TEST/DUPLICATE CATEGORY - Will be deleted\n`);
+        console.log(`   [!] TEST/DUPLICATE CATEGORY - Will be deleted\n`);
         toDelete.push(cat.id);
       } else if (!defaultCategories.includes(cat.name)) {
-        console.log(`   ⓘ Non-default category (keeping)\n`);
+        console.log(`   (i) Non-default category (keeping)\n`);
       }
     });
 
     if (toDelete.length === 0) {
-      console.log('✓ No duplicate test categories found. Database is clean!\n');
+      console.log('[OK] No duplicate test categories found. Database is clean!\n');
       return;
     }
 
-    console.log('─────────────────────────────────────────────────────────');
-    console.log(`\n📋 Found ${toDelete.length} test/duplicate categories to remove\n`);
+    console.log('-----------------------------------------------------');
+    console.log(`\n[!] Found ${toDelete.length} test/duplicate categories to remove\n`);
 
     // Delete test categories
     console.log('Deleting...\n');
     for (const id of toDelete) {
       const deleteRes = await makeRequest('DELETE', `/api/categories/${id}`, null, token);
       if (deleteRes.status === 200) {
-        console.log(`✓ Deleted category ID ${id}`);
+        console.log(`[OK] Deleted category ID ${id}`);
       } else {
-        console.log(`✗ Failed to delete category ID ${id}`);
+        console.log(`[FAIL] Failed to delete category ID ${id}`);
       }
     }
 
-    console.log('\n✅ Cleanup complete!\n');
+console.log('\n[DONE] Cleanup complete!\n');
 
     // Verify
     const finalRes = await makeRequest('GET', '/api/categories', null);
-    console.log(`📊 Now have ${finalRes.body.length} categories in database\n`);
+    console.log(`Now have ${finalRes.body.length} categories in database\n`);
     console.log('Remaining categories:');
     finalRes.body.forEach(cat => {
-      console.log(`  • ${cat.name}`);
+      console.log(`  - ${cat.name}`);
     });
-    console.log('\n─────────────────────────────────────────────────────────\n');
+    console.log('\n-----------------------------------------------------\n');
 
   } catch (error) {
     console.error('Error:', error.message);
