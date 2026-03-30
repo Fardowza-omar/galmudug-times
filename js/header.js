@@ -67,7 +67,7 @@ function _rotateWeather() {
     const d    = _weatherData[city.name];
 
     iconEl.innerHTML = d ? _weatherIcon(d.code) : '<i class="fas fa-sun"></i>';
-    tempEl.textContent = d ? d.temp + '°C' : '--°C';
+    tempEl.textContent = d ? d.temp + '\u00b0C' : '--\u00b0C';
     cityEl.textContent = city.name;
 
     // Fade animation
