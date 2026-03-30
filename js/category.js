@@ -27,7 +27,7 @@ function cleanTitle(raw) {
 let _catAllArticles = [];
 let _catShown = 0;
 const CAT_BATCH = 9;
-let _catColor = '#d63031';
+let _catColor = '#c41e3a';
 
 function renderCatCard(a, color) {
     const t = cleanTitle(a.title);
@@ -63,7 +63,7 @@ function catLoadMore() {
 }
 
 async function initCategoryPage(slug, color) {
-    _catColor = color || '#d63031';
+    _catColor = color || '#c41e3a';
     try {
         const res = await fetch(`/api/articles?category=${encodeURIComponent(slug)}&limit=60&_t=${Date.now()}`);
         const articles = await res.json();

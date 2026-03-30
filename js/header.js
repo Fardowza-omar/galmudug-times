@@ -161,7 +161,7 @@ window.doSearch = window.doSearch || function doSearch() {
             </div>`;
         })
         .catch(() => {
-            box.innerHTML = '<div class="gt-search-results-inner"><p style="color:#d63031;font-family:Inter,sans-serif;font-size:.85rem;">Search failed — is the server running?</p></div>';
+            box.innerHTML = '<div class="gt-search-results-inner"><p style="color:#c41e3a;font-family:Inter,sans-serif;font-size:.85rem;">Search failed — is the server running?</p></div>';
         });
 };
 

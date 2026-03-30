@@ -397,28 +397,31 @@ html { visibility: visible; }
     position: sticky;
     top: 38px;
     z-index: 999;
-    border-bottom: 3px solid var(--gt-black);
+    border-bottom: none;
 }
 
 .gt-header-inner {
     display: flex;
+    flex-wrap: wrap;
     align-items: stretch;
     max-width: var(--gt-max-width);
     margin: 0 auto;
     padding: 0 1.5rem;
+    position: relative;
 }
 
-/* Logo */
+/* Logo — centered nameplate */
 .gt-logo {
     text-decoration: none;
     color: var(--gt-black);
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding: 0.7rem 1.6rem 0.7rem 0;
-    margin-right: 0.5rem;
-    border-right: 1px solid var(--gt-border);
-    flex-shrink: 0;
+    flex: 0 0 100%;
+    padding: 1.1rem 0 0.65rem;
+    border-right: none;
+    margin-right: 0;
     transition: opacity 0.2s;
 }
 
@@ -426,31 +429,34 @@ html { visibility: visible; }
 
 .gt-logo-text {
     font-family: var(--gt-font-display);
-    font-size: 1.75rem;
+    font-size: 2.8rem;
     font-weight: 900;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     line-height: 1;
     color: var(--gt-black);
 }
 
 .gt-logo-tagline {
     font-family: var(--gt-font-ui);
-    font-size: 0.52rem;
-    letter-spacing: 0.2em;
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--gt-meta);
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
 }
 
 /* Nav links */
 .gt-nav {
     display: flex;
     align-items: stretch;
-    flex: 1;
+    justify-content: center;
+    flex: 1 0 100%;
     overflow-x: auto;
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    border-top: 1px solid var(--gt-border);
+    border-bottom: 3px solid var(--gt-black);
 }
 
 .gt-nav::-webkit-scrollbar { display: none; }
@@ -523,7 +529,9 @@ html { visibility: visible; }
     flex-shrink: 0;
     transition: color 0.2s, background 0.2s;
     border-left: 1px solid var(--gt-border);
-    margin-left: auto;
+    position: absolute;
+    right: 1.5rem;
+    top: 0.8rem;
 }
 
 .gt-search-btn:hover {
@@ -1910,7 +1918,8 @@ html { visibility: visible; }
     .gt-topbar-right a:not(:last-child):not(.gt-lang-btn) { display: none; }
     .gt-header { position: sticky !important; top: 0 !important; }
     .gt-header-inner { padding: 0 1rem; }
-    .gt-logo-text { font-size: 1.3rem !important; }
+    .gt-logo { padding: 0.7rem 0 0.4rem; }
+    .gt-logo-text { font-size: 1.6rem !important; }
     .gt-nav {
         display: none;
         position: absolute;
@@ -1937,7 +1946,7 @@ html { visibility: visible; }
     }
     .gt-nav .nav-item::after,
     .gt-nav a.nav-item::after { display: none !important; }
-    .gt-hamburger { display: flex; }
+    .gt-hamburger { display: flex; position: absolute; right: 1rem; top: 0.7rem; }
     .gt-search-btn { display: none; }
 
     /* Ticker */

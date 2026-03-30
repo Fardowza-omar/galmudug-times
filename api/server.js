@@ -294,7 +294,7 @@ function initializeDatabase() {
 
     // Insert default categories (Somali language for Galmudug region)
     const categories = [
-      { name: 'Wararka', slug: 'wararka', color: '#d63031', order: 1 },           // News
+      { name: 'Wararka', slug: 'wararka', color: '#c41e3a', order: 1 },           // News
       { name: 'Galmudug', slug: 'galmudug', color: '#1e90ff', order: 2 },         // Local Galmudug news
       { name: 'Bulshada', slug: 'bulshada', color: '#27ae60', order: 3 },         // Community/Society
       { name: 'Caafimaadka', slug: 'caafimaadka', color: '#e74c3c', order: 4 },   // Health
