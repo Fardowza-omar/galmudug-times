@@ -2044,7 +2044,7 @@ html { visibility: visible; }
     .gt-nav a.nav-item::after { display: none !important; }
     .gt-hamburger { display: flex; position: absolute; right: 1rem; top: 0.7rem; }
     .gt-search-btn { display: none; }
-    .gt-theme-toggle { position: absolute; right: 3.5rem; top: 0.7rem; font-size: 1.2rem; }
+    .gt-theme-toggle { right: 3.2rem; top: 0.7rem; font-size: 1.1rem; color: #fff; }
 
     /* Ticker */
     .ticker-bar { position: relative !important; top: auto !important; padding: 0.4rem 0 !important; }
@@ -2270,11 +2270,14 @@ html { visibility: visible; }
 /* Dark mode toggle button */
 .gt-theme-toggle {
     background: none; border: none; cursor: pointer;
-    color: inherit; font-size: 1.1rem; padding: .3rem;
+    color: rgba(255,255,255,0.6); font-size: 1.1rem; padding: 0 0.7rem;
     display: flex; align-items: center; justify-content: center;
     transition: color .2s;
+    position: absolute;
+    right: 4rem;
+    top: 0.8rem;
 }
-.gt-theme-toggle:hover { color: var(--gt-red); }
+.gt-theme-toggle:hover { color: #fff; }
 
 /* ================================================================
    25. PRINT

@@ -354,9 +354,6 @@ function initializeDatabase() {
       )
     `);
 
-    // Add sample articles if not exists
-    addSampleArticles();
-
     console.log(`Database initialized. Admin user: ${username}`);
   });
 }
@@ -386,83 +383,6 @@ function runDailyBackup() {
 // Run backup on startup, then every 24 hours
 runDailyBackup();
 setInterval(runDailyBackup, 24 * 60 * 60 * 1000);
-
-// Add sample articles
-function addSampleArticles() {
-  const sampleArticles = [
-    {
-      title: 'Breaking: Major Economic Agreement Reached',
-      slug: 'breaking-major-economic-agreement-reached',
-      description: 'Leaders from 12 nations sign landmark trade accord affecting billions in commerce.',
-      content: 'In a historic move, world leaders have signed a comprehensive economic agreement that is expected to reshape global trade patterns. The accord includes provisions for tariff reductions, technology transfers, and joint infrastructure projects. Economists estimate the deal could generate $2 trillion in new economic activity over the next decade.\n\nThe agreement was reached after six months of intensive negotiations involving delegates from major economies worldwide. "This represents a turning point in international cooperation," said a senior diplomat at the signing ceremony.\n\nThe accord includes groundbreaking provisions for climate initiatives, cybersecurity standards, and artificial intelligence governance. Environmental groups have praised the environmental provisions as "the most ambitious climate commitment in trade history."',
-      category_id: 1, // Politics
-      author: 'James Wilson',
-      status: 'published',
-      published_at: new Date().toISOString()
-    },
-    {
-      title: 'Tech Giants Announce Joint AI Research Initiative',
-      slug: 'tech-giants-announce-joint-ai-research',
-      description: 'Five leading technology companies form consortium to advance artificial intelligence safely and responsibly.',
-      content: 'In a surprising display of cooperation, five major technology companies announced the formation of the Global AI Research Consortium. The initiative aims to develop ethical AI standards and prevent potential misuse of artificial intelligence.\n\nThe consortium includes provisions for open-source research, shared datasets, and joint safety protocols. "This collaboration will accelerate responsible AI development," stated the consortium\'s director.\n\nThe move comes amid growing scrutiny of AI development and calls for international regulation. Industry analysts view this as a significant step toward self-governance in the tech sector.',
-      category_id: 4, // Technology
-      author: 'Sarah Johnson',
-      status: 'published',
-      published_at: new Date(Date.now() - 86400000).toISOString()
-    },
-    {
-      title: 'Global Markets React Positively to New Trade Deal',
-      slug: 'global-markets-react-positively-trade-deal',
-      description: 'Stock indices surge as investors welcome framework for stable international commerce.',
-      content: 'Financial markets around the world rallied following the announcement of the new trade agreement. The S&P 500 gained 2.3%, while international indices also posted strong gains.\n\n"Investors had been waiting for clarity on trade policy," said a market analyst. "This agreement provides exactly that."\n\nThe currency markets also stabilized, with major currencies showing less volatility. Bond yields moved higher, reflecting increased investor confidence in economic growth. Emerging market equities, particularly those in Asia and Latin America, outperformed developed markets.',
-      category_id: 3, // Business
-      author: 'Michael Chen',
-      status: 'published',
-      published_at: new Date(Date.now() - 172800000).toISOString()
-    },
-    {
-      title: 'World Leaders Commit to Climate Action Plan',
-      slug: 'world-leaders-commit-climate-action-plan',
-      description: 'United Nations summit produces binding agreement on emissions reduction targets.',
-      content: 'Delegates from 195 nations agreed on ambitious targets for carbon emissions reduction. The new framework commits signatories to net-zero emissions by 2050, with intermediate targets for 2030 and 2040.\n\n"This is the moment we take serious action on climate change," declared the UN Secretary-General.\n\nThe agreement includes $100 billion annually in climate finance for developing nations and establishes a global carbon pricing mechanism. Environmental organizations have called it "the most significant climate agreement since Paris."',
-      category_id: 2, // World
-      author: 'Emma Thompson',
-      status: 'published',
-      published_at: new Date(Date.now() - 259200000).toISOString()
-    },
-    {
-      title: 'Opinion: The Future of Global Cooperation',
-      slug: 'opinion-future-global-cooperation',
-      description: 'Columnist reflects on what recent agreements mean for international relations.',
-      content: 'The recent wave of international agreements suggests we may be witnessing a fundamental shift in global politics. After years of nationalist posturing and trade wars, nations are returning to multilateralism and cooperation.\n\nThis represents both opportunity and challenge. While cooperation on trade and climate is welcome, we must remain vigilant about protecting our own interests and values.\n\n"The next decade will define whether we can build truly sustainable global institutions," observes the author. The success or failure of these agreements will shape international relations for generations to come.',
-      category_id: 5, // Opinion
-      author: 'Dr. Patricia Martinez',
-      status: 'published',
-      published_at: new Date(Date.now() - 345600000).toISOString()
-    },
-    {
-      title: 'Cultural Exchange Program Launched Across Continents',
-      slug: 'cultural-exchange-program-launched',
-      description: 'New initiative brings artists, musicians, and performers from around the world together.',
-      content: 'A new international cultural exchange program has been launched, bringing together artists and performers from diverse backgrounds. The initiative seeks to promote mutual understanding and celebrate global creativity.\n\nParticipants will have opportunities for collaborative projects, exhibitions, and performances across multiple countries. "Culture is a universal language," said the program director.\n\nThe first exchange cohort includes representatives from 47 countries, spanning visual arts, music, theater, and literature. The program aims to break down cultural barriers and foster lasting international friendships through creative collaboration.',
-      category_id: 6, // Culture
-      author: 'Isabella Rossi',
-      status: 'published',
-      published_at: new Date(Date.now() - 432000000).toISOString()
-    }
-  ];
-
-  sampleArticles.forEach(article => {
-    db.get('SELECT id FROM articles WHERE slug = ?', [article.slug], (err, row) => {
-      if (!row) {
-        db.run(`
-          INSERT INTO articles (title, slug, description, content, category_id, author, status, published_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [article.title, article.slug, article.description, article.content, article.category_id, article.author, article.status, article.published_at]);
-      }
-    });
-  });
-}
 
 // ==================== Authentication Routes ====================
 
