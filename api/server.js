@@ -133,13 +133,13 @@ const upload = multer({
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max for videos
   fileFilter: (req, file, cb) => {
     const allowedMimes = [
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+      'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
       'video/mp4', 'video/webm', 'video/quicktime'
     ];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only JPEG, PNG, GIF, WebP images and MP4/WebM/MOV videos are allowed'));
+      cb(new Error('Only JPEG, PNG, GIF, WebP, SVG images and MP4/WebM/MOV videos are allowed'));
     }
   }
 });
