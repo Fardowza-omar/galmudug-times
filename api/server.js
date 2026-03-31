@@ -1334,7 +1334,7 @@ app.use((req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'Endpoint not found' });
   }
-  res.status(404).sendFile('index.html', { root: path.join(__dirname, '..') });
+  res.status(404).sendFile('index.html', { root: join(__dirname, '..') });
 });
 
 // ==================== Server Start ====================
