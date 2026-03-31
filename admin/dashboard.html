@@ -174,8 +174,17 @@
             .profile-grid{grid-template-columns:1fr;}
             .cat-grid{grid-template-columns:1fr;}
             .modal-box{padding:1rem;margin:.5rem;}
-            .tbl th:nth-child(n+5),.tbl td:nth-child(n+5){display:none;}
-            .act-btns{flex-direction:column;gap:.2rem;}
+            /* Card-based responsive tables */
+            .tbl thead{display:none;}
+            .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%;}
+            .tbl tbody tr{margin-bottom:.75rem;padding:.75rem;background:#fff;border-radius:10px;border:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+            .tbl td{padding:.35rem 0;border-bottom:none;display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+            .tbl td::before{content:attr(data-label);font-weight:700;text-transform:uppercase;font-size:.65rem;letter-spacing:.05em;color:#777;flex-shrink:0;min-width:5rem;}
+            .tbl td:last-child{justify-content:flex-end;padding-top:.6rem;border-top:1px solid #f0f0f0;margin-top:.35rem;}
+            .tbl td:last-child::before{display:none;}
+            .title-cell{white-space:normal!important;max-width:none!important;font-size:.85rem;}
+            .act-btns{flex-direction:row;gap:.4rem;flex-wrap:wrap;justify-content:flex-end;}
+            .btn-sm{padding:.4rem .7rem;font-size:.72rem;}
         }
         @media(max-width:480px){
             .stats{grid-template-columns:repeat(2,1fr);}
@@ -528,12 +537,12 @@
                 return;
             }
             tbody.innerHTML=articles.map(a=>`<tr>
-                <td class="title-cell">${esc(a.title)}</td>
-                <td>${esc(a.category_name)||'&mdash;'}</td>
-                <td><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
-                <td style="white-space:nowrap;">${new Date(a.created_at).toLocaleDateString()}</td>
-                <td>${a.views}</td>
-                <td><div class="act-btns">
+                <td class="title-cell" data-label="Title">${esc(a.title)}</td>
+                <td data-label="Category">${esc(a.category_name)||'&mdash;'}</td>
+                <td data-label="Status"><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
+                <td data-label="Date" style="white-space:nowrap;">${new Date(a.created_at).toLocaleDateString()}</td>
+                <td data-label="Views">${a.views}</td>
+                <td data-label="Actions"><div class="act-btns">
                     <button class="btn-sm btn-edit" onclick="editArticle(${a.id})">Edit</button>
                     <button class="btn-sm btn-del" onclick="deleteArticle(${a.id})">Delete</button>
                     <button class="btn-sm btn-view" onclick="viewArticle('${esc(a.slug)}')">View</button>
@@ -695,12 +704,12 @@
                 if(!comments.length){c.innerHTML='<p style="color:#999;padding:1.5rem 0;">No comments yet.</p>';return;}
                 c.innerHTML='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Author</th><th>Comment</th><th>Article</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+
                     comments.map(cm=>`<tr>
-                        <td><strong>${esc(cm.author_name)}</strong>${cm.author_email?'<br><small style="color:#999;">'+esc(cm.author_email)+'</small>':''}</td>
-                        <td style="max-width:280px;word-break:break-word;">${esc(cm.content)}</td>
-                        <td><a href="../article.html?slug=${encodeURIComponent(cm.article_slug)}" target="_blank" style="color:#667eea;text-decoration:none;">${esc(cm.article_title||'')}</a></td>
-                        <td style="white-space:nowrap;">${new Date(cm.created_at).toLocaleDateString()}</td>
-                        <td><span class="badge ${cm.approved?'badge-approved':'badge-hidden'}">${cm.approved?'Approved':'Hidden'}</span></td>
-                        <td><div class="act-btns">
+                        <td data-label="Author"><strong>${esc(cm.author_name)}</strong>${cm.author_email?'<br><small style="color:#999;">'+esc(cm.author_email)+'</small>':''}</td>
+                        <td data-label="Comment" style="max-width:280px;word-break:break-word;">${esc(cm.content)}</td>
+                        <td data-label="Article"><a href="../article.html?slug=${encodeURIComponent(cm.article_slug)}" target="_blank" style="color:#667eea;text-decoration:none;">${esc(cm.article_title||'')}</a></td>
+                        <td data-label="Date" style="white-space:nowrap;">${new Date(cm.created_at).toLocaleDateString()}</td>
+                        <td data-label="Status"><span class="badge ${cm.approved?'badge-approved':'badge-hidden'}">${cm.approved?'Approved':'Hidden'}</span></td>
+                        <td data-label="Actions"><div class="act-btns">
                             <button class="btn-sm ${cm.approved?'btn-hide':'btn-approve'}" onclick="toggleComment(${cm.id},${cm.approved?0:1})">${cm.approved?'Hide':'Approve'}</button>
                             <button class="btn-sm btn-del" onclick="deleteComment(${cm.id})">Delete</button>
                         </div></td>
@@ -737,7 +746,7 @@
                 $('totalSubscribers').textContent=subs.length;
                 if(!subs.length){c.innerHTML='<p style="color:#999;padding:1rem 0;">No subscribers yet.</p>';return;}
                 c.innerHTML='<div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Email</th><th>Name</th><th>Subscribed</th><th>Action</th></tr></thead><tbody>'+
-                    subs.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.email)}</td><td>${esc(s.name)||'&mdash;'}</td><td>${new Date(s.subscribed_at).toLocaleDateString()}</td><td><button class="btn-sm btn-del" onclick="removeSubscriber(${s.id})">Remove</button></td></tr>`).join('')+
+                    subs.map((s,i)=>`<tr><td data-label="#">${i+1}</td><td data-label="Email">${esc(s.email)}</td><td data-label="Name">${esc(s.name)||'&mdash;'}</td><td data-label="Subscribed">${new Date(s.subscribed_at).toLocaleDateString()}</td><td data-label="Action"><button class="btn-sm btn-del" onclick="removeSubscriber(${s.id})">Remove</button></td></tr>`).join('')+
                     '</tbody></table></div>';
             }catch(e){c.innerHTML='<p style="color:#dc2626;">Failed to load subscribers.</p>';}
         }
@@ -922,12 +931,12 @@
             }
             restoreBtn.style.display='';emptyBtn.style.display='';
             tbody.innerHTML=items.map(a=>`<tr>
-                <td class="title-cell">${esc(a.title)}</td>
-                <td>${esc(a.category_name)||'&mdash;'}</td>
-                <td><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
-                <td style="white-space:nowrap;">${new Date(a.deleted_at).toLocaleDateString()}</td>
-                <td>${esc(a.deleted_by)||'&mdash;'}</td>
-                <td><div class="act-btns">
+                <td class="title-cell" data-label="Title">${esc(a.title)}</td>
+                <td data-label="Category">${esc(a.category_name)||'&mdash;'}</td>
+                <td data-label="Status"><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
+                <td data-label="Deleted" style="white-space:nowrap;">${new Date(a.deleted_at).toLocaleDateString()}</td>
+                <td data-label="Deleted By">${esc(a.deleted_by)||'&mdash;'}</td>
+                <td data-label="Actions"><div class="act-btns">
                     <button class="btn-sm btn-edit" onclick="restoreArticle(${a.id})">Restore</button>
                     <button class="btn-sm btn-del" onclick="permDeleteArticle(${a.id})">Delete Forever</button>
                 </div></td>
