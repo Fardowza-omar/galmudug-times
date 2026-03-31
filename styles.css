@@ -535,6 +535,7 @@ html { visibility: visible; }
     position: absolute;
     right: 1.5rem;
     top: 0.8rem;
+    z-index: 10;
 }
 
 .gt-search-btn:hover {
@@ -2270,12 +2271,15 @@ html { visibility: visible; }
 /* Dark mode toggle button */
 .gt-theme-toggle {
     background: none; border: none; cursor: pointer;
-    color: rgba(255,255,255,0.6); font-size: 1.1rem; padding: 0 0.7rem;
+    color: rgba(255,255,255,0.6); font-size: 1.15rem;
+    padding: 0 0.75rem;
     display: flex; align-items: center; justify-content: center;
     transition: color .2s;
     position: absolute;
-    right: 4rem;
+    right: 4.2rem;
     top: 0.8rem;
+    z-index: 10;
+    line-height: 1;
 }
 .gt-theme-toggle:hover { color: #fff; }
 
