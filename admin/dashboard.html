@@ -212,6 +212,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     Articles
                 </a>
+                <a href="#trash" class="nav-link" data-section="trash">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                    Trash <span class="nav-badge" id="trashBadge" style="display:none;">0</span>
+                </a>
                 <a href="#comments" class="nav-link" data-section="comments">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     Comments <span class="nav-badge" id="commentBadge" style="display:none;">0</span>
@@ -305,6 +309,25 @@
                 <div class="card">
                     <div class="card-head"><h2>Comments Moderation</h2></div>
                     <div class="card-body" id="commentsTableContainer"><p style="color:#999;">Loading...</p></div>
+                </div>
+            </div>
+
+            <!-- TRASH SECTION -->
+            <div class="section-box" id="trashSection">
+                <div class="card">
+                    <div class="card-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+                        <h2>Trash</h2>
+                        <div style="display:flex;gap:.5rem;">
+                            <button onclick="restoreAllTrash()" class="btn-sm btn-edit" id="restoreAllBtn" style="display:none;">&#x21A9; Restore All</button>
+                            <button onclick="emptyTrash()" class="btn-sm btn-del" id="emptyTrashBtn" style="display:none;">&#128465; Empty Trash</button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="overflow-x:auto;">
+                        <table class="tbl">
+                            <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Deleted</th><th>Deleted By</th><th>Actions</th></tr></thead>
+                            <tbody id="trashTableBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:#999;">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -461,8 +484,8 @@
         overlay.addEventListener('click',closeSidebar);
 
         // ===== SECTION NAVIGATION =====
-        const sections=['articles','comments','subscribers','profile','ads'];
-        const sectionTitles={articles:'Dashboard',comments:'Comments',subscribers:'Subscribers',profile:'My Profile',ads:'Advertising'};
+        const sections=['articles','trash','comments','subscribers','profile','ads'];
+        const sectionTitles={articles:'Dashboard',trash:'Trash',comments:'Comments',subscribers:'Subscribers',profile:'My Profile',ads:'Advertising'};
 
         function showSection(name){
             sections.forEach(s=>{
@@ -479,6 +502,7 @@
             if(name==='subscribers')loadSubscribers();
             if(name==='profile')loadUserProfile();
             if(name==='ads')loadAds();
+            if(name==='trash')loadTrash();
             closeSidebar();
         }
 
@@ -568,10 +592,10 @@
         };
 
         window.deleteArticle=async function(id){
-            if(!confirm('Delete this article permanently?'))return;
+            if(!confirm('Move this article to trash?'))return;
             try{
                 const res=await fetch(API+'/articles/'+id,{method:'DELETE',headers:authHeaders()});
-                if(res.ok){showToast('ok','Article deleted');loadArticles();}
+                if(res.ok){showToast('ok','Article moved to trash');loadArticles();loadTrashCount();}
                 else showToast('err','Failed to delete article');
             }catch(e){showToast('err','Error deleting article');}
         };
@@ -855,13 +879,87 @@
         };
 
         window.clearAllArticles=async function(){
-            if(!confirm('âš ï¸ DELETE ALL ARTICLES?\n\nThis will permanently erase every article.\nMake a backup first!\n\nClick OK to confirm.'))return;
+            if(!confirm('\u26a0\ufe0f MOVE ALL ARTICLES TO TRASH?\n\nYou can restore them from the Trash section.\n\nClick OK to confirm.'))return;
             try{
                 const res=await fetch(API+'/admin/reset-articles',{method:'DELETE',headers:authHeaders()});
                 const data=await res.json();
-                if(res.ok){showToast('ok','All articles deleted ('+data.count+' removed)');loadArticles();}
+                if(res.ok){showToast('ok','All articles moved to trash ('+data.count+' moved)');loadArticles();loadTrashCount();}
                 else showToast('err',data.error||'Failed to clear articles');
             }catch(e){showToast('err','Error: '+e.message);}
+        };
+
+        // ===== TRASH SECTION =====
+        async function loadTrash(){
+            try{
+                const res=await fetch(API+'/admin/trash',{headers:authHeaders()});
+                if(handleUnauth(res))return;
+                const items=await res.json();
+                displayTrash(items);
+            }catch(e){showToast('err','Failed to load trash');}
+        }
+        async function loadTrashCount(){
+            try{
+                const res=await fetch(API+'/admin/trash',{headers:authHeaders()});
+                const items=await res.json();
+                const badge=$('trashBadge');
+                if(items.length>0){badge.textContent=items.length;badge.style.display='';}
+                else{badge.style.display='none';}
+            }catch(e){}
+        }
+        function displayTrash(items){
+            const tbody=$('trashTableBody');
+            const restoreBtn=$('restoreAllBtn');
+            const emptyBtn=$('emptyTrashBtn');
+            if(!items.length){
+                tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2.5rem;color:#999;">Trash is empty &mdash; deleted articles will appear here</td></tr>';
+                restoreBtn.style.display='none';emptyBtn.style.display='none';
+                return;
+            }
+            restoreBtn.style.display='';emptyBtn.style.display='';
+            tbody.innerHTML=items.map(a=>`<tr>
+                <td class="title-cell">${esc(a.title)}</td>
+                <td>${esc(a.category_name)||'&mdash;'}</td>
+                <td><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
+                <td style="white-space:nowrap;">${new Date(a.deleted_at).toLocaleDateString()}</td>
+                <td>${esc(a.deleted_by)||'&mdash;'}</td>
+                <td><div class="act-btns">
+                    <button class="btn-sm btn-edit" onclick="restoreArticle(${a.id})">Restore</button>
+                    <button class="btn-sm btn-del" onclick="permDeleteArticle(${a.id})">Delete Forever</button>
+                </div></td>
+            </tr>`).join('');
+        }
+        window.restoreArticle=async function(id){
+            try{
+                const res=await fetch(API+'/admin/trash/'+id+'/restore',{method:'POST',headers:authHeaders()});
+                if(res.ok){showToast('ok','Article restored!');loadTrash();loadArticles();loadTrashCount();}
+                else{const d=await res.json();showToast('err',d.error||'Failed to restore');}
+            }catch(e){showToast('err','Network error');}
+        };
+        window.permDeleteArticle=async function(id){
+            if(!confirm('Permanently delete this article?\nThis CANNOT be undone.'))return;
+            try{
+                const res=await fetch(API+'/admin/trash/'+id,{method:'DELETE',headers:authHeaders()});
+                if(res.ok){showToast('ok','Permanently deleted');loadTrash();loadTrashCount();}
+                else showToast('err','Failed to delete');
+            }catch(e){showToast('err','Network error');}
+        };
+        window.restoreAllTrash=async function(){
+            if(!confirm('Restore all articles from trash?'))return;
+            try{
+                const res=await fetch(API+'/admin/trash/restore-all',{method:'POST',headers:authHeaders()});
+                const data=await res.json();
+                if(res.ok){showToast('ok',data.message);loadTrash();loadArticles();loadTrashCount();}
+                else showToast('err',data.error||'Failed to restore');
+            }catch(e){showToast('err','Network error');}
+        };
+        window.emptyTrash=async function(){
+            if(!confirm('\u26a0\ufe0f PERMANENTLY DELETE everything in trash?\nThis CANNOT be undone.'))return;
+            try{
+                const res=await fetch(API+'/admin/trash',{method:'DELETE',headers:authHeaders()});
+                const data=await res.json();
+                if(res.ok){showToast('ok','Trash emptied ('+data.count+' removed)');loadTrash();loadTrashCount();}
+                else showToast('err',data.error||'Failed to empty trash');
+            }catch(e){showToast('err','Network error');}
         };
 
         // ===== ADS SECTION =====
@@ -933,7 +1031,7 @@
         // ===== INIT =====
         window.addEventListener('load',()=>{
             if(!checkAuth())return;
-            loadArticles();loadCategories();loadUserProfile();loadCommentCount();
+            loadArticles();loadCategories();loadUserProfile();loadCommentCount();loadTrashCount();
         });
     })();
     </script>

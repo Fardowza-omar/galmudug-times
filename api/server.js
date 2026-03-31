@@ -328,12 +328,64 @@ function initializeDatabase() {
       VALUES (?, ?, ?)
     `, [username, hashedPassword, email]);
 
+    // Deleted articles (trash) table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS deleted_articles (
+        id INTEGER PRIMARY KEY,
+        title TEXT,
+        slug TEXT,
+        description TEXT,
+        content TEXT,
+        category_id INTEGER,
+        featured_image TEXT,
+        article_url TEXT,
+        video_url TEXT,
+        gallery_images TEXT,
+        author TEXT,
+        author_id INTEGER,
+        status TEXT,
+        is_breaking INTEGER DEFAULT 0,
+        views INTEGER DEFAULT 0,
+        created_at DATETIME,
+        updated_at DATETIME,
+        published_at DATETIME,
+        deleted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_by TEXT
+      )
+    `);
+
     // Add sample articles if not exists
     addSampleArticles();
 
     console.log(`Database initialized. Admin user: ${username}`);
   });
 }
+
+// ==================== Daily Auto-Backup ====================
+const backupDir = join(__dirname, '../data/backups');
+if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+
+function runDailyBackup() {
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const dest = join(backupDir, `auto-backup-${stamp}.db`);
+  fs.copyFile(dbPath, dest, (err) => {
+    if (err) { console.error('[BACKUP] Failed:', err.message); return; }
+    console.log(`[BACKUP] Daily backup saved: ${dest}`);
+    // Keep only the latest 30 backups
+    const files = fs.readdirSync(backupDir)
+      .filter(f => f.startsWith('auto-backup-') && f.endsWith('.db'))
+      .sort();
+    while (files.length > 30) {
+      const old = files.shift();
+      fs.unlinkSync(join(backupDir, old));
+      console.log(`[BACKUP] Removed old backup: ${old}`);
+    }
+  });
+}
+
+// Run backup on startup, then every 24 hours
+runDailyBackup();
+setInterval(runDailyBackup, 24 * 60 * 60 * 1000);
 
 // Add sample articles
 function addSampleArticles() {
@@ -799,15 +851,24 @@ app.put('/api/articles/:id', authenticateToken, (req, res, next) => {
   });
 });
 
-// Delete article (admin only)
+// Soft-delete article (move to trash)
 app.delete('/api/articles/:id', authenticateToken, (req, res) => {
   const id = req.params.id;
-
-  db.run('DELETE FROM articles WHERE id = ?', [id], function(err) {
-    if (err) {
-      return res.status(500).json({ error: 'Failed to delete article' });
-    }
-    res.json({ message: 'Article deleted successfully' });
+  db.get('SELECT * FROM articles WHERE id = ?', [id], (err, article) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!article) return res.status(404).json({ error: 'Article not found' });
+    db.run(`INSERT INTO deleted_articles
+      (id, title, slug, description, content, category_id, featured_image, article_url, video_url, gallery_images, author, author_id, status, is_breaking, views, created_at, updated_at, published_at, deleted_by)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [article.id, article.title, article.slug, article.description, article.content, article.category_id, article.featured_image, article.article_url, article.video_url, article.gallery_images, article.author, article.author_id, article.status, article.is_breaking, article.views, article.created_at, article.updated_at, article.published_at, req.user.username],
+      function(err2) {
+        if (err2) return res.status(500).json({ error: 'Failed to move to trash' });
+        db.run('DELETE FROM articles WHERE id = ?', [id], function(err3) {
+          if (err3) return res.status(500).json({ error: 'Failed to remove article' });
+          res.json({ message: 'Article moved to trash' });
+        });
+      }
+    );
   });
 });
 
@@ -1034,13 +1095,121 @@ app.get('/api/admin/backup', authenticateToken, (req, res) => {
   res.sendFile(dbPath);
 });
 
-// Delete all articles (reset)
+// Move all articles to trash (reset)
 app.delete('/api/admin/reset-articles', authenticateToken, (req, res) => {
-  db.run('DELETE FROM articles', [], function(err) {
-    if (err) return res.status(500).json({ error: 'Failed to clear articles' });
-    db.run('DELETE FROM sqlite_sequence WHERE name = "articles"', [], () => {});
-    res.json({ message: 'All articles deleted', count: this.changes });
+  db.all('SELECT * FROM articles', [], (err, articles) => {
+    if (err) return res.status(500).json({ error: 'Failed to read articles' });
+    if (!articles.length) return res.json({ message: 'No articles to delete', count: 0 });
+    const stmt = db.prepare(`INSERT INTO deleted_articles
+      (id, title, slug, description, content, category_id, featured_image, article_url, video_url, gallery_images, author, author_id, status, is_breaking, views, created_at, updated_at, published_at, deleted_by)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+    articles.forEach(a => {
+      stmt.run(a.id, a.title, a.slug, a.description, a.content, a.category_id, a.featured_image, a.article_url, a.video_url, a.gallery_images, a.author, a.author_id, a.status, a.is_breaking, a.views, a.created_at, a.updated_at, a.published_at, req.user.username);
+    });
+    stmt.finalize(() => {
+      db.run('DELETE FROM articles', [], function(err2) {
+        if (err2) return res.status(500).json({ error: 'Failed to clear articles' });
+        const count = this.changes;
+        db.run('DELETE FROM sqlite_sequence WHERE name = "articles"', [], () => {});
+        res.json({ message: 'All articles moved to trash', count });
+      });
+    });
   });
+});
+
+// ==================== Trash API ====================
+
+// List trashed articles
+app.get('/api/admin/trash', authenticateToken, (req, res) => {
+  db.all(`SELECT d.*, c.name as category_name FROM deleted_articles d
+    LEFT JOIN categories c ON d.category_id = c.id
+    ORDER BY d.deleted_at DESC`, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.json(rows);
+  });
+});
+
+// Restore single article from trash
+app.post('/api/admin/trash/:id/restore', authenticateToken, (req, res) => {
+  const id = req.params.id;
+  db.get('SELECT * FROM deleted_articles WHERE id = ?', [id], (err, item) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!item) return res.status(404).json({ error: 'Item not found in trash' });
+    // Ensure slug uniqueness — append timestamp if conflict
+    db.get('SELECT id FROM articles WHERE slug = ?', [item.slug], (err2, conflict) => {
+      if (err2) return res.status(500).json({ error: 'Database error' });
+      const slug = conflict ? item.slug + '-restored-' + Date.now() : item.slug;
+      db.run(`INSERT INTO articles
+        (title, slug, description, content, category_id, featured_image, article_url, video_url, gallery_images, author, author_id, status, is_breaking, views, created_at, updated_at, published_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [item.title, slug, item.description, item.content, item.category_id, item.featured_image, item.article_url, item.video_url, item.gallery_images, item.author, item.author_id, item.status, item.is_breaking, item.views, item.created_at, item.updated_at, item.published_at],
+        function(err3) {
+          if (err3) return res.status(500).json({ error: 'Failed to restore article' });
+          db.run('DELETE FROM deleted_articles WHERE id = ?', [id]);
+          res.json({ message: 'Article restored successfully' });
+        }
+      );
+    });
+  });
+});
+
+// Restore all articles from trash
+app.post('/api/admin/trash/restore-all', authenticateToken, (req, res) => {
+  db.all('SELECT * FROM deleted_articles', [], (err, items) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!items.length) return res.json({ message: 'Trash is empty', count: 0 });
+    let restored = 0;
+    let pending = items.length;
+    items.forEach(item => {
+      db.get('SELECT id FROM articles WHERE slug = ?', [item.slug], (err2, conflict) => {
+        const slug = conflict ? item.slug + '-restored-' + Date.now() : item.slug;
+        db.run(`INSERT INTO articles
+          (title, slug, description, content, category_id, featured_image, article_url, video_url, gallery_images, author, author_id, status, is_breaking, views, created_at, updated_at, published_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [item.title, slug, item.description, item.content, item.category_id, item.featured_image, item.article_url, item.video_url, item.gallery_images, item.author, item.author_id, item.status, item.is_breaking, item.views, item.created_at, item.updated_at, item.published_at],
+          function(err3) {
+            if (!err3) restored++;
+            pending--;
+            if (pending === 0) {
+              db.run('DELETE FROM deleted_articles');
+              res.json({ message: `Restored ${restored} articles`, count: restored });
+            }
+          }
+        );
+      });
+    });
+  });
+});
+
+// Permanently delete single item from trash
+app.delete('/api/admin/trash/:id', authenticateToken, (req, res) => {
+  db.run('DELETE FROM deleted_articles WHERE id = ?', [req.params.id], function(err) {
+    if (err) return res.status(500).json({ error: 'Failed to delete' });
+    if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Permanently deleted' });
+  });
+});
+
+// Empty entire trash
+app.delete('/api/admin/trash', authenticateToken, (req, res) => {
+  db.run('DELETE FROM deleted_articles', [], function(err) {
+    if (err) return res.status(500).json({ error: 'Failed to empty trash' });
+    res.json({ message: 'Trash emptied', count: this.changes });
+  });
+});
+
+// List available backups
+app.get('/api/admin/backups', authenticateToken, (req, res) => {
+  const backupDir2 = join(__dirname, '../data/backups');
+  if (!fs.existsSync(backupDir2)) return res.json([]);
+  const files = fs.readdirSync(backupDir2)
+    .filter(f => f.endsWith('.db'))
+    .sort().reverse()
+    .map(f => {
+      const stat = fs.statSync(join(backupDir2, f));
+      return { name: f, size: stat.size, date: stat.mtime };
+    });
+  res.json(files);
 });
 
 // ==================== Ads API ====================
