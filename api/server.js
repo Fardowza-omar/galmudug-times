@@ -41,18 +41,18 @@ const SECRET_KEY = getOrCreateSecret();
 let emailTransporter = null;
 if (process.env.SMTP_EMAIL && process.env.SMTP_PASSWORD) {
   emailTransporter = nodemailer.createTransport({
-    service: process.env.SMTP_SERVICE || 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.SMTP_EMAIL,
       pass: process.env.SMTP_PASSWORD
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
   });
-  emailTransporter.verify().then(() => {
-    console.log('[OK] Email transporter ready');
-  }).catch(err => {
-    console.warn('[WARN] Email transporter failed:', err.message);
-    emailTransporter = null;
-  });
+  console.log('[OK] Email transporter configured for', process.env.SMTP_EMAIL);
 } else {
   console.log('[INFO] No SMTP credentials in .env — welcome emails disabled');
 }
