@@ -266,8 +266,16 @@ function initializeDatabase() {
     `);
         // Migration: add profile_image column if missing
         db.all("PRAGMA table_info(users)", (err, columns) => {
-          if (!err && Array.isArray(columns) && !columns.some(col => col.name === 'profile_image')) {
-            db.run("ALTER TABLE users ADD COLUMN profile_image TEXT");
+          if (!err && Array.isArray(columns)) {
+            if (!columns.some(col => col.name === 'profile_image')) {
+              db.run("ALTER TABLE users ADD COLUMN profile_image TEXT");
+            }
+            if (!columns.some(col => col.name === 'reset_token')) {
+              db.run("ALTER TABLE users ADD COLUMN reset_token TEXT");
+            }
+            if (!columns.some(col => col.name === 'reset_token_expires')) {
+              db.run("ALTER TABLE users ADD COLUMN reset_token_expires DATETIME");
+            }
           }
         });
 
@@ -491,6 +499,75 @@ app.post('/api/auth/login', loginRateLimiter, (req, res) => {
 
     const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '7d' });
     res.json({ token, user: { id: user.id, username: user.username, email: user.email, profile_image: user.profile_image || null } });
+  });
+});
+
+// Forgot password — sends reset link to admin email
+app.post('/api/auth/forgot-password', publicRateLimiter, (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  db.get('SELECT id, email FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    // Always return success to prevent email enumeration
+    if (!user) return res.json({ message: 'If that email exists, a reset link has been sent.' });
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+
+    db.run('UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?',
+      [resetToken, expires, user.id], function(err2) {
+        if (err2) return res.status(500).json({ error: 'Database error' });
+
+        const resetUrl = `https://galmudugtimes.com/admin/reset-password.html?token=${resetToken}`;
+
+        if (emailTransporter) {
+          emailTransporter.sendMail({
+            from: `"Galmudug Times" <${process.env.SMTP_EMAIL}>`,
+            to: user.email,
+            subject: 'Password Reset — Galmudug Times Admin',
+            html: `
+              <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+                <h2 style="color:#1a1a1a;border-bottom:2px solid #c41e1e;padding-bottom:10px;">Galmudug Times</h2>
+                <p>You requested a password reset for your admin account.</p>
+                <p>Click the button below to set a new password. This link expires in <strong>1 hour</strong>.</p>
+                <br>
+                <a href="${resetUrl}" style="background:#c41e1e;color:#fff;padding:12px 28px;text-decoration:none;border-radius:4px;font-weight:bold;">Reset Password</a>
+                <br><br>
+                <p style="color:#888;font-size:12px;">If you didn't request this, ignore this email. Your password won't change.</p>
+              </div>
+            `
+          }).catch(err => console.error('[Email Error]', err.message));
+        }
+
+        res.json({ message: 'If that email exists, a reset link has been sent.' });
+      }
+    );
+  });
+});
+
+// Reset password with token
+app.post('/api/auth/reset-password', publicRateLimiter, (req, res) => {
+  const { token, newPassword } = req.body;
+  if (!token || !newPassword) return res.status(400).json({ error: 'Token and new password are required' });
+  if (newPassword.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+
+  db.get('SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = ?', [token], (err, user) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!user) return res.status(400).json({ error: 'Invalid or expired reset link' });
+
+    if (new Date(user.reset_token_expires) < new Date()) {
+      db.run('UPDATE users SET reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [user.id]);
+      return res.status(400).json({ error: 'Reset link has expired. Please request a new one.' });
+    }
+
+    const hashed = bcryptjs.hashSync(newPassword, 10);
+    db.run('UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?',
+      [hashed, user.id], function(err2) {
+        if (err2) return res.status(500).json({ error: 'Failed to reset password' });
+        res.json({ message: 'Password has been reset successfully. You can now log in.' });
+      }
+    );
   });
 });
 
