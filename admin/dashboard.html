@@ -245,7 +245,6 @@
             <div class="sidebar-footer">
                 <a href="/" target="_blank" class="sidebar-btn btn-site">🌐 View Live Site</a>
                 <button onclick="backupDatabase()" class="sidebar-btn btn-backup">💾 Download Backup</button>
-                <button onclick="clearAllArticles()" class="sidebar-btn btn-danger">🗑️ Clear All Articles</button>
                 <button class="sidebar-btn btn-logout" id="logoutBtn">Sign Out</button>
             </div>
         </aside>
@@ -890,16 +889,6 @@
                     a.download='galmudug-backup-'+new Date().toISOString().replace(/[:.]/g,'-')+'.db';
                     a.click();URL.revokeObjectURL(url);showToast('ok','Backup downloaded!');
                 }).catch(()=>showToast('err','Backup failed'));
-        };
-
-        window.clearAllArticles=async function(){
-            if(!confirm('\u26a0\ufe0f MOVE ALL ARTICLES TO TRASH?\n\nYou can restore them from the Trash section.\n\nClick OK to confirm.'))return;
-            try{
-                const res=await fetch(API+'/admin/reset-articles',{method:'DELETE',headers:authHeaders()});
-                const data=await res.json();
-                if(res.ok){showToast('ok','All articles moved to trash ('+data.count+' moved)');loadArticles();loadTrashCount();}
-                else showToast('err',data.error||'Failed to clear articles');
-            }catch(e){showToast('err','Error: '+e.message);}
         };
 
         // ===== TRASH SECTION =====
