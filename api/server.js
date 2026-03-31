@@ -9,6 +9,7 @@ import { dirname, join } from 'path';
 import fs from 'fs';
 import bodyParser from 'body-parser';
 import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,6 +32,51 @@ function getOrCreateSecret() {
   return newSecret;
 }
 const SECRET_KEY = getOrCreateSecret();
+
+// ---- Email transporter (optional — set SMTP_EMAIL and SMTP_PASSWORD in .env) ----
+let emailTransporter = null;
+if (process.env.SMTP_EMAIL && process.env.SMTP_PASSWORD) {
+  emailTransporter = nodemailer.createTransport({
+    service: process.env.SMTP_SERVICE || 'gmail',
+    auth: {
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD
+    }
+  });
+  emailTransporter.verify().then(() => {
+    console.log('[OK] Email transporter ready');
+  }).catch(err => {
+    console.warn('[WARN] Email transporter failed:', err.message);
+    emailTransporter = null;
+  });
+} else {
+  console.log('[INFO] No SMTP credentials in .env — welcome emails disabled');
+}
+
+function sendWelcomeEmail(toEmail, subscriberName) {
+  if (!emailTransporter) return;
+  const displayName = subscriberName || 'there';
+  const mailOptions = {
+    from: `"Galmudug Times" <${process.env.SMTP_EMAIL}>`,
+    to: toEmail,
+    subject: 'Ku soo dhawoow Galmudug Times! 🗞️',
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h2 style="color:#1a1a1a;border-bottom:2px solid #c41e1e;padding-bottom:10px;">Galmudug Times</h2>
+        <p>Salaan, <strong>${displayName}</strong>!</p>
+        <p>Waad ku mahadsan tahay inaad isdiiwaangelisay Galmudug Times. Waxaad heli doontaa wararka ugu muhiimsan ee Soomaaliya.</p>
+        <p>Thank you for subscribing to Galmudug Times! You'll receive the latest and most important news from Somalia.</p>
+        <br>
+        <a href="https://galmudugtimes.com" style="background:#c41e1e;color:#fff;padding:10px 24px;text-decoration:none;border-radius:4px;">Visit Galmudug Times</a>
+        <br><br>
+        <p style="color:#888;font-size:12px;">If you didn't subscribe, please ignore this email.</p>
+      </div>
+    `
+  };
+  emailTransporter.sendMail(mailOptions).catch(err => {
+    console.error('[Email Error]', err.message);
+  });
+}
 
 // ---- Simple in-memory rate limiter (no extra dependency) ----
 const loginAttempts = new Map(); // key = IP, value = { count, firstAttempt }
@@ -1059,6 +1105,8 @@ app.post('/api/subscribe', publicRateLimiter, (req, res) => {
       if (err.message.includes('UNIQUE')) return res.status(409).json({ error: 'This email is already subscribed!' });
       return res.status(500).json({ error: 'Could not subscribe. Please try again.' });
     }
+    // Send welcome email (non-blocking)
+    sendWelcomeEmail(email.toLowerCase().trim(), (name || '').trim());
     res.json({ message: 'Subscribed successfully! Thank you.' });
   });
 });
