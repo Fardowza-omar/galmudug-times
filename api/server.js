@@ -848,6 +848,47 @@ app.get('/api/breaking-news', (req, res) => {
   });
 });
 
+// ==================== Dynamic Sitemap ====================
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = 'https://galmudugtimes.com';
+  const staticPages = [
+    { url: '/', priority: '1.0', changefreq: 'hourly' },
+    { url: '/politics', priority: '0.8', changefreq: 'daily' },
+    { url: '/business', priority: '0.8', changefreq: 'daily' },
+    { url: '/world', priority: '0.8', changefreq: 'daily' },
+    { url: '/culture', priority: '0.8', changefreq: 'daily' },
+    { url: '/technology', priority: '0.8', changefreq: 'daily' },
+    { url: '/opinion', priority: '0.8', changefreq: 'daily' },
+    { url: '/about', priority: '0.5', changefreq: 'monthly' },
+    { url: '/contact', priority: '0.5', changefreq: 'monthly' },
+    { url: '/careers', priority: '0.5', changefreq: 'monthly' },
+    { url: '/privacy', priority: '0.3', changefreq: 'yearly' },
+    { url: '/terms', priority: '0.3', changefreq: 'yearly' },
+    { url: '/cookies', priority: '0.3', changefreq: 'yearly' },
+  ];
+
+  db.all(`SELECT slug, updated_at, created_at FROM articles WHERE status = 'published' ORDER BY published_at DESC`, (err, articles) => {
+    const articleEntries = (articles || []).map(a => {
+      const lastmod = (a.updated_at || a.created_at || '').split(' ')[0];
+      return `  <url><loc>${base}/article?slug=${encodeURIComponent(a.slug)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}<changefreq>weekly</changefreq><priority>0.7</priority></url>`;
+    });
+
+    const staticEntries = staticPages.map(p =>
+      `  <url><loc>${base}${p.url}</loc><changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority></url>`
+    );
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticEntries.join('\n')}
+${articleEntries.join('\n')}
+</urlset>`;
+
+    res.set('Content-Type', 'application/xml');
+    res.send(xml);
+  });
+});
+
 // ==================== Article by ID ====================
 
 app.get('/api/articles/id/:id', (req, res) => {

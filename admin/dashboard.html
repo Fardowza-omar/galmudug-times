@@ -297,7 +297,7 @@
                 <div class="card">
                     <div class="tbl-wrap">
                         <table class="tbl">
-                            <thead><tr><th>Title</th><th>Category</th><th>Breaking</th><th>Status</th><th>Date</th><th>Views</th><th>Actions</th></tr></thead>
+                            <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Views</th><th>Actions</th></tr></thead>
                             <tbody id="articlesTableBody"><tr><td colspan="7" style="text-align:center;padding:2rem;color:#999;">Loading articles...</td></tr></tbody>
                         </table>
                     </div>
@@ -524,13 +524,12 @@
         function displayArticles(articles){
             const tbody=$('articlesTableBody');
             if(!articles.length){
-                tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2.5rem;color:#999;">No articles yet &mdash; create your first one!</td></tr>';
+                tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2.5rem;color:#999;">No articles yet &mdash; create your first one!</td></tr>';
                 return;
             }
             tbody.innerHTML=articles.map(a=>`<tr>
                 <td class="title-cell">${esc(a.title)}</td>
                 <td>${esc(a.category_name)||'&mdash;'}</td>
-                <td style="text-align:center;">${a.is_breaking?'<span style="color:#dc2626;" title="Breaking">&#128308;</span>':'<span style="color:#ddd;">&mdash;</span>'}</td>
                 <td><span class="badge ${a.status==='published'?'badge-pub':'badge-draft'}">${esc(a.status)}</span></td>
                 <td style="white-space:nowrap;">${new Date(a.created_at).toLocaleDateString()}</td>
                 <td>${a.views}</td>

@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Read the latest news articles from Galmudug Times — Somalia's trusted news source.">
+    <meta property="og:title" content="Galmudug Times">
+    <meta property="og:description" content="Read the latest news articles from Galmudug Times — Somalia's trusted news source.">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Galmudug Times">
+    <meta property="og:locale" content="so_SO">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@galmudugtimes">
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <title>Galmudug Times</title>
@@ -259,6 +266,15 @@
             if(!r.ok){showErr('Article not found.');return;}
             const a=await r.json();
             document.title=esc(cleanTitle(a.title))+' | Galmudug Times';
+            // Update OG meta tags dynamically for social sharing
+            const setMeta=(p,c)=>{let m=document.querySelector(`meta[property="${p}"]`);if(m)m.content=c;};
+            setMeta('og:title',cleanTitle(a.title)+' | Galmudug Times');
+            setMeta('og:description',(a.description||a.title).substring(0,200));
+            if(a.featured_image)setMeta('og:image',location.origin+a.featured_image);
+            // Add JSON-LD structured data for Google
+            const ld=document.createElement('script');ld.type='application/ld+json';
+            ld.textContent=JSON.stringify({"@context":"https://schema.org","@type":"NewsArticle","headline":cleanTitle(a.title),"description":a.description||a.title,"image":a.featured_image?[location.origin+a.featured_image]:[],"datePublished":a.published_at||a.created_at,"dateModified":a.updated_at||a.created_at,"author":{"@type":"Person","name":a.author||"Galmudug Times"},"publisher":{"@type":"Organization","name":"Galmudug Times"},"mainEntityOfPage":{"@type":"WebPage","@id":location.href}});
+            document.head.appendChild(ld);
             renderArticle(a);
             loadLikeState(a.id);
             loadComments(a.id);
@@ -346,7 +362,7 @@
                 <p class="subscribe-box-title">La Soco Wararka</p>
                 <p>Hel wararka ugu cusub ee Galmudug Times.</p>
                 <div id="subForm">
-                    <input type="text" id="subName" placeholder="Magacaaga (ikhtiyaari)" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
+                    <input type="text" id="subName" placeholder="Magacaaga" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
                     <input type="email" id="subEmail" placeholder="Emailkaaga *" style="width:100%;padding:.6rem .75rem;margin-bottom:.75rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
                     <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#c41e3a';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Isdiiwaangeli</button>
                     <p id="subMsg" style="margin-top:.6rem;font-size:.8rem;display:none;"></p>
