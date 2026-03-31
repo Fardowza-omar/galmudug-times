@@ -160,7 +160,7 @@
             <div class="quick-card">
                 <i class="fas fa-phone"></i>
                 <h3>Call Us</h3>
-                <p><a href="tel:+25261000000">+252 61 000 0000</a></p>
+                <p><a href="tel:+252615263815">+252 61 526 3815</a></p>
             </div>
             <div class="quick-card">
                 <i class="fas fa-map-marker-alt"></i>
@@ -196,10 +196,10 @@
             </div>
 
             <div class="contact-detail">
-                <div class="contact-detail-icon"><i class="fas fa-clock"></i></div>
+                <div class="contact-detail-icon"><i class="fas fa-phone"></i></div>
                 <div class="contact-detail-text">
-                    <strong>Working Hours</strong>
-                    <span>Saturday &ndash; Thursday, 8:00 AM &ndash; 6:00 PM EAT</span>
+                    <strong>Phone</strong>
+                    <span><a href="tel:+252615263815">+252 61 526 3815</a></span>
                 </div>
             </div>
 
@@ -285,7 +285,7 @@
 
             <div class="faq-item">
                 <p class="faq-q">How long does it take to receive a response?</p>
-                <p class="faq-a">We aim to respond to all inquiries within 24 hours during working hours (Saturday&ndash;Thursday, 8 AM&ndash;6 PM EAT).</p>
+                <p class="faq-a">We aim to respond to all inquiries within 24 hours.</p>
             </div>
         </div>
     </div>
@@ -357,15 +357,17 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, subject, message })
                 });
+                const data = await res.json();
                 if (res.ok) {
                     success.style.display = 'block';
                     document.getElementById('contactForm').reset();
                 } else {
-                    throw new Error('Server error');
+                    errBox.textContent = data.error || 'Failed to send. Please try again.';
+                    errBox.style.display = 'block';
                 }
-            } catch (_) {
-                success.style.display = 'block';
-                document.getElementById('contactForm').reset();
+            } catch (err) {
+                errBox.textContent = 'Something went wrong. Please try again or email us directly at info@galmudugtimes.com';
+                errBox.style.display = 'block';
             }
 
             btn.textContent = 'Send Message';

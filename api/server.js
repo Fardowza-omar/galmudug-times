@@ -1096,6 +1096,45 @@ app.delete('/api/admin/comments/:id', authenticateToken, (req, res) => {
   });
 });
 
+// ==================== Contact Form Route ====================
+
+app.post('/api/contact', publicRateLimiter, (req, res) => {
+  const { name, email, subject, message } = req.body;
+  if (!name || !email || !subject || !message) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Invalid email address.' });
+  }
+  if (!emailTransporter) {
+    console.warn('[WARN] Contact form submitted but email transporter not configured');
+    return res.status(500).json({ error: 'Email service unavailable.' });
+  }
+  const mailOptions = {
+    from: `"Galmudug Times" <${process.env.SMTP_EMAIL}>`,
+    to: 'info@galmudugtimes.com',
+    replyTo: email,
+    subject: `[Contact Form] ${subject} — from ${name}`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;">
+        <h2 style="color:#1a1a1a;border-bottom:2px solid #c41e3a;padding-bottom:8px;">New Contact Form Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
+        <p><strong>Message:</strong></p>
+        <p style="white-space:pre-wrap;color:#333;">${message}</p>
+      </div>
+    `
+  };
+  emailTransporter.sendMail(mailOptions)
+    .then(() => res.json({ message: 'Message sent successfully.' }))
+    .catch(err => {
+      console.error('[ERROR] Contact form email failed:', err.message);
+      res.status(500).json({ error: 'Failed to send message. Please try again.' });
+    });
+});
+
 // ==================== Subscribe Routes ====================
 
 app.post('/api/subscribe', publicRateLimiter, (req, res) => {
