@@ -397,7 +397,7 @@ function initializeDatabase() {
     // REQUIRED: Set ADMIN_USERNAME and ADMIN_PASSWORD in your .env file
     const username = process.env.ADMIN_USERNAME;
     const password = process.env.ADMIN_PASSWORD;
-    const email = process.env.ADMIN_EMAIL || 'admin@galmudugtimes.com';
+    const email = process.env.ADMIN_EMAIL || 'info@galmudugtimes.com';
     if (!username || !password) {
       console.warn('[WARN] ADMIN_USERNAME and ADMIN_PASSWORD not set in .env — skipping default admin creation');
       return;
