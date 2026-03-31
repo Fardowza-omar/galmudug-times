@@ -766,6 +766,12 @@
                     }else{
                         $('profileImgPreview').style.display='none';
                     }
+                    // Sync author display and localStorage with fresh DB data
+                    $('authorDisplayName').textContent=u.username;
+                    if(u.profile_image){$('authorThumb').src=u.profile_image;$('authorThumb').style.display='block';}
+                    else{$('authorThumb').style.display='none';}
+                    const stored=JSON.parse(localStorage.getItem('user')||'{}');
+                    localStorage.setItem('user',JSON.stringify({...stored,username:u.username,email:u.email,profile_image:u.profile_image||null}));
                 }
             }catch(e){console.error('Profile error:',e);}
         }
