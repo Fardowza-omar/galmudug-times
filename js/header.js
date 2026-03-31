@@ -97,6 +97,32 @@ function _setTopbarDate() {
 }
 
 // ═══════════════════════════════
+//  Dark Theme Toggle
+// ═══════════════════════════════
+function _applyTheme(dark) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    const btn = document.getElementById('gtThemeToggle');
+    if (btn) btn.innerHTML = dark
+        ? '<i class="fas fa-sun"></i>'
+        : '<i class="fas fa-moon"></i>';
+}
+
+function toggleGTTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = !isDark;
+    _applyTheme(next);
+    try { localStorage.setItem('gt_theme', next ? 'dark' : 'light'); } catch (_) {}
+}
+
+// Apply saved theme immediately (before DOMContentLoaded to avoid flash)
+(function _initTheme() {
+    try {
+        const saved = localStorage.getItem('gt_theme');
+        if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (_) {}
+})();
+
+// ═══════════════════════════════
 //  Search Toggle
 // ═══════════════════════════════
 function toggleGTSearch() {
@@ -170,6 +196,7 @@ window.doSearch = window.doSearch || function doSearch() {
 // ═══════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
     _setTopbarDate();
+    _applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
 
     // Start weather rotation immediately (cache gives real values on refresh)
     // then refresh data from API in the background and keep rotating

@@ -136,6 +136,7 @@
             <button class="gt-search-btn" onclick="toggleGTSearch()" aria-label="Search">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
+            <button class="gt-theme-toggle" id="gtThemeToggle" onclick="toggleGTTheme()" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
         </div>
         <div class="gt-search-expand" id="gtSearchExpand" style="display:none;">
             <div class="gt-search-expand-inner">
@@ -218,7 +219,7 @@
             </div>
             <div class="footer-column">
                 <h4 class="footer-title">SUBSCRIBE</h4>
-                <p class="footer-text">Get the latest important news.</p>
+                <p class="footer-text">Hel wararka muhiimka ah ee ugu dambeya.</p>
                 <button class="subscribe-btn" onclick="window.location.href='index.html'">Subscribe</button>
             </div>
         </div>
@@ -342,12 +343,12 @@
             <h3 class="related-title">More Stories</h3>
             <div id="relatedList"><p style="color:#999;font-size:.85rem">Loading...</p></div>
             <div class="subscribe-box" style="margin-top:2rem" id="subscribeBox">
-                <p class="subscribe-box-title">Stay Informed</p>
-                <p>Get the latest news from Galmudug Times.</p>
+                <p class="subscribe-box-title">La Soco Wararka</p>
+                <p>Hel wararka ugu cusub ee Galmudug Times.</p>
                 <div id="subForm">
-                    <input type="text" id="subName" placeholder="Your name (optional)" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
-                    <input type="email" id="subEmail" placeholder="Your email address *" style="width:100%;padding:.6rem .75rem;margin-bottom:.75rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
-                    <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#c41e3a';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Subscribe Now</button>
+                    <input type="text" id="subName" placeholder="Magacaaga (ikhtiyaari)" style="width:100%;padding:.6rem .75rem;margin-bottom:.6rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
+                    <input type="email" id="subEmail" placeholder="Emailkaaga *" style="width:100%;padding:.6rem .75rem;margin-bottom:.75rem;border:none;border-radius:3px;font-family:'Inter',sans-serif;font-size:.85rem;">
+                    <button onclick="doSubscribe()" style="width:100%;background:#fff;color:#000;border:none;padding:.75rem;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .2s" onmouseover="this.style.background='#c41e3a';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#000'">Isdiiwaangeli</button>
                     <p id="subMsg" style="margin-top:.6rem;font-size:.8rem;display:none;"></p>
                 </div>
             </div>
@@ -452,14 +453,14 @@
             if(r.ok){
                 msg.style.color='#4CAF50';msg.textContent='? '+d.message;
                 document.getElementById('subEmail').value='';document.getElementById('subName').value='';
-                btn.textContent='Subscribed!';btn.style.background='#27ae60';btn.style.color='#fff';
+                btn.textContent='Waad isdiiwaangelisay!';btn.style.background='#27ae60';btn.style.color='#fff';
             }else{
-                msg.style.color='#f39c12';msg.textContent=d.error||'Something went wrong.';
-                btn.disabled=false;btn.textContent='Subscribe Now';
+                msg.style.color='#f39c12';msg.textContent=d.error||'Wax qalad ah ayaa dhacay.';
+                btn.disabled=false;btn.textContent='Isdiiwaangeli';
             }
         }catch(e){
-            msg.style.display='block';msg.style.color='#f39c12';msg.textContent='Network error. Please try again.';
-            btn.disabled=false;btn.textContent='Subscribe Now';
+            msg.style.display='block';msg.style.color='#f39c12';msg.textContent='Khalad shabakad. Fadlan isku day mar kale.';
+            btn.disabled=false;btn.textContent='Isdiiwaangeli';
         }
     }
 
