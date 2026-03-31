@@ -393,7 +393,7 @@ function initializeDatabase() {
       `, [cat.name, cat.slug, cat.color, cat.order]);
     });
 
-    // Create default admin user (if not exists)
+    // Create default admin user only if no users exist at all
     // REQUIRED: Set ADMIN_USERNAME and ADMIN_PASSWORD in your .env file
     const username = process.env.ADMIN_USERNAME;
     const password = process.env.ADMIN_PASSWORD;
@@ -402,12 +402,13 @@ function initializeDatabase() {
       console.warn('[WARN] ADMIN_USERNAME and ADMIN_PASSWORD not set in .env — skipping default admin creation');
       return;
     }
-    const hashedPassword = bcryptjs.hashSync(password, 10);
-
-    db.run(`
-      INSERT OR IGNORE INTO users (username, password, email)
-      VALUES (?, ?, ?)
-    `, [username, hashedPassword, email]);
+    db.get('SELECT COUNT(*) as count FROM users', [], (err, row) => {
+      if (!err && row && row.count === 0) {
+        const hashedPassword = bcryptjs.hashSync(password, 10);
+        db.run('INSERT INTO users (username, password, email) VALUES (?, ?, ?)', [username, hashedPassword, email]);
+        console.log(`[OK] Created default admin user: ${username}`);
+      }
+    });
 
     // Deleted articles (trash) table
     db.run(`
