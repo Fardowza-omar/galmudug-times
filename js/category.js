@@ -69,12 +69,17 @@ async function initCategoryPage(slug, color) {
         const articles = await res.json();
 
         if (!articles.length) {
+            const loadingEl = document.getElementById('cat-loading');
+            if (loadingEl) loadingEl.remove();
             const topEl = document.getElementById('cat-top-card');
             if (topEl) topEl.innerHTML = '<p style="color:#aaa;padding:2rem 0;font-family:Inter,sans-serif;">No articles in this category yet.</p>';
             return;
         }
 
         // ── Top featured card ────────────────────────────────────────
+        const loadingEl = document.getElementById('cat-loading');
+        if (loadingEl) loadingEl.remove();
+
         const hero = articles[0];
         const heroTitle = cleanTitle(hero.title);
         const heroDesc = (hero.description || (hero.content||'').replace(/<[^>]*>/g,'')).trim().substring(0,220);
@@ -116,6 +121,8 @@ async function initCategoryPage(slug, color) {
         if (wrap) wrap.style.display = _catAllArticles.length > CAT_BATCH ? 'block' : 'none';
 
     } catch(e) {
+        const loadingEl = document.getElementById('cat-loading');
+        if (loadingEl) loadingEl.remove();
         console.error('Category load error:', e);
     }
 }
