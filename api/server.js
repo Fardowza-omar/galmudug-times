@@ -57,11 +57,38 @@ function loginRateLimiter(req, res, next) {
   next();
 }
 
+// ---- General rate limiter for public write endpoints ----
+const publicWriteAttempts = new Map();
+const PUBLIC_RATE_WINDOW = 60 * 1000; // 1 minute
+const MAX_PUBLIC_WRITES = 10; // 10 per minute per IP
+
+function publicRateLimiter(req, res, next) {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
+  const now = Date.now();
+  const record = publicWriteAttempts.get(ip);
+
+  if (record) {
+    if (now - record.firstAttempt > PUBLIC_RATE_WINDOW) {
+      publicWriteAttempts.set(ip, { count: 1, firstAttempt: now });
+    } else if (record.count >= MAX_PUBLIC_WRITES) {
+      return res.status(429).json({ error: 'Too many requests. Please slow down.' });
+    } else {
+      record.count++;
+    }
+  } else {
+    publicWriteAttempts.set(ip, { count: 1, firstAttempt: now });
+  }
+  next();
+}
+
 // Clean up stale entries every 30 minutes
 setInterval(() => {
   const now = Date.now();
   for (const [ip, record] of loginAttempts) {
     if (now - record.firstAttempt > RATE_LIMIT_WINDOW) loginAttempts.delete(ip);
+  }
+  for (const [ip, record] of publicWriteAttempts) {
+    if (now - record.firstAttempt > PUBLIC_RATE_WINDOW) publicWriteAttempts.delete(ip);
   }
 }, 30 * 60 * 1000);
 
@@ -317,10 +344,14 @@ function initializeDatabase() {
     });
 
     // Create default admin user (if not exists)
-    // Set ADMIN_USERNAME and ADMIN_PASSWORD in your .env file before first run
-    const username = process.env.ADMIN_USERNAME || 'admin';
-    const password = process.env.ADMIN_PASSWORD || 'admin123';
-    const email = process.env.ADMIN_EMAIL || 'admin@galmudug-times.com';
+    // REQUIRED: Set ADMIN_USERNAME and ADMIN_PASSWORD in your .env file
+    const username = process.env.ADMIN_USERNAME;
+    const password = process.env.ADMIN_PASSWORD;
+    const email = process.env.ADMIN_EMAIL || 'admin@galmudugtimes.com';
+    if (!username || !password) {
+      console.warn('[WARN] ADMIN_USERNAME and ADMIN_PASSWORD not set in .env — skipping default admin creation');
+      return;
+    }
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
     db.run(`
@@ -809,7 +840,7 @@ app.get('/api/admin/articles', authenticateToken, (req, res) => {
 
 // ==================== Search Route ====================
 
-app.get('/api/search', (req, res) => {
+app.get('/api/search', publicRateLimiter, (req, res) => {
   const q = (req.query.q || '').trim();
   if (!q) return res.json([]);
   const like = `%${q}%`;
@@ -923,7 +954,7 @@ app.get('/api/articles/:id/comments', (req, res) => {
 });
 
 // Post a comment
-app.post('/api/articles/:id/comments', (req, res) => {
+app.post('/api/articles/:id/comments', publicRateLimiter, (req, res) => {
   const { author_name, author_email, content } = req.body;
   const article_id = req.params.id;
 
@@ -963,7 +994,7 @@ app.get('/api/articles/:id/likes', (req, res) => {
 });
 
 // Toggle like for an article (identifier = forwarded-for or x-real-ip or a client token)
-app.post('/api/articles/:id/like', (req, res) => {
+app.post('/api/articles/:id/like', publicRateLimiter, (req, res) => {
   const article_id = req.params.id;
   // Use client-supplied token (stored in localStorage) so each browser is treated as a unique user
   const identifier = req.headers['x-client-token'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
@@ -1018,7 +1049,7 @@ app.delete('/api/admin/comments/:id', authenticateToken, (req, res) => {
 
 // ==================== Subscribe Routes ====================
 
-app.post('/api/subscribe', (req, res) => {
+app.post('/api/subscribe', publicRateLimiter, (req, res) => {
   const { email, name } = req.body;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
@@ -1243,6 +1274,15 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: 'Invalid JSON in request body' });
   }
   next(err);
+});
+
+// 404 catch-all
+app.use((req, res) => {
+  // Serve index.html for browser requests, JSON for API
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Endpoint not found' });
+  }
+  res.status(404).sendFile('index.html', { root: path.join(__dirname, '..') });
 });
 
 // ==================== Server Start ====================
